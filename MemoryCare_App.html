@@ -1174,6 +1174,210 @@
         border-radius: 0 !important;
       }
     }
+
+    /* ── SENIOR ACCESSIBILITY FONTS AND CONTROLS ── */
+    .app-accessibility-bar {
+      background: var(--card-cream);
+      border-bottom: 2px solid var(--border-light);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      gap: 12px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .caregiver-clinical-theme .app-accessibility-bar {
+      background: #FFFFFF;
+      border-bottom: 2px solid #CBD5E1;
+    }
+
+    .access-label {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .access-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-access {
+      background: white;
+      border: 2px solid var(--border-light);
+      color: var(--navy);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-access:hover {
+      background: var(--bg-cream);
+      border-color: var(--teal);
+    }
+
+    .btn-access.active {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal-dark);
+      box-shadow: 0 2px 6px rgba(61, 140, 140, 0.2);
+    }
+
+    /* Scaling Rules inside the simulated app screen container */
+    .app-screen-container {
+      --font-scale: 1.0;
+    }
+    
+    .app-screen-container.font-large {
+      --font-scale: 1.25;
+    }
+    
+    .app-screen-container.font-xlarge {
+      --font-scale: 1.5;
+    }
+
+    /* Smooth scale animation on all senior screens elements */
+    .app-screen-container, 
+    .app-screen-container *,
+    .app-screen-container *::before,
+    .app-screen-container *::after {
+      transition: font-size 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                  padding 0.2s ease, 
+                  min-height 0.2s ease, 
+                  height 0.2s ease;
+    }
+
+    /* Overrides with scale multiplication */
+    .app-screen-container.font-large,
+    .app-screen-container.font-xlarge {
+      font-size: calc(16px * var(--font-scale)) !important;
+    }
+
+    /* Header Bar title and subtitle */
+    .app-screen-container.font-large .screen-header-bar h3,
+    .app-screen-container.font-xlarge .screen-header-bar h3 {
+      font-size: calc(20px * var(--font-scale)) !important;
+    }
+    
+    .app-screen-container.font-large .screen-header-bar p,
+    .app-screen-container.font-xlarge .screen-header-bar p {
+      font-size: calc(12px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large #app-header-avatar,
+    .app-screen-container.font-xlarge #app-header-avatar {
+      font-size: calc(28px * var(--font-scale)) !important;
+    }
+
+    /* Cards */
+    .app-screen-container.font-large .elderly-card,
+    .app-screen-container.font-xlarge .elderly-card {
+      padding: calc(20px * calc(1 + 0.1 * calc(var(--font-scale) - 1))) !important;
+    }
+
+    /* H2 Titles e.g., Welcome */
+    .app-screen-container.font-large h2,
+    .app-screen-container.font-xlarge h2 {
+      font-size: calc(28px * var(--font-scale)) !important;
+    }
+
+    /* H3, H4 Titles inside screens */
+    .app-screen-container.font-large h3,
+    .app-screen-container.font-xlarge h3 {
+      font-size: calc(16px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large h4,
+    .app-screen-container.font-xlarge h4 {
+      font-size: calc(14px * var(--font-scale)) !important;
+    }
+
+    /* Labels & General text */
+    .app-screen-container.font-large label,
+    .app-screen-container.font-xlarge label {
+      font-size: calc(16px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large p,
+    .app-screen-container.font-xlarge p {
+      font-size: calc(13px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large span:not(.icon):not(.topbar-led-indicator),
+    .app-screen-container.font-xlarge span:not(.icon):not(.topbar-led-indicator) {
+      font-size: calc(12px * var(--font-scale)) !important;
+    }
+
+    /* Large Accessibility Buttons */
+    .app-screen-container.font-large .elderly-btn-large,
+    .app-screen-container.font-xlarge .elderly-btn-large {
+      font-size: calc(18px * var(--font-scale)) !important;
+      min-height: calc(64px * var(--font-scale)) !important;
+      padding: calc(18px * var(--font-scale)) calc(24px * var(--font-scale)) !important;
+      border-radius: calc(22px * var(--font-scale)) !important;
+    }
+
+    /* Inputs and textareas */
+    .app-screen-container.font-large .wf-large-input,
+    .app-screen-container.font-xlarge .wf-large-input {
+      font-size: calc(16px * var(--font-scale)) !important;
+      padding: calc(14px * var(--font-scale)) calc(18px * var(--font-scale)) !important;
+      border-radius: calc(16px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large .response-large-textarea,
+    .app-screen-container.font-xlarge .response-large-textarea {
+      font-size: calc(15px * var(--font-scale)) !important;
+    }
+
+    /* Shortcut Boxes layout scaling */
+    .app-screen-container.font-large .home-shortcut-box,
+    .app-screen-container.font-xlarge .home-shortcut-box {
+      padding: calc(20px * var(--font-scale)) calc(12px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large .home-shortcut-box h4,
+    .app-screen-container.font-xlarge .home-shortcut-box h4 {
+      font-size: calc(14px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large .home-shortcut-box p,
+    .app-screen-container.font-xlarge .home-shortcut-box p {
+      font-size: calc(11px * var(--font-scale)) !important;
+    }
+
+    /* Album caption */
+    .app-screen-container.font-large .retro-album-caption,
+    .app-screen-container.font-xlarge .retro-album-caption {
+      font-size: calc(13px * var(--font-scale)) !important;
+    }
+
+    /* Bottom tab items */
+    .app-screen-container.font-large .nav-tab-item,
+    .app-screen-container.font-xlarge .nav-tab-item {
+      font-size: calc(11px * var(--font-scale)) !important;
+    }
+
+    .app-screen-container.font-large .nav-tab-item .icon,
+    .app-screen-container.font-xlarge .nav-tab-item .icon {
+      font-size: calc(22px * var(--font-scale)) !important;
+    }
   </style>
 </head>
 <body>
@@ -1221,6 +1425,15 @@
             <span id="app-db-status-lbl">📶 100% Offline (Local)</span>
             <div class="topbar-led-indicator" id="app-db-status-led"></div>
             <span>🔋 100%</span>
+        </div>
+
+        <!-- แถบปรับขนาดตัวอักษรสำหรับผู้สูงอายุ (Elderly Accessibility Controls) -->
+        <div class="app-accessibility-bar">
+          <div class="access-label">👁️ ขนาดตัวอักษร:</div>
+          <div class="access-buttons">
+            <button class="btn-access active" id="btn-fs-normal" onclick="setAppFontSize('normal')">A ปกติ</button>
+            <button class="btn-access" id="btn-fs-large" onclick="setAppFontSize('large')">A+ ใหญ่</button>
+            <button class="btn-access" id="btn-fs-xlarge" onclick="setAppFontSize('xlarge')">A++ ใหญ่พิเศษ</button>
           </div>
         </div>
 
@@ -1757,6 +1970,7 @@
             memoir: false,
             game: false
           },
+          fontSize: "normal",
           currentMood: "relaxed",
           ch1Text: "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียกง่ายและมีความสุขที่สุด...",
           ch2Text: "",
@@ -1778,6 +1992,7 @@
             memoir: false,
             game: false
           },
+          fontSize: "normal",
           currentMood: "relaxed",
           ch1Text: "",
           ch2Text: "",
@@ -2121,6 +2336,7 @@
         reminiscenceStart: year + 15,
         reminiscenceEnd: year + 25,
         completedActivities: { music: false, memoir: false, game: false },
+        fontSize: "normal",
         currentMood: "relaxed",
         ch1Text: "",
         ch2Text: "",
@@ -2142,6 +2358,36 @@
       syncAppWidgets();
       
       alert(`เพิ่มคนไข้ใหม่ "${name}" เข้าระบบออฟไลน์เรียบร้อยแล้วค่ะ!`);
+    }
+
+    // Senior Font Size Accessibility Controller
+    function setAppFontSize(size, playSound = true, persist = true) {
+      if (playSound) {
+        playTactileBeep(523.25, 0.08);
+      }
+      
+      const screenContainer = document.querySelector('.app-screen-container');
+      if (!screenContainer) return;
+
+      screenContainer.classList.remove('font-large', 'font-xlarge');
+
+      if (size === 'large') {
+        screenContainer.classList.add('font-large');
+      } else if (size === 'xlarge') {
+        screenContainer.classList.add('font-xlarge');
+      }
+
+      document.querySelectorAll('.btn-access').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-fs-${size}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (persist) {
+        const p = getActivePatient();
+        if (p) {
+          p.fontSize = size;
+          saveState();
+        }
+      }
     }
 
     // Switch screens inside application scroller
@@ -2341,6 +2587,9 @@
       // Load current inputs values
       document.getElementById('cg-mmse-scores').value = p.scores.mmse.join(',');
       document.getElementById('cg-gds-scores').value = p.scores.gds.join(',');
+
+      // Sync senior font size accessibility state without playing sound or saving state
+      setAppFontSize(p.fontSize || 'normal', false, false);
 
       saveState();
     }
