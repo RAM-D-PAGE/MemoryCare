@@ -76,7 +76,12 @@ self.addEventListener('fetch', (event) => {
         if (cachedResponse) {
           return cachedResponse; // Serve cached resource instantly
         }
-        return fetch(event.request).then((networkResponse) => {
+        // Force redirect 'follow' mode for browser-navigation manual redirects (e.g. Vercel rewrites)
+        const fetchRequest = event.request.redirect === 'manual'
+          ? new Request(event.request, { redirect: 'follow' })
+          : event.request;
+
+        return fetch(fetchRequest).then((networkResponse) => {
           // If valid response, dynamically cache it for future offline usage
           if (networkResponse && networkResponse.status === 200) {
             return caches.open(CACHE_NAME).then((cache) => {
