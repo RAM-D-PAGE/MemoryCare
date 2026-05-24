@@ -1,0 +1,3759 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemoryCare — Interactive Workspace & Wireframe Hub</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&family=Lora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Theme colors - Navy & Teal Premium Concept */
+      --navy: #1E2D5A;
+      --navy-light: #2A3F7A;
+      --navy-dark: #0F172E;
+      --teal: #3D8C8C;
+      --teal-hover: #337575;
+      --teal-light: #E8F4F4;
+      --teal-ultra-light: #F2FAFA;
+      --rose: #C4606A;
+      --rose-light: #FAE8EA;
+      --gold: #D4973A;
+      --gold-light: #FDF3E0;
+      --sage: #6A9172;
+      --sage-light: #EAF2EB;
+      --dust: #8B7B8B;
+      --bg-warm: #FAF8F5;
+      --card-white: #FFFFFF;
+      --border-color: #E8E0D8;
+      --text-dark: #2C2C2C;
+      --text-muted: #7E756B;
+      --shadow-sm: 0 2px 8px rgba(30, 45, 90, 0.04);
+      --shadow-md: 0 8px 24px rgba(30, 45, 90, 0.06);
+      --shadow-lg: 0 16px 40px rgba(30, 45, 90, 0.12);
+      
+      /* Wireframe / Blueprint Colors */
+      --bp-bg: #F0F2F5;
+      --bp-grid: rgba(0, 82, 204, 0.05);
+      --bp-line: #5B6D80;
+      --bp-accent: #0052CC;
+      --bp-accent-light: rgba(0, 82, 204, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Sarabun', 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-warm);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ── SIDEBAR NAVIGATION ── */
+    .workspace-sidebar {
+      width: 260px;
+      background: var(--navy-dark);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .sidebar-header {
+      padding: 30px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--teal), var(--navy-light));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(61, 140, 140, 0.4);
+    }
+
+    .sidebar-title-wrap h1 {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-title-wrap p {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    .sidebar-menu {
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .menu-item:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .menu-item.active {
+      color: white;
+      background: var(--teal);
+      box-shadow: 0 4px 16px rgba(61, 140, 140, 0.3);
+      font-weight: 600;
+    }
+
+    .menu-item .icon {
+      font-size: 18px;
+    }
+
+    .sidebar-footer {
+      padding: 20px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.5;
+    }
+
+    /* ── MAIN WORKSPACE ── */
+    .workspace-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .workspace-header {
+      background: var(--card-white);
+      border-bottom: 1px solid var(--border-color);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-info h2 {
+      font-family: 'Lora', serif;
+      font-size: 24px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .header-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .workspace-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--teal-hover);
+      box-shadow: 0 4px 12px rgba(61, 140, 140, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border-color);
+      color: var(--navy);
+    }
+    .btn-outline:hover {
+      background: var(--bg-warm);
+    }
+
+    /* ── WORKSPACE PANELS ── */
+    .workspace-content {
+      padding: 32px 40px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .tab-panel.active {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── DUAL CANVAS LAYOUT (EMULATOR + DASHBOARD) ── */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .split-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── PHONE EMULATOR CONTAINER ── */
+    .phone-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: sticky;
+      top: 100px;
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 720px;
+      background: #111;
+      border-radius: 48px;
+      padding: 12px;
+      box-shadow: 0 24px 70px rgba(15, 23, 46, 0.25), 
+                  0 8px 24px rgba(0, 0, 0, 0.15),
+                  inset 0 0 3px 2px rgba(255,255,255,0.2);
+      border: 4px solid #2d2d2d;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Notch & Camera */
+    .phone-notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 24px;
+      background: #111;
+      border-radius: 0 0 16px 16px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .phone-camera {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #242424;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .phone-speaker {
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: #2d2d2d;
+    }
+
+    .phone-screen {
+      background: #FAF8F5;
+      border-radius: 36px;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Mobile Status Bar */
+    .mobile-status-bar {
+      height: 38px;
+      background: var(--navy);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 24px 4px;
+      font-size: 11px;
+      font-weight: 500;
+      z-index: 999;
+    }
+
+    .mobile-status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Mobile Header */
+    .mobile-header {
+      background: var(--navy);
+      color: white;
+      padding: 16px 20px 24px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 4px 16px rgba(30, 45, 90, 0.1);
+      position: relative;
+    }
+
+    .mobile-header .greeting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-header .greeting-text h4 {
+      font-size: 11px;
+      opacity: 0.7;
+      font-weight: 400;
+    }
+
+    .mobile-header .greeting-text h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 2px;
+      font-family: 'Lora', serif;
+    }
+
+    .mobile-header .profile-pill {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+    }
+    
+    .mobile-header .profile-pill img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Mobile Content Scroller */
+    .mobile-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #FAF8F5;
+      padding-bottom: 24px;
+    }
+
+    /* Hide scrollbars for emulator for sleek look */
+    .mobile-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Mobile Screen Components */
+    .mobile-screen-view {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: screenFade 0.3s ease both;
+      height: 100%;
+    }
+
+    .mobile-screen-view.active {
+      display: flex;
+    }
+
+    @keyframes screenFade {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Mobile Footer Nav */
+    .mobile-nav-bar {
+      height: 64px;
+      background: white;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: 8px;
+      border-radius: 0 0 36px 36px;
+      z-index: 999;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 9px;
+      font-weight: 600;
+      gap: 4px;
+      width: 25%;
+      height: 100%;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-nav-item .icon {
+      font-size: 18px;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--teal);
+    }
+
+    /* Emulator Labels & Instructions */
+    .emulator-instruction {
+      margin-top: 16px;
+      text-align: center;
+      background: var(--teal-light);
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(61, 140, 140, 0.15);
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .emulator-instruction p {
+      font-size: 12px;
+      color: var(--teal-hover);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* ── MOBILE SCREENS DETAILS ── */
+    
+    /* Screen 1: Login & Config */
+    .mobile-login-view {
+      padding: 12px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mobile-logo-big {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .mobile-logo-circle {
+      width: 64px;
+      height: 64px;
+      background: var(--navy);
+      color: white;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 6px 18px rgba(30, 45, 90, 0.15);
+      margin-bottom: 8px;
+    }
+
+    .mobile-logo-big h2 {
+      font-family: 'Lora', serif;
+      color: var(--navy);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .mobile-logo-big p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .mobile-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mobile-form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .mobile-input {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 14px;
+      color: var(--text-dark);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(61, 140, 140, 0.1);
+    }
+
+    .avatar-selector {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .avatar-option {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .avatar-option.selected {
+      border-color: var(--teal);
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(61, 140, 140, 0.2);
+    }
+
+    .mobile-btn {
+      background: var(--navy);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(30, 45, 90, 0.15);
+    }
+
+    .mobile-btn:hover {
+      background: var(--navy-light);
+    }
+
+    /* Screen 2: Home Screen */
+    .mobile-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .music-goal-card {
+      background: linear-gradient(135deg, var(--teal), var(--navy));
+      color: white;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .music-goal-card::before {
+      content: '';
+      position: absolute;
+      top: -30%; right: -20%;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      pointer-events: none;
+    }
+
+    .music-goal-card .goal-icon {
+      font-size: 28px;
+    }
+
+    .music-goal-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .music-goal-card p {
+      font-size: 10px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .music-goal-card .btn-play-mini {
+      background: white;
+      color: var(--teal);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-left: auto;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .mobile-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mobile-shortcut-card {
+      text-align: center;
+      padding: 18px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-shortcut-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--teal);
+    }
+
+    .mobile-shortcut-card .icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .mobile-shortcut-card h5 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .mobile-shortcut-card p {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .streak-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .streak-title-wrap h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .streak-title-wrap p {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .streak-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .streak-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    .streak-dot.active {
+      background: var(--gold-light);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Screen 3: Memory Album & Music Player */
+    .vintage-photo-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .vintage-photo-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: white;
+      cursor: pointer;
+    }
+
+    .vintage-photo {
+      height: 130px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .vintage-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    }
+
+    .vintage-photo-title {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .vintage-photo-desc {
+      padding: 12px;
+      font-size: 11px;
+      color: var(--text-dark);
+      line-height: 1.5;
+      background: white;
+    }
+
+    /* Simulated Audio Recorder with canvas */
+    .record-box {
+      border: 1px dashed var(--teal);
+      background: var(--teal-ultra-light);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .record-btn-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--rose);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(196, 96, 106, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .record-btn-circle:hover {
+      transform: scale(1.05);
+    }
+
+    .record-btn-circle.recording {
+      background: red;
+      animation: pulseRecord 1.5s infinite;
+    }
+
+    @keyframes pulseRecord {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+      70% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+    }
+
+    .record-box h5 {
+      font-size: 12px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .record-box p {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .soundwave-canvas {
+      width: 100%;
+      height: 32px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      display: none;
+    }
+
+    /* Vintage Music Player */
+    .vintage-player {
+      background: #FDF9F4;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .player-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .album-art {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--gold), var(--navy));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .song-details h5 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .song-details p {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .control-btn {
+      font-size: 16px;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 1px solid var(--border-color);
+    }
+
+    .control-btn:hover {
+      background: var(--bg-warm);
+    }
+
+    .control-btn.btn-play-pause {
+      font-size: 20px;
+      width: 44px;
+      height: 44px;
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+      box-shadow: 0 4px 10px rgba(61, 140, 140, 0.25);
+    }
+
+    .control-btn.btn-play-pause:hover {
+      background: var(--teal-hover);
+    }
+
+    .progress-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      flex-grow: 1;
+      height: 4px;
+      background: #E8E0D8;
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 2px;
+      width: 0%;
+      position: absolute;
+      top: 0; left: 0;
+      transition: width 0.1s linear;
+    }
+
+    /* Mood buttons */
+    .mood-feedback {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .mood-feedback h5 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .mood-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-warm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mood-btn:hover {
+      background: white;
+      border-color: var(--teal);
+    }
+
+    .mood-btn.active {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 2px rgba(61, 140, 140, 0.1);
+      font-weight: 600;
+    }
+    
+    .mood-btn.active[data-mood="happy"] { background: var(--sage-light); border-color: var(--sage); color: var(--sage); }
+    .mood-btn.active[data-mood="relaxed"] { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+    .mood-btn.active[data-mood="sad"] { background: var(--rose-light); border-color: var(--rose); color: var(--rose); }
+    .mood-btn.active[data-mood="neutral"] { background: var(--gold-light); border-color: var(--gold); color: var(--gold); }
+
+    .mood-btn .emoji {
+      font-size: 18px;
+    }
+
+    .mood-btn .label {
+      font-size: 8px;
+    }
+
+    /* Screen 4: Life Review */
+    .life-review-view {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chapter-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .chapter-card:hover {
+      border-color: var(--teal);
+      background: var(--teal-ultra-light);
+    }
+
+    .chapter-card.completed {
+      border-left: 4px solid var(--sage);
+    }
+
+    .chapter-card.active-chapter {
+      border-color: var(--teal);
+      background: var(--teal-ultra-light);
+      border-left: 4px solid var(--teal);
+    }
+
+    .chapter-info h5 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .chapter-info p {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .chapter-badge {
+      font-size: 14px;
+    }
+
+    /* Life Review Prompt Sheet */
+    .review-prompt-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-card {
+      background: #FFFDF9;
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .prompt-card::before {
+      content: '“';
+      position: absolute;
+      top: -10px; left: 16px;
+      font-size: 48px;
+      font-family: 'Lora', serif;
+      color: rgba(212, 151, 58, 0.15);
+      line-height: 1;
+    }
+
+    .prompt-card h4 {
+      font-family: 'Lora', serif;
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .prompt-card p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-dark);
+      font-style: italic;
+    }
+
+    .response-input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .response-textarea {
+      min-height: 70px;
+      max-height: 120px;
+      resize: vertical;
+    }
+
+    .life-review-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .life-review-actions button {
+      flex: 1;
+    }
+
+    /* ── DESKTOP NURSE DASHBOARD ── */
+    .dashboard-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Nurse Alert Banner */
+    .nurse-alert-banner {
+      background: linear-gradient(135deg, var(--rose), #A04050);
+      color: white;
+      border-radius: 16px;
+      padding: 18px 24px;
+      display: none; /* Controlled by JS */
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(196, 96, 106, 0.25);
+      animation: alertFlash 1s infinite alternate;
+    }
+
+    @keyframes alertFlash {
+      from { box-shadow: 0 10px 30px rgba(196, 96, 106, 0.25); }
+      to { box-shadow: 0 10px 30px rgba(196, 96, 106, 0.5); }
+    }
+
+    .alert-icon {
+      font-size: 32px;
+    }
+
+    .alert-details h3 {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .alert-details p {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .alert-btn {
+      background: white;
+      color: var(--rose);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-left: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .alert-btn:hover {
+      background: var(--rose-light);
+    }
+
+    /* Grid of Metric Cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .metric-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .metric-footer {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Analytics Section with SVG Charts */
+    .analytics-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .analytics-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chart-title h3 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .chart-title p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Custom SVG Drawing Styles */
+    .svg-chart {
+      width: 100%;
+      height: 200px;
+    }
+
+    .chart-axis {
+      stroke: #E2E8F0;
+      stroke-width: 1;
+    }
+
+    .chart-text {
+      fill: #A0AEC0;
+      font-size: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .chart-line {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: all 0.3s ease;
+    }
+
+    .chart-line-bg {
+      fill: url(#chart-gradient);
+      stroke: none;
+      transition: all 0.3s ease;
+    }
+
+    .chart-dot {
+      fill: white;
+      stroke: var(--teal);
+      stroke-width: 3;
+      cursor: pointer;
+      transition: r 0.2s ease, fill 0.2s ease;
+    }
+
+    .chart-dot:hover {
+      r: 7;
+      fill: var(--teal);
+    }
+
+    .chart-bar {
+      fill: var(--navy-light);
+      rx: 4;
+      transition: fill 0.2s ease, height 0.3s ease, y 0.3s ease;
+      cursor: pointer;
+    }
+
+    .chart-bar:hover {
+      fill: var(--navy);
+    }
+    
+    .chart-bar.alert-bar {
+      fill: var(--rose);
+    }
+
+    /* Tooltip styling in SVG */
+    .chart-tooltip {
+      background: var(--navy-dark);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      pointer-events: none;
+      position: absolute;
+      display: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      z-index: 1000;
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    /* Patient Table */
+    .patient-table-card {
+      background: white;
+      border-radius: 18px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-header h3 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    
+    .table-header p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .patient-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .patient-table th {
+      background: var(--bg-warm);
+      padding: 14px 24px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .patient-table td {
+      padding: 16px 24px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-dark);
+    }
+
+    .patient-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .patient-table tr:hover td {
+      background: var(--bg-warm);
+    }
+
+    .avatar-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .table-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      overflow: hidden;
+    }
+    
+    .table-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .patient-name {
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-active { background: var(--sage-light); color: var(--sage); }
+    .status-inactive { background: #EDF2F7; color: #718096; }
+    .status-alert { background: var(--rose-light); color: var(--rose); }
+
+    .mood-pill-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Daily encouragement message modal */
+    .intervention-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 46, 0.4);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalScale {
+      from { transform: scale(0.9) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-header h3 {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-body p {
+      font-size: 13px;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .encouragement-option {
+      background: var(--bg-warm);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .encouragement-option:hover {
+      border-color: var(--teal);
+      background: var(--teal-ultra-light);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* ── WIREFRAME BLUEPRINT HUB ── */
+    .blueprint-control-header {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .blueprint-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .bp-nav-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--navy);
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .bp-nav-btn:hover {
+      background: var(--bg-warm);
+    }
+
+    .bp-nav-btn.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    .blueprint-toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .switch-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #CBD5E0;
+      border-radius: 24px;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--teal);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Blueprint Layout */
+    .blueprint-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .blueprint-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Monochrome blueprint view */
+    .blueprint-canvas {
+      background: var(--bp-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 600px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    .blueprint-canvas::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(var(--bp-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bp-grid) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    /* Architectural wireframe mockups */
+    .wireframe-phone {
+      width: 290px;
+      height: 580px;
+      background: white;
+      border: 2px solid var(--bp-line);
+      border-radius: 36px;
+      padding: 10px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .wireframe-phone::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 90px; height: 16px;
+      background: white;
+      border: 2px solid var(--bp-line);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      z-index: 10;
+    }
+
+    .wireframe-screen {
+      width: 100%;
+      height: 100%;
+      border: 1px dashed var(--bp-line);
+      border-radius: 28px;
+      overflow: hidden;
+      padding: 16px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--bp-line);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    /* Overlay guides shown on toggle */
+    .safety-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+    }
+
+    .safety-overlay.visible {
+      display: block;
+    }
+
+    .safety-box {
+      position: absolute;
+      border: 1.5px dashed #E53E3E;
+      background: rgba(229, 62, 62, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+      color: #E53E3E;
+    }
+
+    .safety-box::after {
+      content: '48px Min';
+      position: absolute;
+      background: white;
+      border: 1px solid #E53E3E;
+      padding: 1px 3px;
+      border-radius: 3px;
+      top: -6px;
+      transform: scale(0.8);
+    }
+
+    /* Wireframe Content Elements */
+    .wf-placeholder-box {
+      border: 1px dashed var(--bp-line);
+      background: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .wf-placeholder-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        linear-gradient(45deg, transparent 48%, var(--bp-grid) 49%, var(--bp-grid) 51%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, var(--bp-grid) 49%, var(--bp-grid) 51%, transparent 52%);
+    }
+
+    .wf-button {
+      border: 1px solid var(--bp-line);
+      padding: 8px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .wf-label {
+      font-size: 8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .wf-title {
+      font-size: 12px;
+      font-weight: 800;
+      border-bottom: 1.5px solid var(--bp-line);
+      padding-bottom: 4px;
+    }
+
+    /* Psychiatric UX Annotation Panels */
+    .annotation-panel {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .annotation-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--navy);
+    }
+
+    .annotation-header .icon {
+      font-size: 20px;
+    }
+
+    .annotation-header h3 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .annotation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .annotation-item {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .annotation-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--teal-light);
+      color: var(--teal-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 10px;
+      flex-shrink: 0;
+      border: 1px solid rgba(61, 140, 140, 0.15);
+    }
+
+    .annotation-text strong {
+      color: var(--navy);
+      display: block;
+      margin-bottom: 2px;
+    }
+    
+    .annotation-text span {
+      color: var(--text-dark);
+    }
+
+    /* Print Legable Memoir Modal Sheets */
+    .booklet-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 45, 90, 0.4);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .booklet-container {
+      background: #FFFDF9; /* Warm paper color */
+      border: 12px double #D4973A; /* Golden double border for legacy look */
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .booklet-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .booklet-cover {
+      text-align: center;
+      padding: 24px 0 40px;
+      border-bottom: 1.5px dashed var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .booklet-cover h2 {
+      font-family: 'Lora', serif;
+      font-size: 28px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .booklet-cover h3 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .booklet-cover .patient-stamp {
+      font-size: 13px;
+      margin-top: 10px;
+      border: 1px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: 4px;
+      background: #FAF8F5;
+      font-weight: 600;
+    }
+
+    .booklet-content {
+      padding: 30px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .booklet-chapter {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .booklet-chapter h4 {
+      font-family: 'Lora', serif;
+      font-size: 15px;
+      color: var(--navy);
+      font-weight: 700;
+      border-left: 3px solid var(--gold);
+      padding-left: 10px;
+    }
+
+    .booklet-chapter p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #3E3730;
+      text-indent: 24px;
+      font-style: italic;
+    }
+
+    .booklet-footer {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    /* Toast Notification for Sync Confirmation */
+    .toast-notif {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--navy-dark);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 9999;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .toast-notif.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-notif .toast-icon {
+      color: var(--teal);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── SIDEBAR NAVIGATION ── -->
+  <div class="workspace-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🧠</div>
+      <div class="sidebar-title-wrap">
+        <h1>MemoryCare</h1>
+        <p>Interactive Workspace v1.0</p>
+      </div>
+    </div>
+    
+    <div class="sidebar-menu">
+      <div class="menu-item active" onclick="switchTab('emulator-tab', this)">
+        <span class="icon">💻</span>
+        <span>Interactive Emulator</span>
+      </div>
+      <div class="menu-item" onclick="switchTab('wireframe-tab', this)">
+        <span class="icon">📐</span>
+        <span>Wireframe Flow Hub</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-footer">
+      <p>คณะพยาบาลศาสตร์<br>นวัตกรรมบำบัดความจำดิจิทัล</p>
+      <p style="margin-top: 8px; opacity: 0.6;">© 2026 MemoryCare Project</p>
+    </div>
+  </div>
+
+  <!-- ── MAIN WORKSPACE ── -->
+  <div class="workspace-main">
+    
+    <!-- Workspace Top Header -->
+    <div class="workspace-header">
+      <div class="header-info">
+        <h2 id="workspace-title">Interactive App Emulator & Nurse Statistics</h2>
+        <p id="workspace-subtitle">ต้นแบบระบบโต้ตอบประสานงานสองฝั่งแบบเรียลไทม์ (Emulator & Clinician Dashboard Coordinator)</p>
+      </div>
+      
+      <div class="header-actions">
+        <div class="btn-outline workspace-btn" onclick="resetSimulationData()">
+          <span>🔄</span> รีเซ็ตข้อมูลจำลอง
+        </div>
+        <div class="btn-primary workspace-btn" onclick="openLifeBookBooklet()">
+          <span>📖</span> พิมพ์หนังสือชีวิต
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace Content Scroller -->
+    <div class="workspace-content">
+      
+      <!-- ────────────────────────────────────────── -->
+      <!-- TAB 1: EMULATOR & DESKTOP DASHBOARD PANEL -->
+      <!-- ────────────────────────────────────────── -->
+      <div id="emulator-tab" class="tab-panel active">
+        <div class="split-layout">
+          
+          <!-- MOBILE EMULATOR COLUMN -->
+          <div class="phone-column">
+            <div class="phone-container">
+              <div class="phone-notch">
+                <div class="phone-speaker"></div>
+                <div class="phone-camera"></div>
+              </div>
+              
+              <div class="phone-screen">
+                
+                <!-- Status Bar -->
+                <div class="mobile-status-bar">
+                  <div class="time-label" id="mobile-time">16:14</div>
+                  <div class="mobile-status-icons">
+                    <span>📶</span>
+                    <span>📶</span>
+                    <span>🔋 98%</span>
+                  </div>
+                </div>
+
+                <!-- Shared Mobile Header -->
+                <div class="mobile-header" id="app-dynamic-header" style="display: none;">
+                  <div class="greeting-row">
+                    <div class="greeting-text">
+                      <h4 id="home-greeting-prefix">สวัสดีตอนบ่าย 🌅</h4>
+                      <h3 id="home-greeting-name">คุณสมศรี วงศ์ดี</h3>
+                    </div>
+                    <div class="profile-pill">
+                      <span id="active-avatar-emoji">👴</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Dynamic Mobile Content Area -->
+                <div class="mobile-content" id="mobile-content-box">
+                  
+                  <!-- [SCREEN 1: LOGIN & CONFIG] -->
+                  <div id="screen-login" class="mobile-screen-view active">
+                    <div class="mobile-logo-big">
+                      <div class="mobile-logo-circle">🧠</div>
+                      <h2>MemoryCare</h2>
+                      <p>โปรแกรมกระตุ้นความจำผู้สูงวัย</p>
+                    </div>
+
+                    <div class="mobile-form-group">
+                      <label for="input-patient-name">ชื่อผู้สูงอายุ (ชื่อ-นามสกุล)</label>
+                      <input type="text" id="input-patient-name" class="mobile-input" value="คุณสมศรี วงศ์ดี" placeholder="กรอกชื่อ-นามสกุล">
+                    </div>
+
+                    <div class="mobile-form-group">
+                      <label for="input-patient-year">ปี พ.ศ. เกิด (ค.ศ. ก็ได้)</label>
+                      <input type="number" id="input-patient-year" class="mobile-input" value="2493" placeholder="ตัวอย่าง 2493">
+                    </div>
+
+                    <div class="mobile-form-group">
+                      <label>เลือกอวาตาร์ตัวละคร</label>
+                      <div class="avatar-selector">
+                        <div class="avatar-option selected" data-avatar="👴" onclick="selectAvatar(this)">👴</div>
+                        <div class="avatar-option" data-avatar="👵" onclick="selectAvatar(this)">👵</div>
+                        <div class="avatar-option" data-avatar="👨" onclick="selectAvatar(this)">👨</div>
+                        <div class="avatar-option" data-avatar="👩" onclick="selectAvatar(this)">👩</div>
+                      </div>
+                    </div>
+
+                    <button class="mobile-btn" onclick="submitProfileSettings()">
+                      เข้าสู่ระบบบำบัดความจำ ➔
+                    </button>
+                  </div>
+
+                  <!-- [SCREEN 2: HOME SCREEN] -->
+                  <div id="screen-home" class="mobile-screen-view">
+                    
+                    <!-- Progress Card -->
+                    <div class="mobile-card" style="padding: 12px 16px;">
+                      <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                          <h4 style="font-size:12px; color:var(--navy); font-weight:700;">เป้าหมายกิจกรรมวันนี้</h4>
+                          <p style="font-size:9px; color:var(--text-muted); margin-top:2px;">ฟื้นฟูสมอง วันละ 20 นาที</p>
+                        </div>
+                        <div style="width: 38px; height: 38px; position:relative; display:flex; align-items:center; justify-content:center;">
+                          <!-- Circle Progress representation -->
+                          <svg width="38" height="38" style="transform: rotate(-90deg);">
+                            <circle cx="19" cy="19" r="16" fill="transparent" stroke="#E8E0D8" stroke-width="3"></circle>
+                            <circle id="home-progress-circle" cx="19" cy="19" r="16" fill="transparent" stroke="var(--teal)" stroke-width="3" stroke-dasharray="100.53" stroke-dashoffset="100.53" style="transition: stroke-dashoffset 0.5s ease;"></circle>
+                          </svg>
+                          <span id="home-progress-percent" style="position:absolute; font-size:9px; font-weight:700; color:var(--navy);">0%</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Daily Music Goal shortcut card -->
+                    <div class="mobile-card music-goal-card" onclick="goToScreen('album')">
+                      <div class="goal-icon">🎵</div>
+                      <div>
+                        <h4>เพลงย้อนยุคปีทองคุณ</h4>
+                        <p id="music-bump-text">ยุคปีทอง 2508 - 2518</p>
+                      </div>
+                      <div class="btn-play-mini">▶</div>
+                    </div>
+
+                    <!-- Touch Menus -->
+                    <div class="mobile-grid-2">
+                      <div class="mobile-shortcut-card mobile-card" onclick="goToScreen('album')">
+                        <div class="icon-wrap" style="background:#E8F4F4; color:#3D8C8C;">📸</div>
+                        <h5>อัลบั้มภาพ</h5>
+                        <p>32 รูปอดีต</p>
+                      </div>
+                      
+                      <div class="mobile-shortcut-card mobile-card" onclick="triggerBrainGameDemo()">
+                        <div class="icon-wrap" style="background:#FDF3E0; color:#D4973A;">🧩</div>
+                        <h5>เกมฝึกสมอง</h5>
+                        <p id="game-status-label">วันนี้: ยังไม่ได้เล่น</p>
+                      </div>
+                      
+                      <div class="mobile-shortcut-card mobile-card" onclick="goToScreen('lifereview')">
+                        <div class="icon-wrap" style="background:#FAE8EA; color:#C4606A;">📖</div>
+                        <h5>เรื่องเล่าชีวิต</h5>
+                        <p id="memoir-status-label">บทที่ 1/6</p>
+                      </div>
+                      
+                      <div class="mobile-shortcut-card mobile-card" onclick="triggerHealthSelfTest()">
+                        <div class="icon-wrap" style="background:#EAF2EB; color:#6A9172;">📊</div>
+                        <h5>ผลประเมิน</h5>
+                        <p>สัปดาห์ที่ 2</p>
+                      </div>
+                    </div>
+
+                    <!-- Streak Tracker -->
+                    <div class="mobile-card streak-container">
+                      <div class="streak-title-wrap">
+                        <h4>สถิติฝึกต่อเนื่อง 🔥</h4>
+                        <p>เล่นทุกวันเพื่อการกระตุ้นที่ยั่งยืน</p>
+                      </div>
+                      <div class="streak-dots">
+                        <div class="streak-dot active">จ</div>
+                        <div class="streak-dot active">อ</div>
+                        <div class="streak-dot active">พ</div>
+                        <div class="streak-dot" id="streak-today">พฤ</div>
+                        <div class="streak-dot">ศ</div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- [SCREEN 3: ALBUM & MUSIC PLAYER] -->
+                  <div id="screen-album" class="mobile-screen-view">
+                    
+                    <!-- Vintage Album Segment -->
+                    <div class="vintage-photo-container">
+                      <h4 style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:2px;">📸 รูปอดีตกระตุ้นความหลัง</h4>
+                      
+                      <div class="vintage-photo-card" onclick="playImageStory('วิถีชีวิตดนตรีสุนทราภรณ์ 2512','วิถีชีวิตคนกรุงยุคสุนทราภรณ์ แวะนั่งรถสามล้อถีบเที่ยวชมพระนครอันแสนร่มรื่น ถือเป็นยุคแห่งความสุขที่คุณคุ้นเคย')">
+                        <div class="vintage-photo" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=300&auto=format&fit=crop');">
+                          <div class="vintage-photo-title">กรุงเทพย้อนวันวาน (พ.ศ. 2512)</div>
+                        </div>
+                        <div class="vintage-photo-desc">
+                          👉 <em>คลิกรูปภาพนี้เพื่อขยายความทรงจำ และบันทึกคำตอบเล่าความหลังสะท้อนประเด็นบำบัด</em>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Voice Recorder Box -->
+                    <div class="record-box" id="record-box-container">
+                      <h5>🎙️ บันทึกเสียงเล่าความหลังของคุณ</h5>
+                      <p id="record-status-text">กดปุ่มสีแดงเพื่อเล่าความทรงจำเกี่ยวกับรูปข้างต้น</p>
+                      
+                      <div class="record-btn-circle" id="btn-voice-record" onclick="toggleVoiceRecording()">
+                        🎤
+                      </div>
+                      
+                      <canvas class="soundwave-canvas" id="voice-wave"></canvas>
+                    </div>
+
+                    <!-- Vintage Music Player -->
+                    <div class="vintage-player">
+                      <div class="player-header">
+                        <div class="album-art">📻</div>
+                        <div class="song-details">
+                          <h5 id="player-song-title">เพลงย้อนวันทองปี 2510</h5>
+                          <p id="player-song-artist">สุนทราภรณ์แชมเบอร์</p>
+                        </div>
+                      </div>
+                      
+                      <div class="progress-bar-wrap">
+                        <span id="player-time-current">0:00</span>
+                        <div class="progress-track" onclick="seekSong(event)">
+                          <div class="progress-fill" id="player-progress-fill"></div>
+                        </div>
+                        <span id="player-time-total">2:45</span>
+                      </div>
+
+                      <div class="player-controls">
+                        <div class="control-btn">⏮</div>
+                        <div class="control-btn btn-play-pause" id="btn-music-play" onclick="toggleMusicPlayback()">▶</div>
+                        <div class="control-btn">⏭</div>
+                      </div>
+                    </div>
+
+                    <!-- Mood feedback buttons -->
+                    <div class="mood-feedback">
+                      <h5>หลังรับชม/ฟังคุณรู้สึกอย่างไร? (ส่งกลับแดชบอร์ดพยาบาล)</h5>
+                      <div class="mood-grid">
+                        <div class="mood-btn" data-mood="happy" onclick="sendMoodToDashboard('happy', this)">
+                          <span class="emoji">😊</span>
+                          <span class="label">สุขใจ</span>
+                        </div>
+                        <div class="mood-btn" data-mood="relaxed" onclick="sendMoodToDashboard('relaxed', this)">
+                          <span class="emoji">😌</span>
+                          <span class="label">ผ่อนคลาย</span>
+                        </div>
+                        <div class="mood-btn" data-mood="sad" onclick="sendMoodToDashboard('sad', this)">
+                          <span class="emoji">😢</span>
+                          <span class="label">เหงา/เศร้า</span>
+                        </div>
+                        <div class="mood-btn" data-mood="neutral" onclick="sendMoodToDashboard('neutral', this)">
+                          <span class="emoji">😐</span>
+                          <span class="label">เฉยๆ</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- [SCREEN 4: LIFE REVIEW] -->
+                  <div id="screen-lifereview" class="mobile-screen-view">
+                    
+                    <div class="review-prompt-container" id="review-question-block">
+                      <div class="prompt-card">
+                        <h4 id="review-chapter-title">บทเรียนที่ 1: วัยเด็กอันอบอุ่น</h4>
+                        <p id="review-prompt-text">"โรงเรียนแรกของคุณชื่ออะไร และในวัยเด็กคุณกับเพื่อนสนิทมักจะพากันไปเล่นสนุกที่ไหนมากที่สุด?"</p>
+                      </div>
+
+                      <div class="response-input-wrap">
+                        <label style="font-size:11px; font-weight:700; color:var(--navy);">เขียนบันทึกเรื่องราว (หรืออัดเสียงแทนได้):</label>
+                        <textarea class="mobile-input response-textarea" id="memoir-text-input" placeholder="พิมพ์เรื่องเล่าในอดีตของคุณที่นี่..."></textarea>
+                      </div>
+
+                      <div class="life-review-actions">
+                        <button class="mobile-btn" style="background:var(--teal); margin:0;" onclick="submitLifeReviewResponse()">
+                          บันทึกบทนี้ ✅
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Chapter list below -->
+                    <div style="margin-top: 8px;">
+                      <h4 style="font-size:11px; font-weight:700; color:var(--navy); margin-bottom:8px;">สารบัญเรื่องราวชีวิตคุณ</h4>
+                      <div class="life-review-view">
+                        <div class="chapter-card active-chapter" id="chapter-1-row" onclick="selectReviewChapter(1)">
+                          <div class="chapter-info">
+                            <h5>บทที่ 1: วัยเด็กแสนหวาน 🏠</h5>
+                            <p id="ch-1-status">คำถามชวนคิด: โรงเรียนแรกวัยเยาว์</p>
+                          </div>
+                          <span class="chapter-badge">📍</span>
+                        </div>
+
+                        <div class="chapter-card" id="chapter-2-row" onclick="selectReviewChapter(2)">
+                          <div class="chapter-info">
+                            <h5>บทที่ 2: วัยเรียนและการริเริ่ม 🎒</h5>
+                            <p id="ch-2-status">คำถามชวนคิด: วิชาเรียนที่ชอบ</p>
+                          </div>
+                          <span class="chapter-badge">🔒</span>
+                        </div>
+
+                        <div class="chapter-card" id="chapter-3-row" onclick="selectReviewChapter(3)">
+                          <div class="chapter-info">
+                            <h5>บทที่ 3: การทำงานและความรัก 💍</h5>
+                            <p id="ch-3-status">คำถามชวนคิด: งานชิ้นแรกที่ภูมิใจ</p>
+                          </div>
+                          <span class="chapter-badge">🔒</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <!-- Footer Nav Bar (Only active when logged in) -->
+                <div class="mobile-nav-bar" id="app-nav-bar" style="display: none;">
+                  <div class="mobile-nav-item active" id="nav-home" onclick="goToScreen('home')">
+                    <span class="icon">🏠</span>
+                    <span class="label">หน้าหลัก</span>
+                  </div>
+                  <div class="mobile-nav-item" id="nav-album" onclick="goToScreen('album')">
+                    <span class="icon">📸</span>
+                    <span class="label">อัลบั้ม/เพลง</span>
+                  </div>
+                  <div class="mobile-nav-item" id="nav-review" onclick="goToScreen('lifereview')">
+                    <span class="icon">📖</span>
+                    <span class="label">บันทึกชีวิต</span>
+                  </div>
+                  <div class="mobile-nav-item" id="nav-logout" onclick="logoutSimulation()">
+                    <span class="icon">👤</span>
+                    <span class="label">ตั้งค่าใหม่</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Emulator notification badge instructions -->
+            <div class="emulator-instruction">
+              <p>💡 <strong>การทดสอบโต้ตอบ:</strong> กรอกข้อมูลในโทรศัพท์ หรือเล่นเพลงและเลือกปุ่มระดับอารมณ์เพื่อสังเกตการประสานข้อมูลกับหน้าจอแดชบอร์ดด้านขวา!</p>
+            </div>
+          </div>
+
+          <!-- DESKTOP NURSE DASHBOARD COLUMN -->
+          <div class="dashboard-column">
+            
+            <!-- NURSE URGENT ALARM INTERVENTION BAR -->
+            <div class="nurse-alert-banner" id="dashboard-alert-banner">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-details">
+                <h3 id="alert-title-text">ตรวจพบสภาวะอารมณ์ตกต่ำรุนแรงด่วน</h3>
+                <p id="alert-desc-text">คนไข้ [คุณสมศรี วงศ์ดี] บันทึกอารมณ์ในระดับ "เหงา/เศร้า" จากการเปิดรับฟังเสียงบำบัด</p>
+              </div>
+              <button class="alert-btn" onclick="openNurseInterventionModal()">
+                พยาบาลเข้าช่วยเหลือ / ปลอบโยนด่วน 👩‍⚕️
+              </button>
+            </div>
+
+            <!-- Dashboard Summary Stat Cards -->
+            <div class="metric-grid">
+              
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>คนไข้ที่กำลังทดสอบ (Active)</span>
+                  <div class="metric-icon" style="background:var(--teal-light); color:var(--teal);">👤</div>
+                </div>
+                <div class="metric-value" id="dash-active-patient-name" style="font-size:16px; margin:4px 0;">คุณสมศรี วงศ์ดี</div>
+                <div class="metric-footer" id="dash-active-patient-age">อายุ: 76 ปี (เกิด พ.ศ. 2493)</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>ปีทองแห่งความสุข (Bump)</span>
+                  <div class="metric-icon" style="background:var(--gold-light); color:var(--gold);">🌟</div>
+                </div>
+                <div class="metric-value" id="dash-reminiscence-bump">2508 - 2518</div>
+                <div class="metric-footer" id="dash-reminiscence-age">คำนวณช่วงวัยอายุ 15-25 ปีอัตโนมัติ</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>ระดับอารมณ์ล่าสุด</span>
+                  <div class="metric-icon" style="background:var(--sage-light); color:var(--sage);">😊</div>
+                </div>
+                <div class="metric-value" id="dash-current-mood-status" style="font-size:18px; margin:4px 0;">ยังไม่มีข้อมูล</div>
+                <div class="metric-footer" id="dash-current-mood-time">อัปเดตแบบเรียลไทม์จากแอปมือถือ</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-header">
+                  <span>ความก้าวหน้าบำบัดวันนี้</span>
+                  <div class="metric-icon" style="background:var(--teal-light); color:var(--teal);">📈</div>
+                </div>
+                <div class="metric-value" id="dash-daily-progress-percent">0%</div>
+                <div class="metric-footer" id="dash-daily-progress-tasks">ทำสำเร็จ: 0/3 กิจกรรม</div>
+              </div>
+
+            </div>
+
+            <!-- Charts Row (SVG Custom Dynamic Graphic) -->
+            <div class="analytics-section">
+              
+              <!-- MMSE Assessment trend chart -->
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div class="chart-title">
+                    <h3>แนวโน้มคะแนนสติปัญญาและความจำ (MMSE Over Time)</h3>
+                    <p>คะแนนเต็ม 30 (คะแนน &lt; 24 สัญญาณความเสี่ยง MCI)</p>
+                  </div>
+                  <span class="status-badge status-active">ข้อมูล 4 สัปดาห์ล่าสุด</span>
+                </div>
+                
+                <svg class="svg-chart" id="chart-mmse-svg" viewBox="0 0 400 200">
+                  <defs>
+                    <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--teal)" stop-opacity="0.3"></stop>
+                      <stop offset="100%" stop-color="var(--teal)" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Grid Lines -->
+                  <line x1="40" y1="20" x2="380" y2="20" class="chart-axis"></line>
+                  <line x1="40" y1="65" x2="380" y2="65" class="chart-axis"></line>
+                  <line x1="40" y1="110" x2="380" y2="110" class="chart-axis"></line>
+                  <line x1="40" y1="155" x2="380" y2="155" class="chart-axis"></line>
+                  
+                  <!-- Left Y axis Labels -->
+                  <text x="15" y="24" class="chart-text">30</text>
+                  <text x="15" y="69" class="chart-text">24</text>
+                  <text x="15" y="114" class="chart-text">18</text>
+                  <text x="15" y="159" class="chart-text">12</text>
+                  
+                  <!-- Fill Area Under Line -->
+                  <path d="M 50 155 L 50 110 L 150 96 L 250 82 L 350 55 L 350 155 Z" class="chart-line-bg" id="mmse-path-bg"></path>
+                  
+                  <!-- Main Line Path -->
+                  <path d="M 50 110 L 150 96 L 250 82 L 350 55" class="chart-line" id="mmse-path-line"></path>
+                  
+                  <!-- Data Dots with Tooltips -->
+                  <circle cx="50" cy="110" r="5" class="chart-dot" onmouseover="showChartTooltip(event, 'สัปดาห์ 1 (คัดกรองแรกรับ): MMSE = 18 คะแนน (เกณฑ์เสี่ยง)')" onmouseout="hideChartTooltip()"></circle>
+                  <circle cx="150" cy="96" r="5" class="chart-dot" onmouseover="showChartTooltip(event, 'สัปดาห์ 2: MMSE = 20 คะแนน')" onmouseout="hideChartTooltip()"></circle>
+                  <circle cx="250" cy="82" r="5" class="chart-dot" onmouseover="showChartTooltip(event, 'สัปดาห์ 3: MMSE = 22 คะแนน (การทำกิจกรรมสม่ำเสมอ)')" onmouseout="hideChartTooltip()"></circle>
+                  <circle cx="350" cy="55" r="5" class="chart-dot" id="mmse-interactive-dot" onmouseover="showChartTooltip(event, 'สัปดาห์ 4 (ล่าสุด): MMSE = 25 คะแนน (กลับขึ้นสู่เกณฑ์ปกติ!)')" onmouseout="hideChartTooltip()"></circle>
+                  
+                  <!-- X axis labels -->
+                  <text x="45" y="180" class="chart-text">สัปดาห์ 1</text>
+                  <text x="145" y="180" class="chart-text">สัปดาห์ 2</text>
+                  <text x="245" y="180" class="chart-text">สัปดาห์ 3</text>
+                  <text x="345" y="180" class="chart-text">สัปดาห์ 4</text>
+                </svg>
+              </div>
+
+              <!-- Depression Index GDS table bar -->
+              <div class="chart-container">
+                <div class="chart-header">
+                  <div class="chart-title">
+                    <h3>แนวโน้มสภาวะซึมเศร้าผู้สูงอายุ (GDS Depression Trend)</h3>
+                    <p>คะแนนเต็ม 15 (คะแนนสูง = มีความซึมเศร้าสูง, คะแนนเป้าหมาย &lt; 5)</p>
+                  </div>
+                  <span class="status-badge status-active">วัดผลรายสัปดาห์</span>
+                </div>
+
+                <svg class="svg-chart" viewBox="0 0 400 200">
+                  <!-- Grid Lines -->
+                  <line x1="40" y1="20" x2="380" y2="20" class="chart-axis"></line>
+                  <line x1="40" y1="65" x2="380" y2="65" class="chart-axis"></line>
+                  <line x1="40" y1="110" x2="380" y2="110" class="chart-axis"></line>
+                  <line x1="40" y1="155" x2="380" y2="155" class="chart-axis"></line>
+
+                  <!-- Left Y Axis Labels -->
+                  <text x="15" y="24" class="chart-text">15</text>
+                  <text x="15" y="69" class="chart-text">10</text>
+                  <text x="15" y="114" class="chart-text">5</text>
+                  <text x="15" y="159" class="chart-text">0</text>
+
+                  <!-- Bars representing GDS -->
+                  <rect x="60" y="65" width="24" height="90" class="chart-bar" onmouseover="showChartTooltip(event, 'สัปดาห์ 1: GDS = 10 (มีภาวะซึมเศร้าปานกลาง)')" onmouseout="hideChartTooltip()"></rect>
+                  <rect x="140" y="92" width="24" height="63" class="chart-bar" onmouseover="showChartTooltip(event, 'สัปดาห์ 2: GDS = 7')" onmouseout="hideChartTooltip()"></rect>
+                  <rect x="220" y="110" width="24" height="45" class="chart-bar" onmouseover="showChartTooltip(event, 'สัปดาห์ 3: GDS = 5 (ใกล้เคียงเกณฑ์ปกติ)')" onmouseout="hideChartTooltip()"></rect>
+                  <rect x="300" y="128" width="24" height="27" class="chart-bar" id="gds-interactive-bar" onmouseover="showChartTooltip(event, 'สัปดาห์ 4: GDS = 3 (สภาพจิตใจร่าเริงปกติ)')" onmouseout="hideChartTooltip()"></rect>
+
+                  <!-- X axis labels -->
+                  <text x="50" y="180" class="chart-text">สัปดาห์ 1</text>
+                  <text x="130" y="180" class="chart-text">สัปดาห์ 2</text>
+                  <text x="210" y="180" class="chart-text">สัปดาห์ 3</text>
+                  <text x="290" y="180" class="chart-text">สัปดาห์ 4</text>
+                </svg>
+              </div>
+
+            </div>
+
+            <!-- Global Patient Roster Panel -->
+            <div class="patient-table-card">
+              <div class="table-header">
+                <div>
+                  <h3>ทำเนียบบำบัดคนไข้ในระบบการดูแล</h3>
+                  <p>พยาบาลสามารถเลือกชื่อคนไข้เพื่อตรวจผลวิเคราะห์รายสัปดาห์</p>
+                </div>
+                <span style="font-size:12px; font-weight:700; color:var(--teal);">เชื่อมต่อเซ็นเซอร์เรียลไทม์ 🟢 Active</span>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="patient-table">
+                  <thead>
+                    <tr>
+                      <th>ชื่อ-สกุล คนไข้</th>
+                      <th>สถานะระบบ</th>
+                      <th>MMSE สัปดาห์นี้</th>
+                      <th>GDS ล่าสุด</th>
+                      <th>ระดับความพึงพอใจอารมณ์</th>
+                      <th>การใช้งานสัปดาห์นี้</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="cursor: pointer; background: var(--teal-ultra-light);" id="roster-active-row">
+                      <td>
+                        <div class="avatar-cell">
+                          <div class="table-avatar" id="roster-active-avatar">👵</div>
+                          <div>
+                            <div class="patient-name" id="roster-active-name">คุณสมศรี วงศ์ดี</div>
+                            <div style="font-size:10px; color:var(--text-muted);">อายุ <span id="roster-active-age">76</span> ปี (กำลังจำลองสัญญาน)</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="status-badge status-active">Online</span></td>
+                      <td style="font-weight:700;" id="roster-active-mmse">22 / 30</td>
+                      <td id="roster-active-gds">5 / 15</td>
+                      <td><div class="mood-pill-mini" id="roster-active-mood">😊 สุขใจ</div></td>
+                      <td>
+                        <div style="width:100px; height:8px; background:#EDF2F7; border-radius:4px; overflow:hidden;">
+                          <div style="width: 80%; height:100%; background:var(--teal);"></div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="avatar-cell">
+                          <div class="table-avatar">👴</div>
+                          <div>
+                            <div class="patient-name">คุณประพันธ์ เจริญศักดิ์</div>
+                            <div style="font-size:10px; color:var(--text-muted);">อายุ 82 ปี</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="status-badge status-alert">Intervene</span></td>
+                      <td style="font-weight:700; color:var(--rose);">16 / 30</td>
+                      <td>9 / 15</td>
+                      <td><div class="mood-pill-mini">😢 เหงา/ซึมเศร้า</div></td>
+                      <td>
+                        <div style="width:100px; height:8px; background:#EDF2F7; border-radius:4px; overflow:hidden;">
+                          <div style="width: 25%; height:100%; background:var(--rose);"></div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="avatar-cell">
+                          <div class="table-avatar">👵</div>
+                          <div>
+                            <div class="patient-name">คุณยายมะลิ อักษรทอง</div>
+                            <div style="font-size:10px; color:var(--text-muted);">อายุ 79 ปี</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="status-badge status-active">Online</span></td>
+                      <td style="font-weight:700;">19 / 30</td>
+                      <td>7 / 15</td>
+                      <td><div class="mood-pill-mini">😐 เฉยๆ</div></td>
+                      <td>
+                        <div style="width:100px; height:8px; background:#EDF2F7; border-radius:4px; overflow:hidden;">
+                          <div style="width: 60%; height:100%; background:var(--teal);"></div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <div class="avatar-cell">
+                          <div class="table-avatar">👴</div>
+                          <div>
+                            <div class="patient-name">คุณตาบุญมี ศรีสุข</div>
+                            <div style="font-size:10px; color:var(--text-muted);">อายุ 73 ปี</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="status-badge status-inactive">Offline</span></td>
+                      <td style="font-weight:700;">24 / 30</td>
+                      <td>3 / 15</td>
+                      <td><div class="mood-pill-mini">😌 ผ่อนคลาย</div></td>
+                      <td>
+                        <div style="width:100px; height:8px; background:#EDF2F7; border-radius:4px; overflow:hidden;">
+                          <div style="width: 90%; height:100%; background:var(--sage);"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ────────────────────────────────────────── -->
+      <!-- TAB 2: WIREFRAME FLOW BLUEPRINT HUB PANEL -->
+      <!-- ────────────────────────────────────────── -->
+      <div id="wireframe-tab" class="tab-panel">
+        
+        <!-- Blueprint Control Header -->
+        <div class="blueprint-control-header">
+          <div class="blueprint-nav">
+            <button class="bp-nav-btn active" onclick="switchBlueprintScreen('login', this)">Screen 1: Login & Config</button>
+            <button class="bp-nav-btn" onclick="switchBlueprintScreen('home', this)">Screen 2: Home Dashboard</button>
+            <button class="bp-nav-btn" onclick="switchBlueprintScreen('album', this)">Screen 3: Reminiscence Album</button>
+            <button class="bp-nav-btn" onclick="switchBlueprintScreen('lifereview', this)">Screen 4: Life Review Prompt</button>
+            <button class="bp-nav-btn" onclick="switchBlueprintScreen('nurse', this)">Screen 5: Nurse Admin Panel</button>
+          </div>
+
+          <div class="blueprint-toggle-wrap">
+            <span class="switch-label">⚠️ แสดงกรอบสัดส่วนความปลอดภัยผู้สูงวัย (WCAG Geriatric Targets)</span>
+            <label class="switch">
+              <input type="checkbox" id="wcag-toggle" onchange="toggleSafetyGrids(this)">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Wireframe Split Panel -->
+        <div class="blueprint-layout">
+          
+          <!-- Large Architecture Drawing Board -->
+          <div class="blueprint-canvas">
+            
+            <!-- [WF SCREEN 1: LOGIN] -->
+            <div class="wireframe-phone" id="wf-view-login">
+              <div class="wireframe-screen">
+                <div class="wf-title" style="text-align:center;">MemoryCare Config</div>
+                <div style="height: 36px;"></div>
+                
+                <div class="wf-label">Input Area</div>
+                <div class="wf-placeholder-box" style="height: 36px; font-size:9px;">[Patient Fullname Input]</div>
+                
+                <div class="wf-label">Age & Memory Gold Period Config</div>
+                <div class="wf-placeholder-box" style="height: 36px; font-size:9px;">[Birth Year (e.g. 2490)]</div>
+                
+                <div class="wf-label">Avatar Graphics Selector</div>
+                <div style="display:flex; justify-content:space-between; gap:6px;">
+                  <div class="wf-placeholder-box" style="width:36px; height:36px; border-radius:50%;">Avatar</div>
+                  <div class="wf-placeholder-box" style="width:36px; height:36px; border-radius:50%;">Avatar</div>
+                  <div class="wf-placeholder-box" style="width:36px; height:36px; border-radius:50%;">Avatar</div>
+                  <div class="wf-placeholder-box" style="width:36px; height:36px; border-radius:50%;">Avatar</div>
+                </div>
+
+                <div style="margin-top:auto;"></div>
+                <div class="wf-button" style="background:var(--bp-accent-light); color:var(--bp-accent);">SUBMIT SETTINGS ➔</div>
+                
+                <!-- Safety target indicators overlay -->
+                <div class="safety-overlay">
+                  <div class="safety-box" style="bottom: 16px; left: 16px; right: 16px; height: 38px;"></div>
+                  <div class="safety-box" style="top: 86px; left: 16px; right: 16px; height: 36px;"></div>
+                  <div class="safety-box" style="top: 154px; left: 16px; right: 16px; height: 36px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- [WF SCREEN 2: HOME SCREEN] -->
+            <div class="wireframe-phone" id="wf-view-home" style="display:none;">
+              <div class="wireframe-screen">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="wf-label" style="font-size:7px;">Senior Greeting</div>
+                    <div class="wf-title" style="border:none; padding:0; font-size:11px;">สวัสดีตอนเช้า คุณสมศรี</div>
+                  </div>
+                  <div class="wf-placeholder-box" style="width:28px; height:28px; border-radius:50%;">Avt</div>
+                </div>
+
+                <div class="wf-placeholder-box" style="height:44px; font-size:8px; text-align:center;">
+                  [Daily Interactive Target Progress Ring - 0/3 Done]
+                </div>
+
+                <div class="wf-placeholder-box" style="height:36px; border-color:var(--bp-accent); font-size:8px; text-align:center; background:rgba(0,82,204,0.03);">
+                  📻 [Music Player Entry Bump Period]
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                  <div class="wf-placeholder-box" style="height:44px; font-size:8px; text-align:center;">📸 Album</div>
+                  <div class="wf-placeholder-box" style="height:44px; font-size:8px; text-align:center;">🧩 Games</div>
+                  <div class="wf-placeholder-box" style="height:44px; font-size:8px; text-align:center;">📖 Memoirs</div>
+                  <div class="wf-placeholder-box" style="height:44px; font-size:8px; text-align:center;">📊 Scores</div>
+                </div>
+
+                <div style="margin-top:auto;"></div>
+                <div style="display:flex; justify-content:space-around; border-top:1px dashed var(--bp-line); padding-top:6px;">
+                  <div style="font-size:7px; font-weight:700;">[Home]</div>
+                  <div style="font-size:7px;">[Album]</div>
+                  <div style="font-size:7px;">[Review]</div>
+                  <div style="font-size:7px;">[Reset]</div>
+                </div>
+
+                <!-- Safety targets indicators overlay -->
+                <div class="safety-overlay">
+                  <div class="safety-box" style="top: 130px; left: 16px; width: 122px; height: 44px;"></div>
+                  <div class="safety-box" style="top: 130px; right: 16px; width: 122px; height: 44px;"></div>
+                  <div class="safety-box" style="top: 180px; left: 16px; width: 122px; height: 44px;"></div>
+                  <div class="safety-box" style="top: 180px; right: 16px; width: 122px; height: 44px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- [WF SCREEN 3: REMINISCENCE ALBUM] -->
+            <div class="wireframe-phone" id="wf-view-album" style="display:none;">
+              <div class="wireframe-screen">
+                <div class="wf-title" style="font-size:10px;">Reminiscence Therapy Media</div>
+                
+                <div class="wf-placeholder-box" style="height:90px; font-size:8px; text-align:center;">
+                  [Vintage Image Target Placeholder: e.g. Bangkok 2512]
+                  <div style="position:absolute; bottom:4px; left:4px; font-size:7px; background:white; padding:2px; border:1px solid #111;">1969 AD</div>
+                </div>
+
+                <div class="wf-placeholder-box" style="height:56px; border:1px dashed #C4606A; font-size:8px; text-align:center; background:rgba(196,96,106,0.02);">
+                  🎙️ [Voice Autobiography Recording Area]
+                  <br>(Press button below to speak)
+                  <div class="wf-button" style="width:30px; height:30px; border-radius:50%; margin:4px auto 0; font-size:8px; padding:0; display:flex; align-items:center; justify-content:center; border-color:#C4606A; background:rgba(196,96,106,0.1);">REC</div>
+                </div>
+
+                <div class="wf-placeholder-box" style="height:48px; border-color:var(--bp-accent); font-size:8px; text-align:center;">
+                  🎵 [Vintage Music Player Component - Play/Pause controls]
+                </div>
+
+                <div class="wf-label" style="font-size:7px;">Post-Listening Mood Reflection Index</div>
+                <div style="display:flex; justify-content:space-between; gap:4px;">
+                  <div class="wf-placeholder-box" style="width:24%; height:24px; font-size:7px;">😊</div>
+                  <div class="wf-placeholder-box" style="width:24%; height:24px; font-size:7px;">😌</div>
+                  <div class="wf-placeholder-box" style="width:24%; height:24px; font-size:7px;">😢</div>
+                  <div class="wf-placeholder-box" style="width:24%; height:24px; font-size:7px;">😐</div>
+                </div>
+
+                <!-- Safety targets indicators overlay -->
+                <div class="safety-overlay">
+                  <div class="safety-box" style="bottom: 48px; left: 16px; width: 56px; height: 26px;"></div>
+                  <div class="safety-box" style="bottom: 48px; left: 78px; width: 56px; height: 26px;"></div>
+                  <div class="safety-box" style="bottom: 48px; right: 78px; width: 56px; height: 26px;"></div>
+                  <div class="safety-box" style="bottom: 48px; right: 16px; width: 56px; height: 26px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- [WF SCREEN 4: LIFE REVIEW] -->
+            <div class="wireframe-phone" id="wf-view-lifereview" style="display:none;">
+              <div class="wireframe-screen">
+                <div class="wf-title" style="font-size:10px;">Life Review Structured Interview</div>
+
+                <div class="wf-placeholder-box" style="height:64px; border-color:#D4973A; font-size:8px; text-align:center; padding:6px; background:rgba(212,151,58,0.02);">
+                  <strong>Chapter Prompt [1/6]:</strong>
+                  <br>"โรงเรียนแรกวัยเด็ก เพื่อนร่วมทางวิ่งเล่นที่ท่านโปรดปราน..."
+                </div>
+
+                <div class="wf-label">Response Option: Text Input</div>
+                <div class="wf-placeholder-box" style="height:60px; font-size:8px;">[Simulated Text Input response typing area...]</div>
+
+                <div class="wf-button" style="background:var(--bp-accent-light); color:var(--bp-accent);">SAVE CHAPTER 1 💾</div>
+
+                <div class="wf-label" style="margin-top:6px;">MEMOIR CHAPTER FLOW PROGRESS</div>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  <div class="wf-placeholder-box" style="height:20px; font-size:7px; justify-content:flex-start; padding-left:6px;">✓ Chapter 1: Childhood Memories</div>
+                  <div class="wf-placeholder-box" style="height:20px; font-size:7px; justify-content:flex-start; padding-left:6px; opacity:0.6;">🔒 Chapter 2: Youth Schooling</div>
+                </div>
+                
+                <!-- Safety targets indicators overlay -->
+                <div class="safety-overlay">
+                  <div class="safety-box" style="top: 156px; left: 16px; right: 16px; height: 32px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- [WF SCREEN 5: NURSE PANEL] -->
+            <div class="wf-placeholder-box" id="wf-view-nurse" style="display:none; width:100%; height:500px; border-radius:12px; border:2.5px solid var(--bp-line); padding:20px; flex-direction:column; justify-content:normal; gap:16px; font-family:'Plus Jakarta Sans', sans-serif;">
+              <div style="display:flex; justify-content:space-between; width:100%; border-bottom:2px solid var(--bp-line); padding-bottom:10px; align-items:center;">
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:var(--bp-line);">CLINICIAN DASHBOARD FOR GERIATRIC COGNITIVE HEALTH</div>
+                  <div style="font-size:9px; color:var(--text-muted);">Real-time Patient Synced Telemetry</div>
+                </div>
+                <div style="font-size:9px; font-weight:700; color:var(--bp-line); border:1.5px solid var(--bp-line); padding:4px 10px; border-radius:4px;">ACTIVE MONITORING STATUS</div>
+              </div>
+
+              <!-- Grid representing summary -->
+              <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%;">
+                <div style="border:1.5px dashed var(--bp-line); padding:10px; border-radius:6px; font-size:8px;">
+                  <strong>Active Patient Name:</strong><br>[Synced Real-time Name]
+                </div>
+                <div style="border:1.5px dashed var(--bp-line); padding:10px; border-radius:6px; font-size:8px;">
+                  <strong>Reminiscence Bump:</strong><br>[Dynamic calculations age 15-25]
+                </div>
+                <div style="border:1.5px dashed var(--bp-line); padding:10px; border-radius:6px; font-size:8px;">
+                  <strong>Patient Current Mood:</strong><br>[Live Emulator telemetry feedback]
+                </div>
+                <div style="border:1.5px dashed var(--bp-line); padding:10px; border-radius:6px; font-size:8px;">
+                  <strong>Urgent Action Needed:</strong><br>[Triggers red blink when depressed]
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; flex-grow:1;">
+                <div style="border:1.5px dashed var(--bp-line); border-radius:8px; padding:10px; display:flex; flex-direction:column; gap:8px;">
+                  <strong style="font-size:10px;">[Custom MMSE scoring line chart SVG]</strong>
+                  <div style="flex-grow:1; background:repeating-linear-gradient(0deg, #f1f5f9, #f1f5f9 20px, #ffffff 20px, #ffffff 40px); border:1px solid #cbd5e0;"></div>
+                </div>
+                
+                <div style="border:1.5px dashed var(--bp-line); border-radius:8px; padding:10px; display:flex; flex-direction:column; gap:8px;">
+                  <strong style="font-size:10px;">[Geriatric Depression Scale trend analysis SVG]</strong>
+                  <div style="flex-grow:1; background:repeating-linear-gradient(90deg, #f1f5f9, #f1f5f9 20px, #ffffff 20px, #ffffff 40px); border:1px solid #cbd5e0;"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Psychiatric & Nursing Annotations Sidebar -->
+          <div class="annotation-panel">
+            <div class="annotation-header">
+              <span class="icon">🩺</span>
+              <h3>หลักการจิตวิทยาและการพยาบาล</h3>
+            </div>
+            
+            <div class="annotation-list" id="annotation-list-box">
+              <!-- Content filled by script based on active wireframe -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ── POPUP: NURSE CLINICAL INTERVENTION OPTIONS ── -->
+  <div class="intervention-modal" id="nurse-intervention-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>👩‍⚕️ แผนการแทรกแซงและช่วยเหลือโดยพยาบาล</h3>
+      </div>
+      <div class="modal-body">
+        <p>เนื่องจากคนไข้ <strong><span id="intervene-patient-name">คุณสมศรี วงศ์ดี</span></strong> ส่งสัญญาณอารมณ์ <strong>เศร้า/เหงา</strong> หรือไม่ได้ทำกิจกรรมติดต่อกันนานเกินเกณฑ์ พยาบาลจิตเวชศาสตร์ผู้สูงอายุแนะนำให้เลือกแผนบำบัดช่วยเหลือด่วน:</p>
+        
+        <button class="encouragement-option" onclick="sendEncouragementToApp('ส่งคำชมเชย: 🌟 ยอดเยี่ยมมากครับคุณยาย! วันนี้คุณยายทำกิจกรรมสมองได้ดีมาก พยาบาลขอส่งความห่วงใยให้นะครับ')">
+          <strong>💌 ส่งกำลังใจด่วนพิเศษ (Direct Support Badge)</strong>
+          <br><span style="font-size:11px; opacity:0.8;">ส่งเหรียญรางวัลและข้อความประดับใจเด้งในหน้าจอมือถือผู้สูงวัยทันที</span>
+        </button>
+
+        <button class="encouragement-option" onclick="sendEncouragementToApp('ส่งข้อความชวนฟัง: 🎵 ลองเปลี่ยนบรรยากาศฟังเพลงสุนทราภรณ์ เพลงสุขกันเถอะเรา ดูไหมครับ? จะช่วยให้ผ่อนคลายขึ้นนะ')">
+          <strong>📻 แนะนำสื่อดนตรีบำบัดชนิดร่าเริง (Mood Booster Suggestion)</strong>
+          <br><span style="font-size:11px; opacity:0.8;">ส่งคำแนะนำปรับเพลย์ลิสต์เพลงเชิงบวกเพื่อลดความซึมเศร้าลง</span>
+        </button>
+
+        <button class="encouragement-option" onclick="sendEncouragementToApp('กำหนดนัดหมาย: 👩‍⚕️ พยาบาลได้บันทึกคิวเตรียมโทรสนทนาบำบัดความจำกับคุณยายในเวลา 10:00 น. วันพรุ่งนี้แล้วครับ')">
+          <strong>📞 ลงคิวนัดสนทนาบำบัดทางโทรศัพท์ (Nurse Call Intervention)</strong>
+          <br><span style="font-size:11px; opacity:0.8;">ส่งการแจ้งเตือนลงตารางนัดหมายสนทนารวมในหน้าหลักแอปมือถือ</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline workspace-btn" style="padding: 6px 14px;" onclick="closeNurseInterventionModal()">ยกเลิก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── POPUP: PRINT BOOKLET LEGABLE MEMOIR SHEET ── -->
+  <div class="booklet-overlay" id="lifebook-booklet-overlay">
+    <div class="booklet-container">
+      <span class="booklet-close" onclick="closeLifeBookBooklet()">&times;</span>
+      
+      <div class="booklet-cover">
+        <h2>หนังสือเล่มชีวิตความทรงจำทองคำ</h2>
+        <h3 id="booklet-bump-years">ช่วงปี พ.ศ. ทองคำ: 2508 - 2518</h3>
+        
+        <div class="patient-stamp">
+          คนไข้ผู้บันทึก: <strong id="booklet-patient-name">คุณสมศรี วงศ์ดี</strong> (อายุ <span id="booklet-patient-age">76</span> ปี)
+        </div>
+        
+        <p style="font-size:11px; color:var(--text-muted); max-width:400px; line-height:1.5; margin-top:10px;">
+          * หนังสือชีวิตฉบับนี้ประมวลผลจากการตอบคำถามชวนคิดในโปรแกรมฟื้นฟู MemoryCare เพื่อจัดพิมพ์เผยแพร่เป็นมรดกความทรงจำแก่ลูกหลานและครอบครัว *
+        </p>
+      </div>
+
+      <div class="booklet-content">
+        <div class="booklet-chapter">
+          <h4>บทที่ 1: วัยเด็กอันแสนหวาน 🏠</h4>
+          <p id="booklet-ch1-content">
+            "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียบง่ายและมีความสุขที่สุด..."
+          </p>
+        </div>
+
+        <div class="booklet-chapter">
+          <h4>บทที่ 2: วัยเรียนและการริเริ่ม 🎒</h4>
+          <p id="booklet-ch2-content">
+            "ช่วงวัยเรียนที่ฉันชื่นชอบที่สุดคือวิชาภาษาไทยและการหัดคัดตัวอักษรไทยลายมือสวยงาม ครูใจดีมักชมและนำสมุดเขียนไปตั้งหน้าห้องเรียน ทำให้ฉันมีความตั้งใจเรียนวิชาด้านวรรณกรรมมากยิ่งขึ้นในชีวิต..."
+          </p>
+        </div>
+
+        <div class="booklet-chapter">
+          <h4>บทที่ 3: ความรักและการก่อร่างสร้างตัว 💍</h4>
+          <p id="booklet-ch3-content">
+            "งานชิ้นแรกที่ฉันทำหลังจากเรียนจบคือการเป็นเสมียนคีย์บัญชีที่ห้างสรรพสินค้าแห่งแรกในพระนคร ฉันภูมิใจมากเพราะนำเงินเดือนก้อนแรกทั้งหมดไปซื้อเสื้อผ้าและจัดอาหารคำนับคุณพ่อคุณแม่เพื่อแสดงความกตัญญูสูงสุด..."
+          </p>
+        </div>
+      </div>
+
+      <div class="booklet-footer">
+        <button class="btn-primary workspace-btn" onclick="window.print()">
+          🖨️ ยืนยันการสั่งพิมพ์ลงกระดาษจริง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time sync confirmation popup toast -->
+  <div class="toast-notif" id="sync-toast">
+    <span class="toast-icon">⚡</span>
+    <span id="toast-text-msg">ข้อมูลความละเอียดสูงซิงค์กับ Nurse Dashboard สำเร็จ!</span>
+  </div>
+
+  <!-- Tooltip for custom charts -->
+  <div class="chart-tooltip" id="chart-tooltip-box"></div>
+
+  <!-- ── JAVASCRIPT LOGIC ── -->
+  <script>
+    // State management
+    const state = {
+      patientName: "คุณสมศรี วงศ์ดี",
+      birthYear: 2493,
+      avatar: "👵",
+      reminiscenceBumpStart: 2508,
+      reminiscenceBumpEnd: 2518,
+      currentScreen: "login",
+      tasks: {
+        musicPlayed: false,
+        gamePlayed: false,
+        memoirWritten: false
+      },
+      streakCount: 3,
+      currentMood: "relaxed",
+      activeChapter: 1,
+      ch1Text: "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียบง่ายและมีความสุขที่สุด...",
+      ch2Text: "",
+      ch3Text: "",
+      isRecording: false,
+      isMusicPlaying: false,
+      musicProgress: 0,
+      musicInterval: null,
+      activeWfScreen: "login"
+    };
+
+    // Google Fonts Lora translation lists for psychiatric insights
+    const psychiatricGuidelines = {
+      login: [
+        { title: "Reminiscence Bump Golden Age Theory", text: "มนุษย์จะจดจำความทรงจำได้ดีที่สุดในช่วงอายุ 15-25 ปี การคำนวณอายุและปี พ.ศ. เกิด ทำให้ระบบนำเสนอรูปและดนตรียุคนั้นได้แม่นยำมากที่สุดทางวิทยาศาสตร์ประสาทบำบัด" },
+        { title: "Custom Avatar Selection Benefit", text: "การให้คนไข้เลือกตัวละครของตนช่วยเสริมสร้าง Self-Identity และ Sense of Control ในกระบวนการบำบัด ช่วยลดความขัดแย้งเชิงต่อต้านในผู้ป่วยภาวะสมองเสื่อมระยะเริ่มต้น" },
+        { title: "Simplified Typography Structure", text: "ตัวหนังสือขนาดใหญ่ อ่านง่าย จัดแนวสมดุล (Contrast Ratio > 4.5:1) สอดรับกับ WCAG สำหรับสายตาผู้สูงอายุที่มีปัญหาภาวะต้อหรือความเสื่อมตามวัย" }
+      ],
+      home: [
+        { title: "Warm Temporal Greetings", text: "การทักทายระบุช่วงเวลาชัดเจน (เช่น 🌅 สวัสดีตอนเช้า) ช่วยลดภาวะสับสนมิติเวลา (Orientation Loss) ซึ่งเป็นอาการเริ่มต้นที่พบบ่อยที่สุดในผู้ป่วยกลุ่ม MCI และ Dementia" },
+        { title: "Positive Reinforcement (Progress Rings)", text: "การแสดงเป้าหมายความสำเร็จของวันผ่านกราฟวงกลมช่วยกระตุ้นสาร Dopamine เพิ่มแรงผลักดันและแรงจูงใจเชิงบวกในการเข้ามาฝึกซ้อมบริหารสมองซ้ำเป็นประจำทุกวัน" },
+        { title: "Touch Safe Target Layouts", text: "ขนาดปุ่มการ์ดหลักขยายใหญ่กว่า 48px และมีระยะห่างปลอดภัยช่วยอำนวยความสะดวกในการกดใช้งาน แม้ในผู้สูงวัยที่มีปัญหาไขข้อติดขัดหรือควบคุมกล้ามเนื้อมือมัดเล็กสั่นเทา" }
+      ],
+      album: [
+        { title: "Autobiographical Memory Retrieval", text: "การนำภาพย้อนวัยสมัยหนุ่มสาวมาแสดงจะช่วยสั่นสะเทือนอารมณ์ความสุขในสมองกลีบขมับส่วนลึก (Temporal Lobe) และช่วยกระตุ้นการดึงข้อมูลส่วนบุคคลที่อาจเลือนหายไปกลับคืนมา" },
+        { title: "Vocal Recording & Acoustic Stimulation", text: "การบันทึกเสียงเล่าความหลังมีประสิทธิผลสูงกว่าการเขียน พยาบาลสามารถนำไฟล์เสียงมาถอดใจความวิเคราะห์หาภาวะเสื่อมถอยของการใช้คำพูดภาษา (Aphasia Markers) ได้อย่างแม่นยำ" },
+        { title: "Emotional Regulation via Retro Music", text: "ดนตรียุค 2510 มีคลื่นเสียงและจังหวะที่หัวใจคุ้นเคย (Auditory Recall) การวัดผลตอบรับระดับอารมณ์ทันทีหลังฟังช่วยให้ผู้ดูแลเห็นการสะท้อนอารมณ์ (Arousal Index) เพื่อป้องกันภาวะเครียดแฝง" }
+      ],
+      lifereview: [
+        { title: "Structured Life Review Therapy", text: "การประเมินทบทวนชีวิตอย่างมีทิศทาง 6 บทเรียนช่วยในการประกอบสร้างความคิด ความสงบทางใจ และยอมรับบทบาทแห่งการดำเนินชีวิต (Ego Integrity) ตามทฤษฎีจิตสังคมของ Erikson" },
+        { title: "Generative Memoir compilation", text: "การพิมพ์หนังสือชีวิตส่งต่อให้ลูกหลานช่วยยกระดับความรู้สึกมีคุณค่าในตนเอง (Self-Worth) ผู้ป่วยตระหนักดีว่าประวัติศาสตร์ชีวิตตนไม่สูญหายไป แต่ได้รับบันทึกเป็นตำนานของครอบครัว" },
+        { title: "Cognitive Training Tasks", text: "การเขียนพิมพ์ข้อความยาวหรือบันทึกเสียงถ้อยคำ เป็นการฝึกการคิดขั้นสูง (Executive Functions) ช่วยยืดอายุป้องกันเซลล์สมองหดเกร็งได้อย่างมีประสิทธิภาพสูงกว่าการนิ่งเฉย" }
+      ],
+      nurse: [
+        { title: "Real-time Telemetry Coordination", text: "การซิงค์ข้อมูลเรียลไทม์ระหว่างหน้าจอผู้สูงอายุและพยาบาลช่วยลดภาระการจัดเก็บข้อมูล และช่วยให้ผู้ดูแลตอบสนองได้เร็วขึ้น 3 เท่าตัว เมื่อคนไข้เกิดอารมณ์ติดลบ" },
+        { title: "SVG Dynamic Analytics", text: "คะแนน MMSE ที่สูงขึ้นคู่กับ GDS ที่ลดลงผ่านกราฟเชิงประจักษ์ทำให้การพยาบาลแบบประเมินผลอิงหลักฐาน (Evidence-based nursing) ทำได้ถูกต้อง ชัดเจน และนำเสนองานวิจัยได้ง่ายขึ้น" },
+        { title: "Proactive Alert Intervention System", text: "ระบบแจ้งเตือนกะพริบด่วนช่วยคัดกรองจัดลำดับความจำเป็นด่วนที่สุดเพื่อให้พยาบาลแทรกแซงเข้าปลอบประโลม ปรับเพลง หรือโทรพูดคุย ป้องกันการทำร้ายตนเองหรือภาวะหลงลืมก้าวร้าวเฉียบพลัน" }
+      ]
+    };
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', () => {
+      // Simulate real local time for notch
+      updateTimeLabel();
+      setInterval(updateTimeLabel, 60000);
+      
+      // Setup initial annotations
+      renderAnnotations('login');
+      
+      // Synced dynamic state
+      syncStateToDashboard();
+      
+      // Standalone Cross-Tab localStorage polling sync
+      setInterval(pollLocalStorageAppState, 1000);
+    });
+
+    // Poll local storage to check for updates from standalone MemoryCare_App.html
+    function pollLocalStorageAppState() {
+      const saved = localStorage.getItem("MemoryCare_AppState");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          
+          // Get the active patient from the parsed patients dictionary
+          const activeId = parsed.activePatientId || "p_1";
+          const activePatient = parsed.patients[activeId];
+          
+          if (!activePatient) return;
+          
+          // Detect changes
+          let changed = false;
+          if (activePatient.seniorName !== state.patientName) { state.patientName = activePatient.seniorName; changed = true; }
+          if (activePatient.birthYear !== state.birthYear) { state.birthYear = activePatient.birthYear; changed = true; }
+          if (activePatient.reminiscenceStart !== state.reminiscenceBumpStart) { state.reminiscenceBumpStart = activePatient.reminiscenceStart; changed = true; }
+          if (activePatient.reminiscenceEnd !== state.reminiscenceBumpEnd) { state.reminiscenceBumpEnd = activePatient.reminiscenceEnd; changed = true; }
+          if (activePatient.avatar !== state.avatar) { state.avatar = activePatient.avatar; changed = true; }
+          
+          if (activePatient.currentMood !== state.currentMood) {
+            state.currentMood = activePatient.currentMood;
+            changed = true;
+            
+            // Auto alarm trigger if sad
+            const alertBanner = document.getElementById('dashboard-alert-banner');
+            const activeRosterRow = document.getElementById('roster-active-row');
+            if (state.currentMood === 'sad') {
+              alertBanner.style.display = 'flex';
+              activeRosterRow.style.background = 'var(--rose-light)';
+            } else {
+              alertBanner.style.display = 'none';
+              activeRosterRow.style.background = 'var(--teal-ultra-light)';
+            }
+          }
+          
+          if (activePatient.completedActivities.music !== state.tasks.musicPlayed) { state.tasks.musicPlayed = activePatient.completedActivities.music; changed = true; }
+          if (activePatient.completedActivities.game !== state.tasks.gamePlayed) { state.tasks.gamePlayed = activePatient.completedActivities.game; changed = true; }
+          if (activePatient.completedActivities.memoir !== state.tasks.memoirWritten) { state.tasks.memoirWritten = activePatient.completedActivities.memoir; changed = true; }
+          
+          if (activePatient.ch1Text !== state.ch1Text) { state.ch1Text = activePatient.ch1Text; changed = true; }
+          if (activePatient.ch2Text !== state.ch2Text) { state.ch2Text = activePatient.ch2Text; changed = true; }
+          if (activePatient.ch3Text !== state.ch3Text) { state.ch3Text = activePatient.ch3Text; changed = true; }
+
+          // Sync assessments scores dynamically to local state for graphs re-plotting
+          if (activePatient.scores) {
+            if (!state.scores) state.scores = { mmse: [], gds: [] };
+            if (JSON.stringify(activePatient.scores.mmse) !== JSON.stringify(state.scores.mmse)) {
+              state.scores.mmse = activePatient.scores.mmse;
+              changed = true;
+            }
+            if (JSON.stringify(activePatient.scores.gds) !== JSON.stringify(state.scores.gds)) {
+              state.scores.gds = activePatient.scores.gds;
+              changed = true;
+            }
+          }
+
+          if (changed) {
+            syncStateToDashboard();
+            
+            // Sync values to local emulator if logged in
+            if (state.currentScreen !== 'login') {
+              document.getElementById('input-patient-name').value = state.patientName;
+              document.getElementById('input-patient-year').value = state.birthYear;
+              document.getElementById('memoir-text-input').value = 
+                state.activeChapter === 1 ? state.ch1Text : (state.activeChapter === 2 ? state.ch2Text : state.ch3Text);
+            }
+            
+            showToast("🔄 ดึงข้อมูลพิกัดการรักษาจาก Tablet จำลองเสร็จสิ้น!");
+          }
+        } catch (e) {
+          console.error("Failed to parse crosstab local state", e);
+        }
+      }
+
+      // Check for sad active trigger directly
+      const sadTrigger = localStorage.getItem("MemoryCare_ActivePatientSadTrigger");
+      if (sadTrigger === "true") {
+        state.currentMood = 'sad';
+        const alertBanner = document.getElementById('dashboard-alert-banner');
+        const activeRosterRow = document.getElementById('roster-active-row');
+        alertBanner.style.display = 'flex';
+        activeRosterRow.style.background = 'var(--rose-light)';
+        syncStateToDashboard();
+        localStorage.removeItem("MemoryCare_ActivePatientSadTrigger"); // clear once processed
+        showToast("⚠️ เตือนภัยฉุกเฉิน: ตรวจพบสภาวะอารมณ์ตกต่ำผ่านสัญญาณแท็บเล็ต!");
+      }
+    }
+
+
+
+    // Time handler for simulated phone
+    function updateTimeLabel() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('mobile-time').textContent = `${hrs}:${mins}`;
+    }
+
+    // Switch between Main Tabs
+    function switchTab(tabId, menuBtn) {
+      // Toggle side menu active styling
+      document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+      menuBtn.classList.add('active');
+
+      // Toggle tab panel
+      document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+      const activePanel = document.getElementById(tabId);
+      activePanel.classList.add('active');
+
+      // Adjust title based on active view
+      if (tabId === 'emulator-tab') {
+        document.getElementById('workspace-title').textContent = "Interactive App Emulator & Nurse Statistics";
+        document.getElementById('workspace-subtitle').textContent = "ต้นแบบระบบโต้ตอบประสานงานสองฝั่งแบบเรียลไทม์ (Emulator & Clinician Dashboard Coordinator)";
+      } else {
+        document.getElementById('workspace-title').textContent = "Interactive Wireframe Blueprint Flow Hub";
+        document.getElementById('workspace-subtitle').textContent = "ศูนย์กลางแสดงมิติขนาดการจัดองค์ประกอบ UI/UX ขาวดำตามมาตรฐานความปลอดภัยทางคลินิกพยาบาลจิตเวช";
+        // Reset annotations to wireframe state
+        renderAnnotations(state.activeWfScreen);
+      }
+    }
+
+    // Navigate inside simulated phone
+    function goToScreen(screenName) {
+      // Hide all screens
+      document.querySelectorAll('.mobile-screen-view').forEach(scr => scr.classList.remove('active'));
+      
+      // Update state
+      state.currentScreen = screenName;
+
+      // Show requested screen
+      const activeScr = document.getElementById(`screen-${screenName}`);
+      if (activeScr) activeScr.classList.add('active');
+
+      // Update mobile menu styling
+      document.querySelectorAll('.mobile-nav-item').forEach(item => item.classList.remove('active'));
+      if (screenName === 'home') document.getElementById('nav-home').classList.add('active');
+      if (screenName === 'album') document.getElementById('nav-album').classList.add('active');
+      if (screenName === 'lifereview') document.getElementById('nav-review').classList.add('active');
+      
+      // Manage header visibility
+      const mobileHeader = document.getElementById('app-dynamic-header');
+      if (screenName === 'login') {
+        mobileHeader.style.display = 'none';
+      } else {
+        mobileHeader.style.display = 'block';
+        
+        // Show specific greeting time based on actual hours
+        const hrs = new Date().getHours();
+        let greeting = "สวัสดีตอนเย็น 🌇";
+        if (hrs < 12) greeting = "สวัสดีตอนเช้า 🌅";
+        else if (hrs < 17) greeting = "สวัสดีตอนบ่าย 🌅";
+        
+        document.getElementById('home-greeting-prefix').textContent = greeting;
+      }
+    }
+
+    // Login configuration submission
+    function submitProfileSettings() {
+      const nameVal = document.getElementById('input-patient-name').value.trim();
+      const yearVal = parseInt(document.getElementById('input-patient-year').value);
+
+      if (!nameVal) {
+        alert("กรุณากรอกชื่อ-นามสกุล คนไข้");
+        return;
+      }
+
+      if (isNaN(yearVal) || yearVal < 2400 || yearVal > 2569) {
+        alert("กรุณาระบุ พ.ศ. เกิดที่สมเหตุสมผล (พ.ศ. 2400 - 2569)");
+        return;
+      }
+
+      // Update state data
+      state.patientName = nameVal;
+      state.birthYear = yearVal;
+      
+      // Reminiscence golden bump golden period calculation
+      state.reminiscenceBumpStart = yearVal + 15;
+      state.reminiscenceBumpEnd = yearVal + 25;
+
+      // Confirm settings transition
+      showToast("คำนวณยุคปีทองบำบัด สำเร็จ!");
+      
+      // Update layout & transition to home
+      syncStateToDashboard();
+      
+      // Show bottom navigation bar
+      document.getElementById('app-nav-bar').style.display = 'flex';
+      
+      // Redirect
+      goToScreen('home');
+    }
+
+    // Select Avatar Option
+    function selectAvatar(element) {
+      document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+      state.avatar = element.getAttribute('data-avatar');
+    }
+
+    // Sync variables values to desktop dashboard widgets in real-time
+    function syncStateToDashboard() {
+      // Sync patient header labels
+      document.getElementById('home-greeting-name').textContent = state.patientName;
+      document.getElementById('active-avatar-emoji').textContent = state.avatar;
+      
+      // Sync dashboard panels
+      document.getElementById('dash-active-patient-name').textContent = state.patientName;
+      const currentYear = new Date().getFullYear() + 543; // Convert to Thai Buddhist Year
+      const age = currentYear - state.birthYear;
+      document.getElementById('dash-active-patient-age').textContent = `อายุ: ${age} ปี (เกิด พ.ศ. ${state.birthYear})`;
+      
+      // Sync Golden Age calculations
+      document.getElementById('dash-reminiscence-bump').textContent = `${state.reminiscenceBumpStart} - ${state.reminiscenceBumpEnd}`;
+      document.getElementById('music-bump-text').textContent = `ยุคปีทอง ${state.reminiscenceBumpStart} - ${state.reminiscenceBumpEnd}`;
+      document.getElementById('booklet-bump-years').textContent = `ช่วงปี พ.ศ. ทองคำ: ${state.reminiscenceBumpStart} - ${state.reminiscenceBumpEnd}`;
+      
+      // Sync current patient table details
+      document.getElementById('roster-active-name').textContent = state.patientName;
+      document.getElementById('roster-active-age').textContent = age;
+      document.getElementById('roster-active-avatar').textContent = state.avatar;
+      
+      // Sync Daily progress
+      let doneCount = 0;
+      if (state.tasks.musicPlayed) doneCount++;
+      if (state.tasks.gamePlayed) doneCount++;
+      if (state.tasks.memoirWritten) doneCount++;
+      
+      const percent = Math.round((doneCount / 3) * 100);
+      
+      // Update phone circular UI
+      document.getElementById('home-progress-percent').textContent = `${percent}%`;
+      const circleDashOffset = 100.53 - (100.53 * (percent / 100));
+      document.getElementById('home-progress-circle').style.strokeDashoffset = circleDashOffset;
+      
+      // Update dashboard widget progress
+      document.getElementById('dash-daily-progress-percent').textContent = `${percent}%`;
+      document.getElementById('dash-daily-progress-tasks').textContent = `ทำสำเร็จ: ${doneCount}/3 กิจกรรม`;
+      
+      // Sync Mood details
+      let moodThai = "ผ่อนคลาย 😌";
+      if (state.currentMood === 'happy') moodThai = "สุขใจ 😊";
+      if (state.currentMood === 'sad') moodThai = "เหงา/เศร้า 😢";
+      if (state.currentMood === 'neutral') moodThai = "เฉยๆ 😐";
+      
+      document.getElementById('dash-current-mood-status').textContent = moodThai;
+      document.getElementById('roster-active-mood').textContent = moodThai;
+      
+      // Clock last active time update
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      document.getElementById('dash-current-mood-time').textContent = `อัปเดตอัจฉริยะเมื่อเวลา ${timeStr}`;
+
+      // Draw dynamic MMSE chart on dashboard tab driven by active patient scores
+      if (state.scores && state.scores.mmse) {
+        const mmse = state.scores.mmse;
+        const y1 = 20 + (30 - mmse[0]) * 7.5;
+        const y2 = 20 + (30 - mmse[1]) * 7.5;
+        const y3 = 20 + (30 - mmse[2]) * 7.5;
+        const y4 = 20 + (30 - mmse[3]) * 7.5;
+        
+        // Update paths
+        document.getElementById('mmse-path-line').setAttribute('d', `M 50 ${y1} L 150 ${y2} L 250 ${y3} L 350 ${y4}`);
+        document.getElementById('mmse-path-bg').setAttribute('d', `M 50 155 L 50 ${y1} L 150 ${y2} L 250 ${y3} L 350 ${y4} L 350 155 Z`);
+        
+        // Update dots and tooltips
+        const dots = document.querySelectorAll('#chart-mmse-svg .chart-dot');
+        if (dots.length >= 4) {
+          dots[0].setAttribute('cy', y1);
+          dots[0].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 1: MMSE = ${mmse[0]} คะแนน')`);
+          
+          dots[1].setAttribute('cy', y2);
+          dots[1].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 2: MMSE = ${mmse[1]} คะแนน')`);
+          
+          dots[2].setAttribute('cy', y3);
+          dots[2].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 3: MMSE = ${mmse[2]} คะแนน')`);
+          
+          dots[3].setAttribute('cy', y4);
+          dots[3].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 4 (ล่าสุด): MMSE = ${mmse[3]} คะแนน')`);
+        }
+
+        // Update active table score
+        document.getElementById('roster-active-mmse').textContent = `${mmse[3]} / 30`;
+      }
+
+      // Draw GDS chart bars driven by active patient scores
+      if (state.scores && state.scores.gds) {
+        const gds = state.scores.gds;
+        const bars = document.querySelectorAll('#emulator-tab svg .chart-bar');
+        
+        if (bars.length >= 4) {
+          // GDS week 1 bar
+          const h1 = gds[0] * 9; const y1 = 155 - h1;
+          bars[0].setAttribute('y', y1);
+          bars[0].setAttribute('height', h1);
+          bars[0].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 1: GDS = ${gds[0]} คะแนน')`);
+          if (gds[0] >= 8) bars[0].classList.add('alert-bar'); else bars[0].classList.remove('alert-bar');
+
+          // GDS week 2 bar
+          const h2 = gds[1] * 9; const y2 = 155 - h2;
+          bars[1].setAttribute('y', y2);
+          bars[1].setAttribute('height', h2);
+          bars[1].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 2: GDS = ${gds[1]} คะแนน')`);
+          if (gds[1] >= 8) bars[1].classList.add('alert-bar'); else bars[1].classList.remove('alert-bar');
+
+          // GDS week 3 bar
+          const h3 = gds[2] * 9; const y3 = 155 - h3;
+          bars[2].setAttribute('y', y3);
+          bars[2].setAttribute('height', h3);
+          bars[2].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 3: GDS = ${gds[2]} คะแนน')`);
+          if (gds[2] >= 8) bars[2].classList.add('alert-bar'); else bars[2].classList.remove('alert-bar');
+
+          // GDS week 4 bar
+          const h4 = gds[3] * 9; const y4 = 155 - h4;
+          bars[3].setAttribute('y', y4);
+          bars[3].setAttribute('height', h4);
+          bars[3].setAttribute('onmouseover', `showChartTooltip(event, 'สัปดาห์ 4 (ล่าสุด): GDS = ${gds[3]} คะแนน')`);
+          if (gds[3] >= 8) bars[3].classList.add('alert-bar'); else bars[3].classList.remove('alert-bar');
+        }
+
+        document.getElementById('roster-active-gds').textContent = `${gds[3]} / 15`;
+      }
+    }
+
+
+    // Reset Simulation values
+    function resetSimulationData() {
+      if (confirm("คุณต้องการรีเซ็ตข้อมูลจำลองการทดสอบกลับเป็นค่าเดิมใช่หรือไม่?")) {
+        state.patientName = "คุณสมศรี วงศ์ดี";
+        state.birthYear = 2493;
+        state.avatar = "👵";
+        state.tasks = { musicPlayed: false, gamePlayed: false, memoirWritten: false };
+        state.currentMood = "relaxed";
+        state.activeChapter = 1;
+        state.ch1Text = "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียบง่ายและมีความสุขที่สุด...";
+        state.ch2Text = "";
+        state.ch3Text = "";
+        
+        // Reset player
+        if (state.isMusicPlaying) toggleMusicPlayback();
+        state.musicProgress = 0;
+        document.getElementById('player-progress-fill').style.width = '0%';
+        document.getElementById('player-time-current').textContent = '0:00';
+        
+        // Reset values inside text inputs
+        document.getElementById('input-patient-name').value = state.patientName;
+        document.getElementById('input-patient-year').value = state.birthYear;
+        document.getElementById('memoir-text-input').value = state.ch1Text;
+        
+        // Roster row back to normal color
+        document.getElementById('roster-active-row').style.background = 'var(--teal-ultra-light)';
+        document.getElementById('dashboard-alert-banner').style.display = 'none';
+
+        // Toggle avatar selector selection
+        document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelector('.avatar-option[data-avatar="👵"]').classList.add('selected');
+        
+        // Return back to screen
+        goToScreen('login');
+        document.getElementById('app-nav-bar').style.display = 'none';
+        
+        syncStateToDashboard();
+        showToast("รีเซ็ตตัวจำลองต้นแบบสำเร็จ!");
+      }
+    }
+
+    // Show dynamic success messages toast
+    function showToast(message) {
+      const toast = document.getElementById('sync-toast');
+      document.getElementById('toast-text-msg').textContent = message;
+      toast.classList.add('visible');
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3500);
+    }
+
+    // Vintage Music player controls
+    function toggleMusicPlayback() {
+      const btn = document.getElementById('btn-music-play');
+      if (state.isMusicPlaying) {
+        btn.textContent = '▶';
+        state.isMusicPlaying = false;
+        clearInterval(state.musicInterval);
+      } else {
+        btn.textContent = '⏸';
+        state.isMusicPlaying = true;
+        
+        // Set task completed
+        state.tasks.musicPlayed = true;
+        syncStateToDashboard();
+        
+        // Run progress bar
+        state.musicInterval = setInterval(() => {
+          state.musicProgress += (1 / 165) * 100; // Total song is 2m 45s (165s)
+          if (state.musicProgress >= 100) {
+            state.musicProgress = 0;
+            toggleMusicPlayback();
+          }
+          
+          document.getElementById('player-progress-fill').style.width = `${state.musicProgress}%`;
+          
+          // Clock timer representation
+          const totalSecs = Math.round((state.musicProgress / 100) * 165);
+          const mins = Math.floor(totalSecs / 60);
+          const secs = String(totalSecs % 60).padStart(2, '0');
+          document.getElementById('player-time-current').textContent = `${mins}:${secs}`;
+        }, 1000);
+        
+        showToast("ส่งสัญญานคลื่นดนตรีย้อนยุคบำบัดสมองสำเร็จ!");
+      }
+    }
+
+    function seekSong(event) {
+      const track = event.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const percent = (clickX / rect.width) * 100;
+      
+      state.musicProgress = percent;
+      document.getElementById('player-progress-fill').style.width = `${percent}%`;
+      
+      const totalSecs = Math.round((percent / 100) * 165);
+      const mins = Math.floor(totalSecs / 60);
+      const secs = String(totalSecs % 60).padStart(2, '0');
+      document.getElementById('player-time-current').textContent = `${mins}:${secs}`;
+    }
+
+    // Voice record simulated logic
+    function toggleVoiceRecording() {
+      const btn = document.getElementById('btn-voice-record');
+      const wave = document.getElementById('voice-wave');
+      const statusText = document.getElementById('record-status-text');
+
+      if (state.isRecording) {
+        state.isRecording = false;
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+        wave.style.display = 'none';
+        statusText.textContent = "อัดประวัติชีวิตเสียงความหลังสำเร็จ! (ความยาว 12 วินาที)";
+        
+        // Complete activity
+        state.tasks.memoirWritten = true;
+        syncStateToDashboard();
+        showToast("ไฟล์เสียงประวัติศาสตร์ชีวิตส่งตรงเข้าแกลเลอรีพยาบาลแล้ว!");
+      } else {
+        state.isRecording = true;
+        btn.classList.add('recording');
+        btn.textContent = '⏹';
+        wave.style.display = 'block';
+        statusText.textContent = "กำลังวิเคราะห์สัญญาณประสาทผ่านเสียงเล่าความหลังของคุณ...";
+        
+        // Draw waves
+        drawFakeAudioWave();
+      }
+    }
+
+    // Soundwave fake drawer
+    function drawFakeAudioWave() {
+      const canvas = document.getElementById('voice-wave');
+      const ctx = canvas.getContext('2d');
+      let offset = 0;
+
+      function render() {
+        if (!state.isRecording) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#3D8C8C';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        
+        for (let x = 0; x < canvas.width; x++) {
+          const y = canvas.height / 2 + Math.sin(x * 0.05 + offset) * 10 * Math.sin(x * 0.01);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        offset += 0.25;
+        requestAnimationFrame(render);
+      }
+      
+      render();
+    }
+
+    // Sync Mood Reflection feedback & Trigger nurse notification warnings
+    function sendMoodToDashboard(mood, btn) {
+      // Toggle button highlights
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      state.currentMood = mood;
+      
+      // Check for sad/depressed warning trigger
+      const alertBanner = document.getElementById('dashboard-alert-banner');
+      const activeRosterRow = document.getElementById('roster-active-row');
+      
+      if (mood === 'sad') {
+        alertBanner.style.display = 'flex';
+        alertBanner.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        activeRosterRow.style.background = 'var(--rose-light)';
+        showToast("⚠️ ระบบพยาบาลตรวจพบอารมณ์ตกกะทันหัน ส่งสัญญานเตือนด่วน!");
+      } else {
+        alertBanner.style.display = 'none';
+        activeRosterRow.style.background = 'var(--teal-ultra-light)';
+        showToast("ส่งบันทึกผลตอบรับอารมณ์สู่แดชบอร์ดสถิติสำเร็จ");
+      }
+      
+      syncStateToDashboard();
+    }
+
+    // Nurse modal popups
+    function openNurseInterventionModal() {
+      document.getElementById('intervene-patient-name').textContent = state.patientName;
+      document.getElementById('nurse-intervention-modal').style.display = 'flex';
+    }
+
+    function closeNurseInterventionModal() {
+      document.getElementById('nurse-intervention-modal').style.display = 'none';
+    }
+
+    // Send proactive clinical encouragement back to simulated device
+    function sendEncouragementToApp(message) {
+      closeNurseInterventionModal();
+      
+      // Save in localStorage for the standalone MemoryCare_App.html to pick up!
+      localStorage.setItem("MemoryCare_NurseAlertMessage", message);
+      
+      // Simulate real-time toast alert popups inside phone
+      alert(`[แจ้งเตือนส่งถึงคุณยายบนมือถือสำเร็จ]: \n\n"${message}"`);
+      
+      // Clear alert status on dashboard
+      document.getElementById('dashboard-alert-banner').style.display = 'none';
+      document.getElementById('roster-active-row').style.background = 'var(--teal-ultra-light)';
+      state.currentMood = 'relaxed';
+      
+      // Push reset mood state back to tablet
+      const saved = localStorage.getItem("MemoryCare_AppState");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          parsed.currentMood = 'relaxed';
+          localStorage.setItem("MemoryCare_AppState", JSON.stringify(parsed));
+        } catch (e) {}
+      }
+      
+      syncStateToDashboard();
+    }
+
+
+    // Life review memoir responses saving
+    function selectReviewChapter(chapterNum) {
+      state.activeChapter = chapterNum;
+      
+      // Styling highlight
+      document.querySelectorAll('.chapter-card').forEach(c => c.classList.remove('active-chapter'));
+      document.getElementById(`chapter-${chapterNum}-row`).classList.add('active-chapter');
+
+      const title = document.getElementById('review-chapter-title');
+      const text = document.getElementById('review-prompt-text');
+      const area = document.getElementById('memoir-text-input');
+
+      if (chapterNum === 1) {
+        title.textContent = "บทเรียนที่ 1: วัยเด็กแสนหวาน 🏠";
+        text.textContent = `"โรงเรียนแรกของคุณชื่ออะไร และในวัยเด็กคุณกับเพื่อนสนิทมักจะพากันไปเล่นสนุกที่ไหนมากที่สุด?"`;
+        area.value = state.ch1Text;
+      } else if (chapterNum === 2) {
+        title.textContent = "บทเรียนที่ 2: วัยเรียนและการริเริ่ม 🎒";
+        text.textContent = `"ในช่วงวัยชั้นมัธยมหรือวัยรุ่น วิชาเรียนอะไรที่คุณเรียนเก่งที่สุด และครูคนใดที่คุณยังคงจำใบหน้าท่านได้ดี?"`;
+        area.value = state.ch2Text;
+      } else {
+        title.textContent = "บทเรียนที่ 3: การทำงานและความรัก 💍";
+        text.textContent = `"บอกเล่าประสบการณ์การได้เงินก้อนแรกจากการทำงานในชีวิต และของขวัญชิ้นแรกที่เก็บหอมรอมริบซื้อให้ตนเองคืออะไร?"`;
+        area.value = state.ch3Text;
+      }
+    }
+
+    function submitLifeReviewResponse() {
+      const txt = document.getElementById('memoir-text-input').value.trim();
+      if (!txt) {
+        alert("กรุณาพิมพ์หรือบันทึกเสียงเรื่องเล่าก่อนกดบันทึก");
+        return;
+      }
+
+      if (state.activeChapter === 1) {
+        state.ch1Text = txt;
+        document.getElementById('ch-1-status').innerHTML = "✓ สำเร็จ: " + txt.substring(0, 20) + "...";
+        document.getElementById('chapter-1-row').classList.add('completed');
+        document.getElementById('booklet-ch1-content').textContent = txt;
+      } else if (state.activeChapter === 2) {
+        state.ch2Text = txt;
+        document.getElementById('ch-2-status').innerHTML = "✓ สำเร็จ: " + txt.substring(0, 20) + "...";
+        document.getElementById('chapter-2-row').classList.add('completed');
+        document.getElementById('booklet-ch2-content').textContent = txt;
+      } else {
+        state.ch3Text = txt;
+        document.getElementById('ch-3-status').innerHTML = "✓ สำเร็จ: " + txt.substring(0, 20) + "...";
+        document.getElementById('chapter-3-row').classList.add('completed');
+        document.getElementById('booklet-ch3-content').textContent = txt;
+      }
+
+      state.tasks.memoirWritten = true;
+      syncStateToDashboard();
+      
+      // Auto move forward or show congratulations
+      showToast("บันทึกเรื่องเล่าชีวประวัติความรักความทรงจำสำเร็จ!");
+      
+      // Sync dynamic text
+      if (state.activeChapter < 3) {
+        const nextCh = state.activeChapter + 1;
+        // Unlock badge indicator
+        document.querySelector(`#chapter-${nextCh}-row .chapter-badge`).textContent = '📍';
+        selectReviewChapter(nextCh);
+      }
+    }
+
+    // Print memoir booklet controls
+    function openLifeBookBooklet() {
+      document.getElementById('booklet-patient-name').textContent = state.patientName;
+      const currentYear = new Date().getFullYear() + 543;
+      document.getElementById('booklet-patient-age').textContent = currentYear - state.birthYear;
+      document.getElementById('lifebook-booklet-overlay').style.display = 'flex';
+    }
+
+    function closeLifeBookBooklet() {
+      document.getElementById('lifebook-booklet-overlay').style.display = 'none';
+    }
+
+    // Image story card details simulation clicking helper
+    function playImageStory(title, info) {
+      alert(`[กิจกรรมการ์ดสนทนาบำบัด] \nหัวข้อ: ${title} \n\nคำแนะนำพยาบาล: ${info}`);
+      state.tasks.gamePlayed = true;
+      syncStateToDashboard();
+    }
+
+    // Other app buttons simulation
+    function triggerBrainGameDemo() {
+      alert("🎮 ตัวอย่างเกมกระตุ้นปัญญา: \n\nจับคู่การ์ดอดีตคุณยาย โดยจับคู่ภาพ 'ถ่านไฟฉายตรากบ' กับ 'วิทยุธานินทร์' สำเร็จ! \n\nผลคะแนน: 100/100 (สมองมีการเชื่อมโยงวิถีจำได้ยอดเยี่ยม)");
+      state.tasks.gamePlayed = true;
+      document.getElementById('game-status-label').textContent = "เล่นแล้ววันนี้: 100 คะแนน";
+      syncStateToDashboard();
+    }
+
+    function triggerHealthSelfTest() {
+      alert("📊 ผลการประเมิน Cognitive Assessment (สัปดาห์ 2): \n\nMMSE: 20 คะแนน (MCI Risk) \nGDS: 7 คะแนน (Mild Depression) \n\n*ข้อแนะนำพยาบาล: ฝึกร้องเพลงบำบัดต่ออีกสัปดาห์ละ 3 วันเพื่อฟื้นฟูระบบการเชื่อมต่อสมองส่วนความอบอุ่น*");
+    }
+
+    // ── WIREFRAME HUB CONTROLS ──
+    function switchBlueprintScreen(viewName, btn) {
+      // Toggle nav btn highlights
+      document.querySelectorAll('.bp-nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Hide all blueprint canvas drawings
+      document.getElementById('wf-view-login').style.display = 'none';
+      document.getElementById('wf-view-home').style.display = 'none';
+      document.getElementById('wf-view-album').style.display = 'none';
+      document.getElementById('wf-view-lifereview').style.display = 'none';
+      document.getElementById('wf-view-nurse').style.display = 'none';
+
+      // Show active wireframe screen
+      if (viewName === 'nurse') {
+        document.getElementById('wf-view-nurse').style.display = 'flex';
+      } else {
+        document.getElementById(`wf-view-${viewName}`).style.display = 'block';
+      }
+
+      state.activeWfScreen = viewName;
+      renderAnnotations(viewName);
+    }
+
+    function toggleSafetyGrids(checkbox) {
+      const overlays = document.querySelectorAll('.safety-overlay');
+      if (checkbox.checked) {
+        overlays.forEach(ov => ov.classList.add('visible'));
+      } else {
+        overlays.forEach(ov => ov.classList.remove('visible'));
+      }
+    }
+
+    // Render clinical annotations to sidebar dynamically
+    function renderAnnotations(viewName) {
+      const box = document.getElementById('annotation-list-box');
+      box.innerHTML = ''; // Clear previous
+
+      const items = psychiatricGuidelines[viewName] || [];
+      items.forEach((item, index) => {
+        const itemHtml = `
+          <div class="annotation-item">
+            <div class="annotation-num">${index + 1}</div>
+            <div class="annotation-text">
+              <strong>${item.title}</strong>
+              <span>${item.text}</span>
+            </div>
+          </div>
+        `;
+        box.insertAdjacentHTML('beforeend', itemHtml);
+      });
+    }
+
+    // Chart tooltips
+    function showChartTooltip(event, text) {
+      const box = document.getElementById('chart-tooltip-box');
+      box.innerHTML = text;
+      box.style.display = 'block';
+      box.style.left = `${event.pageX + 15}px`;
+      box.style.top = `${event.pageY - 15}px`;
+    }
+
+    function hideChartTooltip() {
+      document.getElementById('chart-tooltip-box').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

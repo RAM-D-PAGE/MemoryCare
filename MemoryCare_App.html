@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemoryCare Standalone — Local Unified Care Portal</title>
+  
+  <!-- PWA Manifest & Standalone Mobile Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1E2D5A">
+  <link rel="shortcut icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <!-- Global Configuration bridge for real database sync -->
+  <script src="config.js"></script>
+  <script src="hybrid-sync.js"></script>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Senior Accessibility Palette - Ultra Contrast Warm Concept */
+      --navy: #1E2D5A;
+      --navy-light: #2D4A8A;
+      --navy-dark: #0D162D;
+      --teal: #3D8C8C;
+      --teal-light: #E8F4F4;
+      --teal-dark: #2B6666;
+      --rose: #C4606A;
+      --rose-light: #FAE8EA;
+      --gold: #D4973A;
+      --gold-light: #FDF3E0;
+      --gold-dark: #9E6B20;
+      --sage: #6A9172;
+      --sage-light: #EAF2EB;
+      --bg-cream: #FAF8F5;
+      --card-cream: #FFFDF9;
+      --border-dark: #5B4E41;
+      --border-light: #E5DEC9;
+      --text-dark: #1C1917;
+      
+      /* Visual styling shadows */
+      --shadow-wood: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.15);
+      --shadow-clinical: 0 16px 40px rgba(30, 45, 90, 0.15), 0 0 1px rgba(30,45,90,0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+
+    body {
+      font-family: 'Sarabun', 'Outfit', sans-serif;
+      background: #1C1917; /* Dark room backdrop */
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    /* ── TOP TERMINAL CONFIGURATION TOOLBAR ── */
+    .terminal-toolbar {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .toolbar-title h2 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .toolbar-title p {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .toolbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .toolbar-select {
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .toolbar-btn {
+      background: var(--gold);
+      color: var(--navy-dark);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Sarabun', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .toolbar-btn:hover {
+      background: #E8A84A;
+      transform: translateY(-1px);
+    }
+
+    /* ── DYNAMIC VIRTUAL HARDWARE APPLIANCE SHELL ── */
+    .hardware-canvas {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* [CASING 1: TEAK-WOOD RETRO HEALING KIOSK] */
+    .casing-retro-wood {
+      background: linear-gradient(135deg, #78350F, #451A03); /* Rich wood */
+      border: 14px solid #3F1A03;
+      border-radius: 40px;
+      padding: 30px 40px 40px;
+      box-shadow: var(--shadow-wood);
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 30px;
+      align-items: center;
+      position: relative;
+      border-top-color: #5C2707;
+      border-bottom-color: #260E01;
+    }
+    
+    .casing-retro-wood::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.2) 100%);
+      pointer-events: none;
+    }
+
+    /* Retro Speaker Grille */
+    .wood-control-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      color: #FCD34D;
+      background: #270F03;
+      border-radius: 20px;
+      padding: 24px 16px;
+      border: 4px solid #1c0b02;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    .grille-speaker {
+      width: 100%;
+      height: 70px;
+      background: repeating-linear-gradient(90deg, #1c0b02, #1c0b02 4px, #4d1c02 4px, #4d1c02 8px);
+      border-radius: 8px;
+      border: 1.5px solid #5C2707;
+    }
+
+    /* Glowing LED Appliance Indicators */
+    .indicator-led-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .led-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #D97706;
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .led-bulb {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #78350F;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .led-bulb.active-green {
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981, inset 0 1px 2px rgba(255,255,255,0.4);
+    }
+    
+    .led-bulb.active-amber {
+      background: #F59E0B;
+      box-shadow: 0 0 8px #F59E0B, inset 0 1px 2px rgba(255,255,255,0.4);
+    }
+
+    .led-bulb.blinking-red {
+      background: #EF4444;
+      animation: ledBlink 0.6s infinite alternate;
+    }
+
+    @keyframes ledBlink {
+      from { background: #7F1D1D; box-shadow: 0 0 0px transparent; }
+      to { background: #EF4444; box-shadow: 0 0 10px #EF4444, inset 0 1px 2px rgba(255,255,255,0.4); }
+    }
+
+    /* Analog dials dials */
+    .analog-dial-knob {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4d1c02, #1c0b02);
+      border: 3px solid #78350F;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.05);
+      transition: transform 0.4s ease;
+    }
+
+    .analog-dial-knob::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 14px;
+      background: #FCD34D;
+      border-radius: 2px;
+    }
+
+    /* Emergency big red call switch */
+    .emergency-dial-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #EF4444;
+      border: 4px solid #7F1D1D;
+      box-shadow: 0 6px 0 #5E1717, 0 8px 16px rgba(0,0,0,0.4);
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+      color: white;
+    }
+
+    .emergency-dial-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #5E1717, 0 4px 8px rgba(0,0,0,0.4);
+    }
+
+    /* [CASING 2: CLINICAL WHITE HEALTHCARE TABLET] */
+    .casing-clinical-tablet {
+      background: #E2E8F0;
+      border: 22px solid #F1F5F9;
+      border-radius: 48px;
+      padding: 0;
+      box-shadow: var(--shadow-clinical);
+      position: relative;
+      width: 600px;
+    }
+
+    .casing-clinical-tablet::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 6px solid #CBD5E1;
+      border-radius: 32px;
+      pointer-events: none;
+    }
+
+    .clinical-home-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #94A3B8;
+      background: #F8FAFC;
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* [CASING 3: FULL SCREEN APP ONLY VIEW] */
+    .casing-fullscreen-app {
+      width: 100% !important;
+      max-width: 680px;
+      padding: 0 !important;
+      border: none !important;
+      background: none !important;
+      box-shadow: none !important;
+      display: block !important;
+    }
+
+    /* ── CORE ACTIVE SENIOR SCREEN (Inside Hardware Frame) ── */
+    .app-screen-container {
+      width: 100%;
+      height: 640px;
+      background: var(--bg-cream);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      border: 1px solid var(--border-dark);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
+    }
+
+    .casing-clinical-tablet .app-screen-container {
+      border-radius: 26px;
+      border: none;
+    }
+    
+    .casing-fullscreen-app .app-screen-container {
+      border-radius: 24px;
+      height: 720px;
+    }
+
+    /* Tablet Status bar display */
+    .app-topbar {
+      height: 44px;
+      background: var(--navy-dark);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 700;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .topbar-indicators {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar-led-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 6px #10B981;
+    }
+
+    /* Scrollable Container Screen */
+    .app-viewport {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: var(--bg-cream);
+    }
+
+    .app-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .viewport-view {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: viewFade 0.4s ease both;
+      height: 100%;
+    }
+
+    .viewport-view.active {
+      display: flex;
+    }
+
+    @keyframes viewFade {
+      from { opacity: 0; transform: scale(0.98) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Shared Screen Header inside app */
+    .screen-header-bar {
+      display: none; /* Managed by routing script */
+      background: var(--card-cream);
+      border: 2px solid var(--border-light);
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 4px;
+    }
+
+    .header-bar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-bar-info h3 {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .header-bar-info p {
+      font-size: 12px;
+      color: #6B5E51;
+      margin-top: 2px;
+    }
+
+    /* ── SENIOR TACTILE CONTROLS (WCAG AAA TARGETS) ── */
+    .elderly-card {
+      background: var(--card-cream);
+      border-radius: 20px;
+      padding: 20px;
+      border: 3px solid var(--border-light);
+      box-shadow: 0 6px 16px rgba(91, 78, 65, 0.04);
+    }
+
+    .elderly-btn-large {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: var(--navy);
+      color: white;
+      border: 3px solid var(--navy-dark);
+      padding: 18px 24px;
+      border-radius: 22px;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(30, 45, 90, 0.15);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      min-height: 64px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .elderly-btn-large:hover {
+      background: var(--navy-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30, 45, 90, 0.25);
+    }
+
+    .elderly-btn-large:active {
+      transform: translateY(1px);
+    }
+
+    .elderly-btn-teal {
+      background: var(--teal);
+      border-color: var(--teal-dark);
+    }
+    .elderly-btn-teal:hover {
+      background: var(--teal-hover);
+    }
+
+    .elderly-btn-outline {
+      background: white;
+      color: var(--navy);
+      border-color: var(--border-light);
+      box-shadow: 0 4px 10px rgba(91, 78, 65, 0.05);
+    }
+    .elderly-btn-outline:hover {
+      background: var(--bg-cream);
+    }
+
+    /* Screen Navigation Bottom Bar inside app */
+    .app-bottom-nav {
+      height: 80px;
+      background: var(--card-cream);
+      border-top: 3px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 4px 12px 8px;
+      display: none;
+    }
+
+    .nav-tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #6B5E51;
+      cursor: pointer;
+      gap: 4px;
+      width: 20%;
+      height: 100%;
+      transition: all 0.2s ease;
+      font-weight: 700;
+      font-size: 11px;
+      border-radius: 12px;
+    }
+
+    .nav-tab-item .icon {
+      font-size: 22px;
+    }
+
+    .nav-tab-item.active {
+      color: var(--teal);
+      background: var(--teal-light);
+    }
+
+    /* ── DETAILED VIEW SCENES ── */
+
+    /* Screen 1: Welcome Config */
+    .wf-large-input {
+      background: white;
+      border: 3px solid var(--border-light);
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      outline: none;
+      width: 100%;
+    }
+
+    .wf-large-input:focus {
+      border-color: var(--teal);
+      background: var(--teal-ultra-light);
+    }
+
+    .welcome-avatar-grid {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .welcome-avatar-card {
+      flex: 1;
+      background: white;
+      border: 3px solid var(--border-light);
+      border-radius: 18px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 28px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+
+    .welcome-avatar-card.selected {
+      border-color: var(--teal);
+      background: var(--teal-light);
+      transform: scale(1.08);
+      box-shadow: 0 8px 20px rgba(61, 140, 140, 0.15);
+    }
+
+    .welcome-avatar-card p {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-top: 4px;
+    }
+
+    /* Screen 2: Home Care Screen */
+    .daily-home-progress {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-circle-big {
+      width: 76px;
+      height: 76px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .progress-circle-big svg {
+      transform: rotate(-90deg);
+    }
+
+    .home-shortcut-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .home-shortcut-box {
+      background: white;
+      border: 3px solid var(--border-light);
+      border-radius: 20px;
+      padding: 20px 12px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .home-shortcut-box:hover {
+      border-color: var(--teal);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(91, 78, 65, 0.08);
+    }
+
+    .home-shortcut-box .icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .home-shortcut-box h4 {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .home-shortcut-box p {
+      font-size: 11px;
+      color: #6B5E51;
+    }
+
+    .encouragement-toast-drawer {
+      background: var(--gold-light);
+      border: 3px solid var(--gold);
+      border-radius: 18px;
+      padding: 14px 18px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      animation: toastIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Screen 3: Reminiscence Album & Vintage Player */
+    .retro-album-card {
+      border: 3px solid var(--border-light);
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .retro-album-photo {
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .retro-album-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    }
+
+    .retro-album-photo h3 {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      color: white;
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .retro-album-caption {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-dark);
+      border-top: 3px solid var(--border-light);
+    }
+
+    /* Web Audio record box mockup */
+    .elderly-record-box {
+      background: var(--teal-light);
+      border: 3px dashed var(--teal);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .record-btn-giant {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--rose);
+      border: 3px solid var(--navy-dark);
+      color: white;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(196, 96, 106, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .record-btn-giant.recording {
+      background: red;
+      animation: pulseBtn 1.2s infinite alternate;
+    }
+
+    /* Nostalgic Radio Player Frame UI */
+    .retro-radio-body {
+      background: linear-gradient(135deg, #A16207, #713F12); 
+      border: 6px solid #451A03;
+      border-radius: 20px;
+      padding: 16px;
+      color: #FEF3C7;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-wood);
+      position: relative;
+    }
+
+    .radio-grille-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #FCD34D;
+      padding-bottom: 8px;
+    }
+
+    .radio-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #FCD34D;
+      letter-spacing: 1px;
+    }
+
+    .radio-track-visualizer {
+      height: 34px;
+      background: #1E0E03;
+      border-radius: 6px;
+      border: 1.5px solid #78350F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      color: #FBBF24;
+      font-weight: 600;
+    }
+
+    .radio-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .radio-dial-knob {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #270F03;
+      border: 2px solid #78350F;
+      position: relative;
+    }
+
+    .radio-dial-knob::after {
+      content: '';
+      position: absolute;
+      top: 4px; left: 50%;
+      transform: translateX(-50%);
+      width: 3px; height: 8px;
+      background: #FCD34D;
+    }
+
+    .radio-btn-play {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #115E59;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Screen 4: Structured Memoirs */
+    .memoir-prompt-card {
+      background: #FFFDF9;
+      border: 3px solid var(--gold);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .memoir-prompt-card h4 {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .memoir-prompt-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-dark);
+      font-style: italic;
+    }
+
+    .response-large-textarea {
+      min-height: 90px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Screen 5: Playable Cognitive Game View */
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .game-card {
+      height: 80px;
+      background: var(--navy);
+      border: 2px solid var(--navy-dark);
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
+    }
+
+    .game-card.flipped {
+      transform: rotateY(180deg);
+      background: var(--card-cream);
+      border-color: var(--gold);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-back {
+      color: var(--gold);
+      font-size: 24px;
+    }
+
+    .card-front {
+      transform: rotateY(180deg);
+      font-size: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .game-congratulations {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+    }
+
+    /* ── CAREGIVER PORTAL SYSTEM DESIGN ── */
+    .caregiver-title {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      border-bottom: 2px solid var(--border-light);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .cg-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .cg-form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .cg-input {
+      background: white;
+      border: 2px solid var(--border-light);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 13px;
+      color: var(--text-dark);
+      outline: none;
+      width: 100%;
+    }
+
+    .cg-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Caregiver Custom Mini SVG Chart */
+    .cg-svg-chart {
+      width: 100%;
+      height: 140px;
+      border: 1px solid var(--border-light);
+      background: white;
+      border-radius: 12px;
+      margin-top: 6px;
+    }
+
+    .cg-chart-line {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+
+    .cg-chart-bar {
+      fill: var(--navy-light);
+      rx: 3;
+    }
+
+    .cg-chart-text {
+      fill: #718096;
+      font-size: 8px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .cg-chart-dot {
+      fill: white;
+      stroke: var(--teal);
+      stroke-width: 2;
+    }
+
+    /* ── PASSCODE LOCK KEYPAD OVERLAY DESIGN (Caregiver Lock) ── */
+    .pin-pad-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 22, 45, 0.45);
+      backdrop-filter: blur(12px);
+      z-index: 5000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      border-radius: 20px;
+      color: white;
+    }
+
+    .casing-clinical-tablet .pin-pad-overlay {
+      border-radius: 26px;
+    }
+    
+    .casing-fullscreen-app .pin-pad-overlay {
+      border-radius: 24px;
+    }
+
+    .pin-pad-box {
+      background: #111827;
+      border: 3px solid var(--border-dark);
+      border-radius: 24px;
+      padding: 24px;
+      max-width: 320px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .pin-pad-close {
+      position: absolute;
+      top: 14px; right: 18px;
+      font-size: 20px;
+      color: #9CA3AF;
+      cursor: pointer;
+    }
+
+    .pin-dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: transparent;
+      transition: all 0.1s ease;
+    }
+
+    .pin-dot.filled {
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    .pin-keyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .pin-key {
+      height: 52px;
+      border-radius: 14px;
+      border: 2px solid #374151;
+      background: #1F2937;
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .pin-key:active {
+      background: #374151;
+      transform: scale(0.95);
+    }
+
+    .pin-key.btn-clear { background: #374151; font-size: 16px; }
+    .pin-key.btn-enter { background: var(--teal); border-color: var(--teal-dark); font-size: 16px; }
+
+    /* Clinical Slate theme override */
+    .app-screen-container.caregiver-clinical-theme {
+      --bg-cream: #EDF2F7; /* Crisp medical-grade grey */
+      --card-cream: #FFFFFF; /* Pure clean card white */
+      --border-light: #CBD5E1; /* Muted clinical border */
+      --border-dark: #475569;
+    }
+
+    /* Print layout */
+    .print-only-container {
+      display: none;
+    }
+
+    /* ── RESPONSIVE MOBILE VIEWPORTS (REAL DEVICES) ── */
+    @media (max-width: 768px) {
+      body {
+        padding: 0 !important;
+        background: var(--bg-cream) !important; /* Calming cream backdrop on phone */
+        justify-content: flex-start !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+      }
+
+      /* Hide simulated desktop configuration header on real phone viewports */
+      .terminal-toolbar {
+        display: none !important;
+      }
+
+      .hardware-canvas {
+        width: 100% !important;
+        height: 100vh !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: stretch !important;
+      }
+
+      /* Override virtual hardware borders to be borderless and full-screen on mobile */
+      .casing-retro-wood, 
+      .casing-clinical-tablet, 
+      .casing-fullscreen-app {
+        width: 100% !important;
+        height: 100vh !important;
+        max-width: 100% !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        border-radius: 0 !important;
+      }
+
+      /* Hide mock retro dials and buttons on real phone screen */
+      #casing-wood-panel, 
+      #casing-clinical-home-btn {
+        display: none !important;
+      }
+
+      /* Force inner application screen to fill mobile viewport */
+      .app-screen-container {
+        width: 100% !important;
+        height: 100vh !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      
+      .casing-fullscreen-app .app-screen-container {
+        height: 100vh !important;
+        border-radius: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOP TERMINAL CONFIGURATION TOOLBAR ── -->
+  <div class="terminal-toolbar">
+    <div class="toolbar-title">
+      <h2>MemoryCare 100% Offline Unified Portal</h2>
+      <p>ระบบบำบัดคนไข้และแผงประเมินแพทย์ออฟไลน์ (Patient Client & Caregiver Sync Local-First)</p>
+    </div>
+    
+    <div class="toolbar-controls">
+      <div>
+        <label style="font-size:10px; font-weight:700; opacity:0.8; display:block; margin-bottom:4px;">กรอบฮาร์ดแวร์จำลอง:</label>
+        <select class="toolbar-select" id="casing-selector" onchange="switchHardwareCasing(this.value)">
+          <option value="retro-wood">🪵 ตู้วู้ดเด้นบำบัดย้อนยุค (Teak-Wood Retro Kiosk)</option>
+          <option value="clinical-tablet">📱 แท็บเล็ตทางการแพทย์ (Clinical Tablet Bezel)</option>
+          <option value="fullscreen-app">📺 แอปพลิเคชันแนวตั้งเต็มจอ (Edge-to-Edge App)</option>
+        </select>
+      </div>
+
+      <button class="toolbar-btn" style="background:#4A5568; color:white;" onclick="toggleAudioSynth(this)">
+        🔊 เสียงปุ่ม: เปิด
+      </button>
+
+      <button class="toolbar-btn" onclick="resetDeviceState()">
+        🔄 รีเซ็ตระบบออฟไลน์
+      </button>
+    </div>
+  </div>
+
+  <!-- ── DYNAMIC VIRTUAL HARDWARE APPLIANCE CANVAS ── -->
+  <div class="hardware-canvas" id="hardware-canvas-box">
+    
+    <!-- Outer wooden / clinical shell (Wooden Casing default) -->
+    <div class="casing-retro-wood" id="casing-shell-container">
+      
+      <!-- Inside Display Screen -->
+      <div class="app-screen-container">
+        
+        <!-- Status Bar -->
+        <div class="app-topbar">
+          <div id="app-topbar-time">16:23</div>
+          <div class="topbar-indicators">
+            <span id="app-db-status-lbl">📶 100% Offline (Local)</span>
+            <div class="topbar-led-indicator" id="app-db-status-led"></div>
+            <span>🔋 100%</span>
+          </div>
+        </div>
+
+        <!-- Inner Application Scroll View -->
+        <div class="app-viewport" id="app-viewport-scroller">
+          
+          <!-- Shared Screen Header (App bar) -->
+          <div class="screen-header-bar" id="app-header-bar">
+            <div class="header-bar-row">
+              <div class="header-bar-info">
+                <h3 id="app-header-title">หน้าหลัก</h3>
+                <p id="app-header-subtitle">ยินดีต้อนรับกลับเข้าสู่ระบบบำบัด</p>
+              </div>
+              <div style="font-size: 28px;" id="app-header-avatar">👵</div>
+            </div>
+          </div>
+
+          <!-- [SCREEN 1: WELCOME & DECADE SETTING] -->
+          <div class="viewport-view active" id="view-welcome">
+            <div style="text-align: center; margin: 10px 0 20px;">
+              <span style="font-size: 64px;">🧠</span>
+              <h2 style="font-family: 'Lora', serif; font-size: 28px; color: var(--navy); font-weight: 700; margin-top: 8px;">MemoryCare</h2>
+              <p style="font-size: 14px; color: #6B5E51;">โปรแกรมบำบัดความจำและวิเคราะห์พัฒนาการออฟไลน์</p>
+            </div>
+
+            <div class="elderly-card" style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <label style="font-size: 16px; font-weight: 700; color: var(--navy);">👵 แนะนำตนเองเพื่อเรียกข้อมูลบำบัด:</label>
+                <select class="wf-large-input" id="welcome-patient-select" onchange="onSelectPatient(this.value)">
+                  <!-- Injected by script -->
+                </select>
+              </div>
+
+              <div style="text-align:center; font-size:12px; color:var(--text-muted);">
+                สำหรับผู้ป่วย: แนะนำตนเองแล้วกดปุ่มเปิดเครื่องขนาดใหญ่ด้านล่างเพื่อเริ่มกิจกรรม
+              </div>
+
+              <button class="elderly-btn-large" onclick="submitAppProfile()">
+                เปิดเครื่องเข้าระบบบำบัดความจำ ➔
+              </button>
+            </div>
+
+            <!-- Staff settings gear button below the card -->
+            <div style="text-align: center; margin-top: 12px;">
+              <button onclick="openPinPadOverlay()" style="background: none; border: none; color: #8C7D70; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; display: inline-flex; align-items: center; gap: 6px;">
+                ⚙️ สำหรับญาติ / ผู้ดูแลระบบ (Staff Access)
+              </button>
+            </div>
+          </div>
+
+          <!-- [SCREEN 2: SMART HOME PORTAL] -->
+          <div class="viewport-view" id="view-home">
+            
+            <!-- Encouragement dynamic clinical badge from nurse alert backups -->
+            <div class="encouragement-toast-drawer" id="home-encouragement-toast">
+              <span style="font-size:32px;">💌</span>
+              <div>
+                <h4 style="font-size:13px; font-weight:800; color:var(--gold-dark);">จดหมายส่งใจจากพยาบาลด่วน</h4>
+                <p id="encouragement-toast-text" style="font-size:11px; color:#5B4E41; margin-top:2px;">ยอดเยี่ยมมากครับคุณยาย! พยาบาลขอส่งความห่วงใยให้นะครับ</p>
+              </div>
+            </div>
+
+            <!-- Header Progress -->
+            <div class="elderly-card daily-home-progress">
+              <div class="progress-circle-big">
+                <svg width="80" height="80">
+                  <circle cx="40" cy="40" r="35" fill="transparent" stroke="#E5DEC9" stroke-width="6"></circle>
+                  <circle id="home-progress-ring-fill" cx="40" cy="40" r="35" fill="transparent" stroke="var(--teal)" stroke-width="6" stroke-dasharray="219.91" stroke-dashoffset="219.91" style="transition: stroke-dashoffset 0.6s ease;"></circle>
+                </svg>
+                <span id="home-progress-value-lbl" style="position:absolute; font-size:16px; font-weight:800; color:var(--navy);">0%</span>
+              </div>
+
+              <div>
+                <h3 style="font-family: 'Lora', serif; font-size: 16px; color: var(--navy); font-weight: 700;">ความก้าวหน้ากิจกรรมวันนี้</h3>
+                <p id="home-reminiscence-years" style="font-size: 12px; color: var(--gold-dark); font-weight: 700; margin-top: 4px;">ช่วงปีทองดึงความจำ: พ.ศ. 2508 - 2518</p>
+                <p id="home-status-tasks" style="font-size: 11px; color: #6B5E51; margin-top: 2px;">สำเร็จแล้ว: 0 จาก 3 กิจกรรมวันนี้</p>
+              </div>
+            </div>
+
+            <!-- Home Primary Menu Navigation -->
+            <div class="home-shortcut-grid">
+              <div class="home-shortcut-box" onclick="routeTo('album')">
+                <div class="icon-wrap" style="background:#E8F4F4; color:#3D8C8C;">📸</div>
+                <h4>ภาพเก่าวันวาน</h4>
+                <p id="album-badge-count">รูปดึงความจำ</p>
+              </div>
+
+              <div class="home-shortcut-box" onclick="routeTo('radio')">
+                <div class="icon-wrap" style="background:#FDF3E0; color:#D4973A;">📻</div>
+                <h4>วิทยุเพลงลูกกรุง</h4>
+                <p id="music-status-lbl">เปิดเพลงวันวาน</p>
+              </div>
+
+              <div class="home-shortcut-box" onclick="routeTo('memoir')">
+                <div class="icon-wrap" style="background:#FAE8EA; color:#C4606A;">📖</div>
+                <h4>เขียนสมุดชีวิต</h4>
+                <p id="memoir-progress-lbl">บันทึกชีวประวัติ</p>
+              </div>
+
+              <div class="home-shortcut-box" onclick="routeTo('game')">
+                <div class="icon-wrap" style="background:#EAF2EB; color:#6A9172;">🧩</div>
+                <h4>เกมบริหารสมอง</h4>
+                <p id="game-score-lbl">ทดสอบความจำระยะสั้น</p>
+              </div>
+            </div>
+
+            <!-- Streak card -->
+            <div class="elderly-card" style="display:flex; justify-content:space-between; align-items:center; padding: 16px 20px;">
+              <div>
+                <h4 style="font-size:13px; font-weight:800; color:var(--navy);">ฝึกต่อเนื่องความจำดี 🔥</h4>
+                <p style="font-size:11px; color:#6B5E51; margin-top:2px;">เล่นสมองทุกวันทำให้กระตุ้นเซลล์ยั่งยืน</p>
+              </div>
+              
+              <div style="display:flex; gap:6px;">
+                <div class="welcome-avatar-card" style="width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; background:var(--gold-light); border-color:var(--gold);">จ</div>
+                <div class="welcome-avatar-card" style="width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; background:var(--gold-light); border-color:var(--gold);">อ</div>
+                <div class="welcome-avatar-card" style="width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; background:var(--gold-light); border-color:var(--gold);">พ</div>
+                <div class="welcome-avatar-card" style="width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;" id="streak-thu-badge">พฤ</div>
+                <div class="welcome-avatar-card" style="width:26px; height:26px; padding:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">ศ</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- [SCREEN 3: MEMORY PHOTO ALBUM] -->
+          <div class="viewport-view" id="view-album">
+            <div class="retro-album-card">
+              <div class="retro-album-photo" style="background-image:url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=300&auto=format&fit=crop');">
+                <h3 id="album-photo-title">กรุงเทพย้อนอดีต (พ.ศ. 2512)</h3>
+              </div>
+              <div class="retro-album-caption">
+                👉 <strong>วิถีชีวิตคนเมืองยุคสุนทราภรณ์:</strong> ถนนหนทางยังร่มรื่น สัญจรด้วยรถสามล้อถีบและรถเมล์โบราณ ผู้คนยิ้มแย้มแจ่มใสและใช้ชีวิตอย่างเรียบง่าย
+              </div>
+            </div>
+
+            <!-- Built-in soundwave recorder mic -->
+            <div class="elderly-record-box">
+              <h3 style="font-family:'Lora', serif; font-size:16px; color:var(--navy); font-weight:700;">🎙️ อัดเสียงเรื่องเล่าความหลังของคุณยาย</h3>
+              <p style="font-size:11px; color:#5B4E41; line-height:1.5;">กดปุ่มสีแดงขนาดใหญ่แล้วพูดเรื่องประทับใจที่คุณยายจดจำได้ในรูปภาพด้านบน</p>
+              
+              <div class="record-btn-giant" id="app-voice-rec-btn" onclick="triggerAppVoiceRecording()">🎤</div>
+              <p id="app-voice-rec-status" style="font-size:12px; font-weight:700; color:var(--rose);">ระบบปิดการบันทึกอยู่</p>
+              <canvas id="app-voice-wave" style="width:100%; height:44px; background:white; border-radius:10px; border:2px solid var(--border-light); display:none;"></canvas>
+            </div>
+
+            <button class="elderly-btn-large elderly-btn-outline" onclick="routeTo('home')">➔ ย้อนกลับหน้าหลัก</button>
+          </div>
+
+          <!-- [SCREEN 4: RETRO RADIO MUSIC PLAYER] -->
+          <div class="viewport-view" id="view-radio">
+            <div class="retro-radio-body">
+              <div class="radio-grille-header">
+                <span class="radio-logo">📻 TANIN RETRO</span>
+                <span style="font-size:9px; font-weight:700; color:#FCD34D;">TRANSISTOR THERAPY</span>
+              </div>
+
+              <div class="radio-track-visualizer">
+                <span id="app-radio-song-title">🎶 เพลงย้อนยุคปีทอง พ.ศ. 2510</span>
+              </div>
+
+              <!-- Audio progress seek bar -->
+              <div style="display:flex; align-items:center; gap:10px; font-family:'Outfit', sans-serif; font-size:12px;">
+                <span id="app-radio-time-current">0:00</span>
+                <div style="flex-grow:1; height:6px; background:#451A03; border-radius:3px; position:relative; cursor:pointer;" onclick="seekRadioMusic(event)">
+                  <div style="height:100%; width:0%; background:#FCD34D; border-radius:3px;" id="app-radio-progress-fill"></div>
+                </div>
+                <span>2:30</span>
+              </div>
+
+              <div class="radio-controls-row">
+                <div class="radio-dial-knob"></div>
+                <button class="radio-btn-play" id="app-radio-play-btn" onclick="toggleRadioMusic()">▶</button>
+                <div class="radio-dial-knob" style="transform: rotate(45deg);"></div>
+              </div>
+            </div>
+
+            <!-- Mood reflection log -->
+            <div class="elderly-card" style="text-align:center;">
+              <h3 style="font-family:'Lora', serif; font-size:15px; color:var(--navy); font-weight:700; margin-bottom:12px;">หลังฟังเพลงบำบัด คุณยายรู้สึกอย่างไรบ้างคะ?</h3>
+              
+              <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px;">
+                <div class="welcome-avatar-card" style="padding:10px 4px; font-size:24px;" data-mood="happy" onclick="setAppMood('happy', this)">
+                  😊 <p style="font-size:10px;">สุขใจ</p>
+                </div>
+                <div class="welcome-avatar-card" style="padding:10px 4px; font-size:24px;" data-mood="relaxed" onclick="setAppMood('relaxed', this)">
+                  😌 <p style="font-size:10px;">ผ่อนคลาย</p>
+                </div>
+                <div class="welcome-avatar-card" style="padding:10px 4px; font-size:24px;" data-mood="sad" onclick="setAppMood('sad', this)">
+                  😢 <p style="font-size:10px;">เหงา/ซึม</p>
+                </div>
+                <div class="welcome-avatar-card" style="padding:10px 4px; font-size:24px;" data-mood="neutral" onclick="setAppMood('neutral', this)">
+                  😐 <p style="font-size:10px;">เฉยๆ</p>
+                </div>
+              </div>
+            </div>
+
+            <button class="elderly-btn-large elderly-btn-outline" onclick="routeTo('home')">➔ ย้อนกลับหน้าหลัก</button>
+          </div>
+
+          <!-- [SCREEN 5: STRUCTURED LIFE REVIEW] -->
+          <div class="viewport-view" id="view-memoir">
+            <div class="memoir-prompt-card">
+              <h4 id="app-memoir-chapter-lbl">บทที่ 1: วัยเด็กอันแสนหวาน 🏠</h4>
+              <p id="app-memoir-prompt-text">"โรงเรียนแรกของคุณยายชื่ออะไร และมักจะพากันไปเล่นสนุกที่ไหนกับเพื่อนสนิทคะ?"</p>
+            </div>
+
+            <div class="elderly-card" style="display:flex; flex-direction:column; gap:10px;">
+              <label style="font-size:13px; font-weight:700; color:var(--navy);">เขียนบันทึกประวัติของคุณยาย:</label>
+              <textarea class="wf-large-input response-large-textarea" id="app-memoir-textarea" placeholder="พิมพ์เรื่องเล่าในความทรงจำลงตรงนี้..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:12px;">
+              <button class="elderly-btn-large elderly-btn-teal" onclick="submitAppMemoirChapter()">
+                บันทึกประวัติศาสตร์ชีวิต 💾
+              </button>
+            </div>
+
+            <!-- Chapter buttons row -->
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:4px;">
+              <button class="elderly-btn-large elderly-btn-outline" style="font-size:12px; padding:10px; min-height:48px;" onclick="loadMemoirChapter(1)">บทที่ 1</button>
+              <button class="elderly-btn-large elderly-btn-outline" style="font-size:12px; padding:10px; min-height:48px;" onclick="loadMemoirChapter(2)">บทที่ 2</button>
+              <button class="elderly-btn-large elderly-btn-outline" style="font-size:12px; padding:10px; min-height:48px;" onclick="loadMemoirChapter(3)">บทที่ 3</button>
+            </div>
+
+            <button class="elderly-btn-large" style="background:var(--gold-dark); border-color:#855410;" onclick="openLegacyPrintDialog()">
+              🖨️ จัดพิมพ์สมุดประวัติชีวิตจริง
+            </button>
+
+            <button class="elderly-btn-large elderly-btn-outline" onclick="routeTo('home')">➔ ย้อนกลับหน้าหลัก</button>
+          </div>
+
+          <!-- [SCREEN 6: ACTIVE COGNITIVE BRAIN GAME] -->
+          <div class="viewport-view" id="view-game">
+            <div class="elderly-card" id="game-instructions-box" style="text-align:center;">
+              <h3 style="font-family:'Lora', serif; font-size:16px; color:var(--navy); font-weight:700;">🧩 เกมกระตุ้นสมอง: จับคู่รูปในอดีต</h3>
+              <p style="font-size:12px; color:#5B4E41; line-height:1.5; margin-top:6px;">
+                แตะบัตรภาพขาวดำเพื่อคว่ำจับคู่รูปสิ่งของยุคทองที่เหมือนกัน! ฝึกสมาธิและความจำระยะสั้น
+              </p>
+            </div>
+
+            <!-- The game grid board -->
+            <div class="game-grid-container" id="app-game-board-container">
+              <div class="game-board" id="app-game-board">
+                <!-- Stamped by JS -->
+              </div>
+            </div>
+
+            <!-- Congratulations overlay -->
+            <div class="elderly-card game-congratulations" id="app-game-victory">
+              <span style="font-size:44px;">🏆</span>
+              <h3 style="font-family:'Lora', serif; font-size:20px; color:var(--navy); font-weight:700;">ยินดีด้วยค่ะคุณยาย!</h3>
+              <p style="font-size:13px; color:#6B5E51;">คุณยายจับคู่ภาพความทรงจำในอดีตได้ถูกต้องครบถ้วน สมองทำงานได้อย่างดีเยี่ยมยอด!</p>
+              
+              <div style="background:var(--teal-light); border:2px solid var(--teal); padding:10px; border-radius:12px; font-weight:700; color:var(--teal-dark);">
+                คะแนนบริหารปัญญา: 100 / 100 คะแนน
+              </div>
+              
+              <button class="elderly-btn-large" onclick="restartAppGame()">
+                🔄 เล่นใหม่อีกครั้ง
+              </button>
+            </div>
+
+            <button class="elderly-btn-large elderly-btn-outline" onclick="routeTo('home')">➔ ย้อนกลับหน้าหลัก</button>
+          </div>
+
+          <!-- [SCREEN 7: CAREGIVER / NURSE PORTAL] -->
+          <div class="viewport-view" id="view-caregiver">
+            <!-- Clinical Banner Indicator -->
+            <div style="background: linear-gradient(135deg, #1E2D5A, #2B6666); border: 2px solid var(--teal); border-radius: 16px; padding: 14px 18px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(30,45,90,0.15);">
+              <div>
+                <h4 style="font-family:'Lora', serif; font-size:14px; font-weight:800; color:#FCD34D; display:flex; align-items:center; gap:6px;">🩺 โหมดผู้ดูแลและพยาบาล (Active)</h4>
+                <p style="font-size:11px; opacity:0.9; margin-top:2px;">สิทธิ์เข้าถึงพล็อตคะแนนสะสมออฟไลน์สำเร็จ</p>
+              </div>
+              <button class="toolbar-btn" style="background:#EF4444; border: 1.5px solid #7F1D1D; color:white; font-weight:bold; font-size:11px; padding:6px 12px; border-radius:8px; display:inline-flex; align-items:center; gap:4px; height:fit-content;" onclick="lockCaregiverPortal()">
+                🔒 ล็อกข้อมูล
+              </button>
+            </div>
+
+            <!-- Patient Profile database switcher -->
+            <div class="elderly-card">
+              <h4 style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">👥 เลือกจัดการรายชื่อคนไข้ (Roster)</h4>
+              
+              <div class="cg-form-group">
+                <select class="cg-input" id="cg-patient-select" onchange="onSelectPatient(this.value)">
+                  <!-- Injected by JS -->
+                </select>
+              </div>
+
+              <!-- Create new patient panel inline -->
+              <div style="border-top: 1.5px dashed var(--border-light); padding-top:12px; margin-top:12px;">
+                <h5 style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:8px;">➕ เพิ่มประวัติคนไข้ใหม่ในระบบออฟไลน์</h5>
+                <div class="cg-grid-2">
+                  <div class="cg-form-group">
+                    <label>ชื่อ-นามสกุล คนไข้:</label>
+                    <input type="text" id="cg-new-name" class="cg-input" placeholder="ตัวอย่าง คุณตาบุญมี">
+                  </div>
+                  <div class="cg-form-group">
+                    <label>ปีเกิด พ.ศ.:</label>
+                    <input type="number" id="cg-new-year" class="cg-input" placeholder="ตัวอย่าง 2490">
+                  </div>
+                </div>
+                <button class="elderly-btn-large" style="min-height:44px; padding:6px; font-size:14px;" onclick="addNewPatientProfile()">
+                  เพิ่มโปรไฟล์ออฟไลน์สำเร็จ
+                </button>
+              </div>
+            </div>
+
+            <!-- Score assessment logging form -->
+            <div class="elderly-card">
+              <h4 style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">✍️ บันทึกคะแนนประเมินรายสัปดาห์ (1-4)</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">กรอกคะแนน MMSE (0-30) และ GDS (0-15) เพื่อนำไปพล็อตวิเคราะห์แนวโน้มทางคลินิกแบบออฟไลน์ทันที</p>
+              
+              <div class="cg-grid-2">
+                <div class="cg-form-group">
+                  <label>คะแนน MMSE (4 สัปดาห์):</label>
+                  <input type="text" id="cg-mmse-scores" class="cg-input" placeholder="คั่นด้วยคอมมา เช่น 18,20,22,25">
+                </div>
+                <div class="cg-form-group">
+                  <label>คะแนน GDS (4 สัปดาห์):</label>
+                  <input type="text" id="cg-gds-scores" class="cg-input" placeholder="คั่นด้วยคอมมา เช่น 10,7,5,3">
+                </div>
+              </div>
+
+              <button class="elderly-btn-large elderly-btn-teal" style="min-height:44px; font-size:14px;" onclick="saveClinicalScores()">
+                บันทึกผลคะแนนและเขียนกราฟใหม่ 📊
+              </button>
+            </div>
+
+            <!-- Real dynamic SVG analytics trend graphs driven by inputs -->
+            <div class="elderly-card">
+              <h4 style="font-size:13px; font-weight:700; color:var(--navy);">📊 แนวโน้มคะแนนสติปัญญาและความคิด (MMSE)</h4>
+              <svg class="cg-svg-chart" id="cg-mmse-chart-svg">
+                <!-- Stamped dynamically by JS -->
+              </svg>
+            </div>
+
+            <div class="elderly-card">
+              <h4 style="font-size:13px; font-weight:700; color:var(--navy);">📉 แนวโน้มความรุนแรงของโรคซึมเศร้า (GDS)</h4>
+              <svg class="cg-svg-chart" id="cg-gds-chart-svg">
+                <!-- Stamped dynamically by JS -->
+              </svg>
+            </div>
+
+            <!-- Offline backup manager controls -->
+            <div class="elderly-card">
+              <h4 style="font-size:13px; font-weight:700; color:var(--navy); margin-bottom:8px;">💾 จัดเก็บและสำรองชุดข้อมูล (Backup)</h4>
+              <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">ส่งออกเป็นไฟล์สำรองเก็บไว้ หรือนำเข้าเพื่อเรียกคืนข้อมูลบำบัดทั้งหมดในบราวเซอร์อื่นแบบออฟไลน์ 100%</p>
+              
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <button class="elderly-btn-large" style="background:#4A5568; min-height:44px; font-size:13px;" onclick="exportRosterBackup()">
+                  💾 ส่งออกสำรองระบบ (Export Roster JSON)
+                </button>
+
+                <div style="border-top:1px dashed var(--border-light); padding-top:10px; margin-top:6px;">
+                  <label style="font-size:11px; font-weight:700; color:var(--navy); display:block; margin-bottom:6px;">นำเข้าไฟล์สำรองออฟไลน์ (.json):</label>
+                  <input type="file" id="cg-import-file" class="cg-input" accept=".json" onchange="importRosterBackup(event)">
+                </div>
+
+                <button class="elderly-btn-large" style="background:var(--rose); border-color:#8C3F46; min-height:44px; font-size:13px; margin-top:12px;" onclick="deleteActivePatient()">
+                  🗑️ ลบประวัติคนไข้คนนี้ออกจากระบบเครื่อง
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── [PASSCODE LOCK OVERLAY FOR CAREGIVER PORTAL] ── -->
+        <div class="pin-pad-overlay" id="cg-pin-pad-overlay">
+          <div class="pin-pad-box">
+            <span class="pin-pad-close" onclick="cancelPinUnlock()">&times;</span>
+            <span style="font-size:36px;">🔒</span>
+            <h4 style="font-family:'Lora', serif; font-size:15px; color:white; font-weight:700; margin-top:8px;">โหมดพยาบาลและผู้ดูแลผู้ป่วย</h4>
+            <p style="font-size:11px; color:#9CA3AF; margin-top:4px; line-height:1.4;">กรุณากรอกรหัสผ่าน 4 หลัก เพื่อเข้าถึงสถิติและข้อมูลทางคลินิก (รหัสผ่านเริ่มต้น: 2510)</p>
+            
+            <!-- Pin circles -->
+            <div class="pin-dots-row">
+              <div class="pin-dot" id="dot-0"></div>
+              <div class="pin-dot" id="dot-1"></div>
+              <div class="pin-dot" id="dot-2"></div>
+              <div class="pin-dot" id="dot-3"></div>
+            </div>
+
+            <!-- Red error text -->
+            <p id="pin-error-msg" style="font-size:11px; font-weight:700; color:#EF4444; min-height:16px; margin-bottom:4px;"></p>
+
+            <!-- Numeric Keyboard -->
+            <div class="pin-keyboard-grid">
+              <button class="pin-key" onclick="pressPinKey('1')">1</button>
+              <button class="pin-key" onclick="pressPinKey('2')">2</button>
+              <button class="pin-key" onclick="pressPinKey('3')">3</button>
+              
+              <button class="pin-key" onclick="pressPinKey('4')">4</button>
+              <button class="pin-key" onclick="pressPinKey('5')">5</button>
+              <button class="pin-key" onclick="pressPinKey('6')">6</button>
+              
+              <button class="pin-key" onclick="pressPinKey('7')">7</button>
+              <button class="pin-key" onclick="pressPinKey('8')">8</button>
+              <button class="pin-key" onclick="pressPinKey('9')">9</button>
+              
+              <button class="pin-key btn-clear" onclick="clearPinAll()">❌</button>
+              <button class="pin-key" onclick="pressPinKey('0')">0</button>
+              <button class="pin-key btn-enter" onclick="submitPinUnlock()">🔓</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Navigation Menu -->
+        <div class="app-bottom-nav" id="app-footer-nav">
+          <div class="nav-tab-item active" id="nav-item-home" onclick="routeTo('home')">
+            <span class="icon">🏠</span>
+            <span>หน้าหลัก</span>
+          </div>
+          <div class="nav-tab-item" id="nav-item-album" onclick="routeTo('album')">
+            <span class="icon">📸</span>
+            <span>ภาพวันวาน</span>
+          </div>
+          <div class="nav-tab-item" id="nav-item-radio" onclick="routeTo('radio')">
+            <span class="icon">📻</span>
+            <span>วิทยุเพลง</span>
+          </div>
+          <div class="nav-tab-item" id="nav-item-memoir" onclick="routeTo('memoir')">
+            <span class="icon">📖</span>
+            <span>เขียนชีวิต</span>
+          </div>
+          <!-- secure caregiver tab hidden by default, shown dynamically upon PIN authentication -->
+          <div class="nav-tab-item" id="nav-item-caregiver" style="display: none;" onclick="routeTo('caregiver')">
+            <span class="icon">👩‍⚕️</span>
+            <span>ผู้ดูแล</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ── PRINT LAYOUT KEPT SEPARATE FOR A4 ALIGNMENT ── -->
+  <div class="print-only-container">
+    <div class="print-double-border">
+      <div class="print-title">สมุดเรื่องราวความรักความทรงจำทองคำ</div>
+      <div style="text-align:center; font-size:14px; margin-bottom:30px;">
+        ผู้เล่าชีวประวัติ: <strong id="print-senior-name">คุณสมศรี วงศ์ดี</strong> | ช่วงปีทองคำ: <span id="print-reminiscence-years">พ.ศ. 2508 - 2518</span>
+      </div>
+
+      <div class="print-chapter">
+        <h4>บทที่ 1: วัยเด็กอันแสนหวาน 🏠</h4>
+        <p id="print-ch1-text">
+          "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียบง่ายและมีความสุขที่สุด..."
+        </p>
+      </div>
+
+      <div class="print-chapter">
+        <h4>บทที่ 2: วัยเรียนและการริเริ่ม 🎒</h4>
+        <p id="print-ch2-text">
+          (ยังไม่มีบันทึกข้อมูลในเครื่องจำลอง)
+        </p>
+      </div>
+
+      <div class="print-chapter">
+        <h4>บทที่ 3: การทำงานและความรัก 💍</h4>
+        <p id="print-ch3-text">
+          (ยังไม่มีบันทึกข้อมูลในเครื่องจำลอง)
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio synthesizing elements and variables -->
+  <script>
+    // Audio synthesis manager using browser Web Audio API
+    let audioContext = null;
+    let audioSynthEnabled = true;
+
+    function playTactileBeep(frequency = 440, duration = 0.08, type = "sine") {
+      if (!audioSynthEnabled) return;
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.type = type;
+        osc.frequency.value = frequency;
+        gain.gain.setValueAtTime(0.12, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (err) {
+        console.warn("Audio synthesis was blocked or not supported on this browser.", err);
+      }
+    }
+
+    function playApplianceChime() {
+      playTactileBeep(523.25, 0.1, "sine"); 
+      setTimeout(() => {
+        playTactileBeep(659.25, 0.15, "sine"); 
+      }, 100);
+    }
+
+    function playWarningBleep() {
+      playTactileBeep(220, 0.25, "square"); 
+    }
+
+    function toggleAudioSynth(btn) {
+      audioSynthEnabled = !audioSynthEnabled;
+      btn.textContent = audioSynthEnabled ? "🔊 เสียงปุ่ม: เปิด" : "🔇 เสียงปุ่ม: ปิด";
+      playTactileBeep(523.25, 0.08);
+    }
+  </script>
+
+  <!-- Main interactive program states & logic -->
+  <script>
+    // 100% Offline Multi-Patient State Schema
+    const appState = {
+      activePatientId: "p_1",
+      caregiverAuthenticated: false, // Security lock state
+      patients: {
+        "p_1": {
+          id: "p_1",
+          seniorName: "คุณสมศรี วงศ์ดี",
+          birthYear: 2493,
+          avatar: "👵",
+          reminiscenceStart: 2508,
+          reminiscenceEnd: 2518,
+          completedActivities: {
+            music: false,
+            memoir: false,
+            game: false
+          },
+          currentMood: "relaxed",
+          ch1Text: "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียกง่ายและมีความสุขที่สุด...",
+          ch2Text: "",
+          ch3Text: "",
+          scores: {
+            mmse: [18, 20, 22, 25],
+            gds: [10, 7, 5, 3]
+          }
+        },
+        "p_2": {
+          id: "p_2",
+          seniorName: "คุณตาบุญมี ศรีสุข",
+          birthYear: 2500,
+          avatar: "👴",
+          reminiscenceStart: 2515,
+          reminiscenceEnd: 2525,
+          completedActivities: {
+            music: false,
+            memoir: false,
+            game: false
+          },
+          currentMood: "relaxed",
+          ch1Text: "",
+          ch2Text: "",
+          ch3Text: "",
+          scores: {
+            mmse: [24, 23, 24, 25],
+            gds: [4, 4, 3, 3]
+          }
+        }
+      },
+      currentRoute: "welcome",
+      memoirChapter: 1,
+      isRecording: false,
+      isMusicPlaying: false,
+      musicProgress: 0,
+      musicTimer: null
+    };
+
+    // Predefined secure PIN
+    const CAREGIVER_PIN = "2510";
+    let enteredPin = "";
+
+    // Helper to update database sync indicator states on the status bar
+    function updateDatabaseStatusUI(status) {
+      const lbl = document.getElementById('app-db-status-lbl');
+      const led = document.getElementById('app-db-status-led');
+      if (!lbl || !led) return;
+      
+      const mode = (typeof CONFIG !== 'undefined' && CONFIG.DATABASE_MODE) ? CONFIG.DATABASE_MODE : 'OFFLINE';
+      
+      if (mode === 'OFFLINE') {
+        lbl.textContent = "📶 100% Offline (Local)";
+        led.style.background = "#10B981";
+        led.style.boxShadow = "0 0 8px #10B981, inset 0 1px 2px rgba(255,255,255,0.4)";
+      } else if (mode === 'HYBRID') {
+        if (status === 'online') {
+          lbl.textContent = "🟢 Hybrid Sync Active";
+          led.style.background = "#10B981";
+          led.style.boxShadow = "0 0 8px #10B981, inset 0 1px 2px rgba(255,255,255,0.4)";
+        } else {
+          lbl.textContent = "🟡 Local Cache (Sync Down)";
+          led.style.background = "#F59E0B";
+          led.style.boxShadow = "0 0 8px #F59E0B, inset 0 1px 2px rgba(255,255,255,0.4)";
+        }
+      } else { // ONLINE
+        if (status === 'online') {
+          lbl.textContent = "🟢 Online Sync Active";
+          led.style.background = "#10B981";
+          led.style.boxShadow = "0 0 8px #10B981, inset 0 1px 2px rgba(255,255,255,0.4)";
+        } else {
+          lbl.textContent = "🟡 Local Cache (API Offline)";
+          led.style.background = "#F59E0B";
+          led.style.boxShadow = "0 0 8px #F59E0B, inset 0 1px 2px rgba(255,255,255,0.4)";
+        }
+      }
+    }
+
+    // Load persisted values either from LocalStorage (Cache) or REST API DB
+    async function loadSavedState() {
+      const state = await HybridSync.load();
+      if (state) {
+        appState.activePatientId = state.activePatientId || "p_1";
+        if (state.patients) appState.patients = state.patients;
+        syncAppWidgets();
+      }
+    }
+
+    // Save state back to LocalStorage (Cache) and POST to REST API if ONLINE or HYBRID mode is active
+    async function saveState() {
+      await HybridSync.save(appState);
+    }
+
+    // Get currently active patient object
+    function getActivePatient() {
+      return appState.patients[appState.activePatientId] || appState.patients["p_1"];
+    }
+
+    // Initialize simulation
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedState();
+      
+      // Flush background sync queue immediately on load if connection allows
+      if (typeof HybridSync !== 'undefined') {
+        HybridSync.flushQueue();
+      }
+      
+      // Clock timer ticking
+      updateAppClock();
+      setInterval(updateAppClock, 30000);
+
+      // Setup cognitive card elements
+      buildMatchingGameBoard();
+      
+      // Render patient selectors
+      updatePatientSelectors();
+
+      // Update state ring values
+      syncAppWidgets();
+
+      // Setup the hidden long press on header avatar for caregiver access
+      setupAvatarLongPress();
+
+      // Register Service Worker for PWA 100% Offline Capability
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('Service Worker registered successfully:', reg.scope))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      }
+    });
+
+    // Hidden avatar gesture logic for caregivers (Option A)
+    let avatarPressTimer = null;
+    function setupAvatarLongPress() {
+      const avatarEl = document.getElementById('app-header-avatar');
+      if (!avatarEl) return;
+      
+      avatarEl.style.cursor = 'pointer';
+      avatarEl.title = "กดค้างไว้ 2 วินาทีเพื่อเปิดเมนูผู้ดูแลระบบ (สำหรับเจ้าหน้าที่)";
+      
+      function startPress(e) {
+        if (avatarPressTimer) clearTimeout(avatarPressTimer);
+        // Visual feedback during long-press hold
+        avatarEl.style.opacity = '0.4';
+        avatarEl.style.transition = 'opacity 2s linear';
+        
+        avatarPressTimer = setTimeout(() => {
+          avatarEl.style.opacity = '1';
+          avatarEl.style.transition = 'none';
+          openPinPadOverlay(); // Launches PIN locks keypad overlay
+          avatarPressTimer = null;
+        }, 2000); // 2 seconds hold
+      }
+
+      function cancelPress() {
+        if (avatarPressTimer) {
+          clearTimeout(avatarPressTimer);
+          avatarPressTimer = null;
+        }
+        avatarEl.style.opacity = '1';
+        avatarEl.style.transition = 'none';
+      }
+
+      // Desktop mouse events
+      avatarEl.addEventListener('mousedown', startPress);
+      avatarEl.addEventListener('mouseup', cancelPress);
+      avatarEl.addEventListener('mouseleave', cancelPress);
+      
+      // Tablet/Mobile touch events
+      avatarEl.addEventListener('touchstart', startPress);
+      avatarEl.addEventListener('touchend', cancelPress);
+      avatarEl.addEventListener('touchcancel', cancelPress);
+    }
+
+    function updateAppClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('app-topbar-time').textContent = `${hrs}:${mins}`;
+    }
+
+    // Update patient select boxes
+    function updatePatientSelectors() {
+      const welcomeSelect = document.getElementById('welcome-patient-select');
+      const cgSelect = document.getElementById('cg-patient-select');
+      
+      welcomeSelect.innerHTML = '';
+      cgSelect.innerHTML = '';
+
+      Object.values(appState.patients).forEach(p => {
+        const option = `<option value="${p.id}">${p.avatar} ${p.seniorName} (เกิด พ.ศ. ${p.birthYear})</option>`;
+        welcomeSelect.insertAdjacentHTML('beforeend', option);
+        cgSelect.insertAdjacentHTML('beforeend', option);
+      });
+
+      welcomeSelect.value = appState.activePatientId;
+      cgSelect.value = appState.activePatientId;
+    }
+
+    // Selected active patient changes
+    function onSelectPatient(patientId) {
+      if (!appState.patients[patientId]) return;
+      playTactileBeep(440, 0.08);
+      appState.activePatientId = patientId;
+      
+      // Sync local variables
+      const p = getActivePatient();
+      document.getElementById('welcome-patient-select').value = patientId;
+      document.getElementById('cg-patient-select').value = patientId;
+      
+      // Load scores to inputs
+      document.getElementById('cg-mmse-scores').value = p.scores.mmse.join(',');
+      document.getElementById('cg-gds-scores').value = p.scores.gds.join(',');
+
+      saveState();
+      syncAppWidgets();
+    }
+
+    // Dynamic Hardware Casing Switcher
+    function switchHardwareCasing(casingName) {
+      playTactileBeep(440, 0.1);
+      const canvas = document.getElementById('hardware-canvas-box');
+      const container = document.getElementById('casing-shell-container');
+
+      // Clear previous frames
+      container.className = "";
+      
+      const existingPanel = document.getElementById('casing-wood-panel');
+      if (existingPanel) existingPanel.remove();
+
+      const existingHomeBtn = document.getElementById('casing-clinical-home-btn');
+      if (existingHomeBtn) existingHomeBtn.remove();
+
+      if (casingName === 'retro-wood') {
+        container.className = "casing-retro-wood";
+        const woodPanelHtml = `
+          <div class="wood-control-panel" id="casing-wood-panel">
+            <div class="grille-speaker"></div>
+            
+            <div class="indicator-led-wrap">
+              <div class="led-row">
+                <div class="led-bulb active-green" id="led-pwr"></div>
+                <span>POWER ON</span>
+              </div>
+              <div class="led-row">
+                <div class="led-bulb" id="led-therap"></div>
+                <span>THERAPY RUN</span>
+              </div>
+              <div class="led-row">
+                <div class="led-bulb" id="led-emg"></div>
+                <span>CALL ALERT</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <span style="font-size:8px; font-weight:700; color:#FCD34D;">VOLUME DIAL</span>
+              <div class="analog-dial-knob" onclick="rotateDial(this)"></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              <span style="font-size:8px; font-weight:700; color:#EF4444;">EMERGENCY CALL</span>
+              <div class="emergency-dial-btn" onclick="triggerEmergencyHardwareCall()">📞</div>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', woodPanelHtml);
+        updateLEDIndicators();
+      } else if (casingName === 'clinical-tablet') {
+        container.className = "casing-clinical-tablet";
+        const homeBtnHtml = `<div class="clinical-home-btn" id="casing-clinical-home-btn" onclick="routeTo('home')"></div>`;
+        container.insertAdjacentHTML('beforeend', homeBtnHtml);
+      } else {
+        container.className = "casing-fullscreen-app";
+      }
+    }
+
+    // LED indicator controller
+    function updateLEDIndicators() {
+      const ledTherapy = document.getElementById('led-therap');
+      if (ledTherapy) {
+        if (appState.isMusicPlaying || appState.isRecording) {
+          ledTherapy.className = "led-bulb active-amber";
+        } else {
+          ledTherapy.className = "led-bulb";
+        }
+      }
+    }
+
+    // Dial Knobs click rotator helper
+    let currentRotation = 0;
+    function rotateDial(dialElement) {
+      playTactileBeep(330, 0.05, "sine");
+      currentRotation += 30;
+      dialElement.style.transform = `rotate(${currentRotation}deg)`;
+    }
+
+    // Emergency analog dial bleeps alert triggers
+    function triggerEmergencyHardwareCall() {
+      playWarningBleep();
+      
+      const ledEmg = document.getElementById('led-emg');
+      if (ledEmg) ledEmg.className = "led-bulb blinking-red";
+
+      alert("🚨 [สัญญาณแจ้งเหตุฉุกเฉินระดับสูงทำงาน] \n\nตู้อุปกรณ์ MemoryCare กำลังส่งสัญญานกู้ชีพวิทยุสายสองทางออฟไลน์เตือนภัยทันที!");
+      
+      // Save sad mood to trigger flashing alarm on caregivers desk too!
+      localStorage.setItem("MemoryCare_ActivePatientSadTrigger", "true");
+      
+      const p = getActivePatient();
+      p.currentMood = 'sad';
+      saveState();
+
+      setTimeout(() => {
+        if (ledEmg) ledEmg.className = "led-bulb";
+      }, 5000);
+    }
+
+    // Select Avatar inside layout
+    function selectAppAvatar(card) {
+      playTactileBeep(440, 0.08);
+      document.querySelectorAll('.welcome-avatar-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      getActivePatient().avatar = card.getAttribute('data-av');
+      saveState();
+    }
+
+    // Submit patient profile login
+    function submitAppProfile() {
+      playApplianceChime();
+      
+      // Unlock nav headers
+      document.getElementById('app-footer-nav').style.display = 'flex';
+      document.getElementById('app-header-bar').style.display = 'block';
+
+      // Load home
+      routeTo('home');
+      syncAppWidgets();
+    }
+
+    // Caregiver profile logging CRUD creator
+    function addNewPatientProfile() {
+      const name = document.getElementById('cg-new-name').value.trim();
+      const year = parseInt(document.getElementById('cg-new-year').value);
+
+      if (!name) {
+        alert("กรุณาระบุชื่อคนไข้ใหม่");
+        return;
+      }
+      if (isNaN(year) || year < 2400 || year > 2569) {
+        alert("กรุณาระบุ พ.ศ. เกิดให้ถูกต้อง");
+        return;
+      }
+
+      playApplianceChime();
+      
+      const id = "p_" + Date.now();
+      appState.patients[id] = {
+        id: id,
+        seniorName: name,
+        birthYear: year,
+        avatar: "👵",
+        reminiscenceStart: year + 15,
+        reminiscenceEnd: year + 25,
+        completedActivities: { music: false, memoir: false, game: false },
+        currentMood: "relaxed",
+        ch1Text: "",
+        ch2Text: "",
+        ch3Text: "",
+        scores: {
+          mmse: [20, 20, 20, 20],
+          gds: [5, 5, 5, 5]
+        }
+      };
+
+      appState.activePatientId = id;
+      saveState();
+      
+      // Clear inputs
+      document.getElementById('cg-new-name').value = '';
+      document.getElementById('cg-new-year').value = '';
+      
+      updatePatientSelectors();
+      syncAppWidgets();
+      
+      alert(`เพิ่มคนไข้ใหม่ "${name}" เข้าระบบออฟไลน์เรียบร้อยแล้วค่ะ!`);
+    }
+
+    // Switch screens inside application scroller
+    function routeTo(routeName) {
+      if (routeName === 'caregiver' && !appState.caregiverAuthenticated) {
+        openPinPadOverlay();
+        return; // Cancel direct routing!
+      }
+
+      playTactileBeep(440, 0.08);
+
+      // Apply caregiver clinical theme dynamically
+      const screenContainer = document.querySelector('.app-screen-container');
+      if (screenContainer) {
+        if (routeName === 'caregiver') {
+          screenContainer.classList.add('caregiver-clinical-theme');
+        } else {
+          screenContainer.classList.remove('caregiver-clinical-theme');
+        }
+      }
+      
+      document.querySelectorAll('.viewport-view').forEach(view => view.classList.remove('active'));
+      appState.currentRoute = routeName;
+
+      const activeView = document.getElementById(`view-${routeName}`);
+      if (activeView) activeView.classList.add('active');
+
+      // Sync menu tabs selection
+      document.querySelectorAll('.nav-tab-item').forEach(item => item.classList.remove('active'));
+      
+      const tabMap = {
+        'home': 'nav-item-home',
+        'album': 'nav-item-album',
+        'radio': 'nav-item-radio',
+        'memoir': 'nav-item-memoir',
+        'caregiver': 'nav-item-caregiver'
+      };
+      
+      const targetTab = document.getElementById(tabMap[routeName]);
+      if (targetTab) targetTab.classList.add('active');
+
+      const p = getActivePatient();
+      const headerTitle = document.getElementById('app-header-title');
+      const headerSub = document.getElementById('app-header-subtitle');
+      
+      if (routeName === 'home') {
+        headerTitle.textContent = "หน้าหลักตู้อุปกรณ์";
+        headerSub.textContent = `สวัสดีค่ะคุณยาย ${p.seniorName}`;
+      } else if (routeName === 'album') {
+        headerTitle.textContent = "ภาพเก่าเล่าความหลัง 📸";
+        headerSub.textContent = "รับชมภาพอดีตสะกิดประสาทรับรู้";
+      } else if (routeName === 'radio') {
+        headerTitle.textContent = "วิทยุธานินทร์ทรานซิสเตอร์ 📻";
+        headerSub.textContent = `กำลังเล่นวิทยุยุคปีทอง พ.ศ. ${p.reminiscenceStart} - ${p.reminiscenceEnd}`;
+      } else if (routeName === 'memoir') {
+        headerTitle.textContent = "สมุดขุมทรัพย์ประวัติชีวิต 📖";
+        headerSub.textContent = "บันทึกเรื่องราวอันเปี่ยมความสุขไว้ให้ลูกหลาน";
+      } else if (routeName === 'game') {
+        headerTitle.textContent = "เกมจับคู่บริหารสายตาสมอง 🧩";
+        headerSub.textContent = "จับคู่สิ่งของแบรนด์โบราณ";
+      } else if (routeName === 'caregiver') {
+        headerTitle.textContent = "ดูแลและติดตามสถิติคนไข้ 👩‍⚕️";
+        headerSub.textContent = "ระบบควบคุมคะแนนประเมินและสำรองประวัติคนไข้ออฟไลน์";
+        
+        // Draw real SVG charts based on localStorage scores!
+        drawRealDynamicCharts();
+      }
+
+      // Read nurse encouragement messages from local alerts queue
+      checkProactiveNurseEncouragement();
+    }
+
+    /* ── PIN PAD LOCK LOGIC FOR SECURING CLINICAL PORTALS ── */
+    function openPinPadOverlay() {
+      playTactileBeep(523.25, 0.08);
+      enteredPin = "";
+      updatePinDotsDisplay();
+      document.getElementById('pin-error-msg').textContent = "";
+      document.getElementById('cg-pin-pad-overlay').style.display = 'flex';
+    }
+
+    function cancelPinUnlock() {
+      playTactileBeep(220, 0.1);
+      document.getElementById('cg-pin-pad-overlay').style.display = 'none';
+      routeTo('home'); // Go back to Home so senior isn't stuck
+    }
+
+    function pressPinKey(key) {
+      if (enteredPin.length >= 4) return;
+      playTactileBeep(440, 0.06);
+      enteredPin += key;
+      updatePinDotsDisplay();
+      document.getElementById('pin-error-msg').textContent = "";
+
+      // Auto submit on 4 digits
+      if (enteredPin.length === 4) {
+        setTimeout(submitPinUnlock, 150);
+      }
+    }
+
+    function clearPinAll() {
+      playTactileBeep(330, 0.06);
+      enteredPin = "";
+      updatePinDotsDisplay();
+      document.getElementById('pin-error-msg').textContent = "";
+    }
+
+    function updatePinDotsDisplay() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (i < enteredPin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      }
+    }
+
+    function submitPinUnlock() {
+      if (enteredPin === CAREGIVER_PIN) {
+        playApplianceChime();
+        appState.caregiverAuthenticated = true;
+        document.getElementById('cg-pin-pad-overlay').style.display = 'none';
+        
+        // Dynamically show the caregiver bottom tab
+        const cgTab = document.getElementById('nav-item-caregiver');
+        if (cgTab) cgTab.style.display = 'flex';
+        
+        routeTo('caregiver'); // Complete redirect!
+      } else {
+        playWarningBleep();
+        enteredPin = "";
+        updatePinDotsDisplay();
+        document.getElementById('pin-error-msg').textContent = "❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง";
+      }
+    }
+
+    function lockCaregiverPortal() {
+      playTactileBeep(220, 0.15);
+      appState.caregiverAuthenticated = false;
+      
+      // Dynamically hide the caregiver bottom tab on lock
+      const cgTab = document.getElementById('nav-item-caregiver');
+      if (cgTab) cgTab.style.display = 'none';
+      
+      // Remove clinical theme
+      const screenContainer = document.querySelector('.app-screen-container');
+      if (screenContainer) screenContainer.classList.remove('caregiver-clinical-theme');
+      
+      alert("🔒 ล็อกระบบความปลอดภัย Caregiver Portal เรียบร้อยแล้วค่ะ");
+      routeTo('home'); // Return to senior home screen
+    }
+
+    function checkProactiveNurseEncouragement() {
+      const nurseMsg = localStorage.getItem("MemoryCare_NurseAlertMessage");
+      const toast = document.getElementById('home-encouragement-toast');
+      const text = document.getElementById('encouragement-toast-text');
+
+      if (nurseMsg && appState.currentRoute === 'home') {
+        text.textContent = nurseMsg;
+        toast.style.display = 'flex';
+        playApplianceChime();
+        localStorage.removeItem("MemoryCare_NurseAlertMessage");
+      }
+    }
+
+    // Sync variables values to layouts
+    function syncAppWidgets() {
+      const p = getActivePatient();
+      document.getElementById('app-header-avatar').textContent = p.avatar;
+      
+      // Update widgets labels
+      document.getElementById('home-reminiscence-years').textContent = `ช่วงปีทองฟื้นความทรงจำ: พ.ศ. ${p.reminiscenceStart} - ${p.reminiscenceEnd}`;
+      document.getElementById('album-badge-count').textContent = `รูปยุค พ.ศ. ${p.reminiscenceStart + 4}`;
+      document.getElementById('music-status-lbl').textContent = `เปิดเพลง พ.ศ. ${p.reminiscenceStart + 2}`;
+      
+      let memoirDone = 0;
+      if (p.ch1Text) memoirDone++;
+      if (p.ch2Text) memoirDone++;
+      if (p.ch3Text) memoirDone++;
+      
+      document.getElementById('memoir-progress-lbl').textContent = `เขียนประวัติแล้ว ${memoirDone} / 3 บท`;
+      
+      // Update progress ring
+      let totalActivities = 0;
+      if (p.completedActivities.music) totalActivities++;
+      if (p.completedActivities.memoir) totalActivities++;
+      if (p.completedActivities.game) totalActivities++;
+
+      const percent = Math.round((totalActivities / 3) * 100);
+      document.getElementById('home-progress-value-lbl').textContent = `${percent}%`;
+      
+      const ringFill = 219.91 - (219.91 * (percent / 100));
+      document.getElementById('home-progress-ring-fill').style.strokeDashoffset = ringFill;
+      document.getElementById('home-status-tasks').textContent = `ทำสำเร็จ: ${totalActivities} จาก 3 กิจกรรมวันนี้`;
+      
+      // Load current inputs values
+      document.getElementById('cg-mmse-scores').value = p.scores.mmse.join(',');
+      document.getElementById('cg-gds-scores').value = p.scores.gds.join(',');
+
+      saveState();
+    }
+
+    // Radio controls
+    function toggleRadioMusic() {
+      const btn = document.getElementById('app-radio-play-btn');
+      const p = getActivePatient();
+
+      if (appState.isMusicPlaying) {
+        btn.textContent = '▶';
+        appState.isMusicPlaying = false;
+        clearInterval(appState.musicTimer);
+        playTactileBeep(330, 0.08);
+      } else {
+        btn.textContent = '⏸';
+        appState.isMusicPlaying = true;
+        playTactileBeep(523.25, 0.08);
+        
+        p.completedActivities.music = true;
+        syncAppWidgets();
+
+        appState.musicTimer = setInterval(() => {
+          appState.musicProgress += (1 / 150) * 100;
+          if (appState.musicProgress >= 100) {
+            appState.musicProgress = 0;
+            toggleRadioMusic();
+          }
+          
+          document.getElementById('app-radio-progress-fill').style.width = `${appState.musicProgress}%`;
+          
+          const totalSecs = Math.round((appState.musicProgress / 100) * 150);
+          const mins = Math.floor(totalSecs / 60);
+          const secs = String(totalSecs % 60).padStart(2, '0');
+          document.getElementById('app-radio-time-current').textContent = `${mins}:${secs}`;
+        }, 1000);
+      }
+      updateLEDIndicators();
+    }
+
+    function seekRadioMusic(event) {
+      const track = event.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const percent = (clickX / rect.width) * 100;
+      appState.musicProgress = percent;
+      document.getElementById('app-radio-progress-fill').style.width = `${percent}%`;
+      const totalSecs = Math.round((percent / 100) * 150);
+      const mins = Math.floor(totalSecs / 60);
+      const secs = String(totalSecs % 60).padStart(2, '0');
+      document.getElementById('app-radio-time-current').textContent = `${mins}:${secs}`;
+    }
+
+    // Set mood reflection index
+    function setAppMood(mood, card) {
+      playTactileBeep(523.25, 0.1);
+      
+      document.querySelectorAll('#view-radio .welcome-avatar-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+
+      const p = getActivePatient();
+      p.currentMood = mood;
+      saveState();
+
+      if (mood === 'sad') {
+        playWarningBleep();
+        alert("⚠️ [สัญญาณสภาพจิตใจเหงา/เศร้าทำงาน] \n\nตรวจพบคะแนนอารมณ์ของคุณยายตกลงด่วน ได้ส่งสัญญานระบุพิกัดเตือนภัยสู่แพทย์ออฟไลน์เพื่อเตรียมการแทรกแซงและช่วยเหลือด่วนเรียบร้อยแล้วค่ะ");
+        localStorage.setItem("MemoryCare_ActivePatientSadTrigger", "true");
+      } else {
+        alert("บันทึกสภาพอารมณ์สุขใจคุณยายออฟไลน์ สำเร็จ!");
+      }
+    }
+
+    // Mic recording
+    function triggerAppVoiceRecording() {
+      const btn = document.getElementById('app-voice-rec-btn');
+      const wave = document.getElementById('app-voice-wave');
+      const status = document.getElementById('app-voice-rec-status');
+      const p = getActivePatient();
+
+      if (appState.isRecording) {
+        appState.isRecording = false;
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+        wave.style.display = 'none';
+        status.textContent = "บันทึกเสียงเล่าความหลังสำเร็จ! (ความยาว 15 วินาที)";
+        playTactileBeep(523.25, 0.1);
+        
+        p.completedActivities.memoir = true;
+        syncAppWidgets();
+      } else {
+        appState.isRecording = true;
+        btn.classList.add('recording');
+        btn.textContent = '⏹';
+        wave.style.display = 'block';
+        status.textContent = "🎙️ กำลังอัดเสียงประวัติศาสตร์ความจำ...";
+        playTactileBeep(330, 0.1);
+        drawFakeAppAudioWave();
+      }
+      updateLEDIndicators();
+    }
+
+    function drawFakeAppAudioWave() {
+      const canvas = document.getElementById('app-voice-wave');
+      const ctx = canvas.getContext('2d');
+      let offset = 0;
+      function render() {
+        if (!appState.isRecording) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#3D8C8C';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let x = 0; x < canvas.width; x++) {
+          const y = canvas.height / 2 + Math.sin(x * 0.08 + offset) * 14 * Math.sin(x * 0.02);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        offset += 0.3;
+        requestAnimationFrame(render);
+      }
+      render();
+    }
+
+    // Chapter Loading memoirs
+    function loadMemoirChapter(chNum) {
+      playTactileBeep(440, 0.08);
+      appState.memoirChapter = chNum;
+      
+      const p = getActivePatient();
+      const lbl = document.getElementById('app-memoir-chapter-lbl');
+      const prompt = document.getElementById('app-memoir-prompt-text');
+      const txt = document.getElementById('app-memoir-textarea');
+
+      if (chNum === 1) {
+        lbl.textContent = "บทที่ 1: วัยเด็กอันแสนหวาน 🏠";
+        prompt.textContent = `"โรงเรียนแรกของคุณยายชื่ออะไร และมักจะพากันไปเล่นสนุกที่ไหนกับเพื่อนสนิทคะ?"`;
+        txt.value = p.ch1Text;
+      } else if (chNum === 2) {
+        lbl.textContent = "บทที่ 2: วัยเรียนและการริเริ่ม 🎒";
+        prompt.textContent = `"วิชาเรียนหรือเรื่องท้าทายอะไรที่คุณยายชอบทำมากที่สุดในโรงเรียน และครูลายมือสวยชื่ออะไรจำได้ไหมคะ?"`;
+        txt.value = p.ch2Text;
+      } else {
+        lbl.textContent = "บทที่ 3: การทำงานและความรัก 💍";
+        prompt.textContent = `"งานชิ้นแรกที่สร้างรายได้ให้คุณยายคืออะไร และนำเงินเดือนก้อนแรกไปซื้อสิ่งใดตอบแทนคุณพ่อคุณแม่คะ?"`;
+        txt.value = p.ch3Text;
+      }
+    }
+
+    function submitAppMemoirChapter() {
+      const txt = document.getElementById('app-memoir-textarea').value.trim();
+      const p = getActivePatient();
+
+      if (!txt) {
+        alert("กรุณากรอกบันทึกเรื่องราวก่อนกดบันทึกความจำ");
+        return;
+      }
+
+      playApplianceChime();
+
+      if (appState.memoirChapter === 1) {
+        p.ch1Text = txt;
+        document.getElementById('print-ch1-text').textContent = txt;
+      } else if (appState.memoirChapter === 2) {
+        p.ch2Text = txt;
+        document.getElementById('print-ch2-text').textContent = txt;
+      } else {
+        p.ch3Text = txt;
+        document.getElementById('print-ch3-text').textContent = txt;
+      }
+
+      p.completedActivities.memoir = true;
+      syncAppWidgets();
+
+      alert("บันทึกชีวประวัติความสุขคุณยายออฟไลน์ สำเร็จ!");
+
+      if (appState.memoirChapter < 3) {
+        loadMemoirChapter(appState.memoirChapter + 1);
+      }
+    }
+
+    function openLegacyPrintDialog() {
+      const p = getActivePatient();
+      document.getElementById('print-senior-name').textContent = p.seniorName;
+      document.getElementById('print-reminiscence-years').textContent = `พ.ศ. ${p.reminiscenceStart} - ${p.reminiscenceEnd}`;
+      document.getElementById('print-ch1-text').textContent = p.ch1Text || "(ยังไม่มีบันทึกข้อมูล)";
+      document.getElementById('print-ch2-text').textContent = p.ch2Text || "(ยังไม่มีบันทึกข้อมูล)";
+      document.getElementById('print-ch3-text').textContent = p.ch3Text || "(ยังไม่มีบันทึกข้อมูล)";
+      window.print();
+    }
+
+    // Save Clinical Assessment inputs
+    function saveClinicalScores() {
+      const p = getActivePatient();
+      const mmseStr = document.getElementById('cg-mmse-scores').value.trim();
+      const gdsStr = document.getElementById('cg-gds-scores').value.trim();
+
+      const mmseArr = mmseStr.split(',').map(n => parseInt(n.trim()));
+      const gdsArr = gdsStr.split(',').map(n => parseInt(n.trim()));
+
+      if (mmseArr.length !== 4 || mmseArr.some(isNaN)) {
+        alert("กรุณากรอกคะแนน MMSE คั่นด้วยคอมมาให้ครบ 4 สัปดาห์ (เช่น 18,20,22,25)");
+        return;
+      }
+
+      if (gdsArr.length !== 4 || gdsArr.some(isNaN)) {
+        alert("กรุณากรอกคะแนน GDS คั่นด้วยคอมมาให้ครบ 4 สัปดาห์ (เช่น 10,7,5,3)");
+        return;
+      }
+
+      playApplianceChime();
+      
+      // Save arrays in active patient profile
+      p.scores.mmse = mmseArr;
+      p.scores.gds = gdsArr;
+
+      saveState();
+      
+      // Redraw SVG charts driven by actual input scores!
+      drawRealDynamicCharts();
+      
+      alert(`บันทึกคะแนนการประเมิน MMSE และ GDS ของ "${p.seniorName}" สำเร็จ!`);
+    }
+
+    // Real dynamic charts SVG render builder
+    function drawRealDynamicCharts() {
+      const p = getActivePatient();
+      const mmseChart = document.getElementById('cg-mmse-chart-svg');
+      const gdsChart = document.getElementById('cg-gds-chart-svg');
+
+      if (!p || !p.scores) return;
+
+      const mmse = p.scores.mmse;
+      const gds = p.scores.gds;
+
+      // Draw MMSE line chart dynamically
+      function getMMSE_Y(val) {
+        return 120 - ((val / 30) * 100);
+      }
+
+      const mmseY1 = getMMSE_Y(mmse[0]);
+      const mmseY2 = getMMSE_Y(mmse[1]);
+      const mmseY3 = getMMSE_Y(mmse[2]);
+      const mmseY4 = getMMSE_Y(mmse[3]);
+
+      mmseChart.innerHTML = `
+        <!-- Axis grid -->
+        <line x1="30" y1="20" x2="330" y2="20" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="53" x2="330" y2="53" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="86" x2="330" y2="86" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="120" x2="330" y2="120" stroke="#EDF2F7" stroke-width="1.5"></line>
+
+        <!-- Y Axis labels -->
+        <text x="10" y="24" class="cg-chart-text">30</text>
+        <text x="10" y="57" class="cg-chart-text">20</text>
+        <text x="10" y="90" class="cg-chart-text">10</text>
+        <text x="10" y="124" class="cg-chart-text">0</text>
+
+        <!-- Dynamic trend line paths -->
+        <path d="M 50 ${mmseY1} L 130 ${mmseY2} L 210 ${mmseY3} L 290 ${mmseY4}" class="cg-chart-line"></path>
+
+        <!-- Dynamic trend dots -->
+        <circle cx="50" cy="${mmseY1}" r="4" class="cg-chart-dot"></circle>
+        <circle cx="130" cy="${mmseY2}" r="4" class="cg-chart-dot"></circle>
+        <circle cx="210" cy="${mmseY3}" r="4" class="cg-chart-dot"></circle>
+        <circle cx="290" cy="${mmseY4}" r="4" class="cg-chart-dot"></circle>
+
+        <!-- Text labels below nodes -->
+        <text x="45" y="${mmseY1 - 8}" class="cg-chart-text" style="font-weight:700; fill:var(--teal-dark);">${mmse[0]}</text>
+        <text x="125" y="${mmseY2 - 8}" class="cg-chart-text" style="font-weight:700; fill:var(--teal-dark);">${mmse[1]}</text>
+        <text x="205" y="${mmseY3 - 8}" class="cg-chart-text" style="font-weight:700; fill:var(--teal-dark);">${mmse[2]}</text>
+        <text x="285" y="${mmseY4 - 8}" class="cg-chart-text" style="font-weight:700; fill:var(--teal-dark);">${mmse[3]}</text>
+
+        <!-- Weeks labels -->
+        <text x="35" y="134" class="cg-chart-text">สัปดาห์ 1</text>
+        <text x="115" y="134" class="cg-chart-text">สัปดาห์ 2</text>
+        <text x="195" y="134" class="cg-chart-text">สัปดาห์ 3</text>
+        <text x="275" y="134" class="cg-chart-text">สัปดาห์ 4</text>
+      `;
+
+      // Draw GDS bar chart dynamically
+      function getGDSHeight(val) {
+        return (val / 15) * 90;
+      }
+      function getGDS_Y(val) {
+        return 110 - getGDSHeight(val);
+      }
+
+      const gdsH1 = getGDSHeight(gds[0]);
+      const gdsH2 = getGDSHeight(gds[1]);
+      const gdsH3 = getGDSHeight(gds[2]);
+      const gdsH4 = getGDSHeight(gds[3]);
+
+      gdsChart.innerHTML = `
+        <line x1="30" y1="20" x2="330" y2="20" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="50" x2="330" y2="50" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="80" x2="330" y2="80" stroke="#EDF2F7" stroke-width="1.5"></line>
+        <line x1="30" y1="110" x2="330" y2="110" stroke="#EDF2F7" stroke-width="1.5"></line>
+
+        <text x="10" y="24" class="cg-chart-text">15</text>
+        <text x="10" y="54" class="cg-chart-text">10</text>
+        <text x="10" y="84" class="cg-chart-text">5</text>
+        <text x="10" y="114" class="cg-chart-text">0</text>
+
+        <!-- Dynamic trend bars -->
+        <rect x="40" y="${getGDS_Y(gds[0])}" width="20" height="${gdsH1}" class="cg-chart-bar" style="fill:${gds[0] >= 8 ? 'var(--rose)' : 'var(--navy-light)'};"></rect>
+        <rect x="120" y="${getGDS_Y(gds[1])}" width="20" height="${gdsH2}" class="cg-chart-bar" style="fill:${gds[1] >= 8 ? 'var(--rose)' : 'var(--navy-light)'};"></rect>
+        <rect x="200" y="${getGDS_Y(gds[2])}" width="20" height="${gdsH3}" class="cg-chart-bar" style="fill:${gds[2] >= 8 ? 'var(--rose)' : 'var(--navy-light)'};"></rect>
+        <rect x="280" y="${getGDS_Y(gds[3])}" width="20" height="${gdsH4}" class="cg-chart-bar" style="fill:${gds[3] >= 8 ? 'var(--rose)' : 'var(--navy-light)'};"></rect>
+
+        <!-- Text labels -->
+        <text x="45" y="${getGDS_Y(gds[0]) - 6}" class="cg-chart-text" style="font-weight:700;">${gds[0]}</text>
+        <text x="125" y="${getGDS_Y(gds[1]) - 6}" class="cg-chart-text" style="font-weight:700;">${gds[1]}</text>
+        <text x="205" y="${getGDS_Y(gds[2]) - 6}" class="cg-chart-text" style="font-weight:700;">${gds[2]}</text>
+        <text x="285" y="${getGDS_Y(gds[3]) - 6}" class="cg-chart-text" style="font-weight:700;">${gds[3]}</text>
+
+        <!-- Weeks -->
+        <text x="35" y="124" class="cg-chart-text">สัปดาห์ 1</text>
+        <text x="115" y="124" class="cg-chart-text">สัปดาห์ 2</text>
+        <text x="195" y="124" class="cg-chart-text">สัปดาห์ 3</text>
+        <text x="275" y="124" class="cg-chart-text">สัปดาห์ 4</text>
+      `;
+    }
+
+    // JSON export/backup manager
+    function exportRosterBackup() {
+      playTactileBeep(523.25, 0.08);
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "memorycare_roster_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      alert("ดาวน์โหลดไฟล์ข้อมูลคนไข้แบบออฟไลน์ (.json) สำเร็จ!");
+    }
+
+    // JSON file backup importer
+    function importRosterBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      playTactileBeep(440, 0.12);
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && parsed.patients && parsed.activePatientId) {
+            appState.activePatientId = parsed.activePatientId;
+            appState.patients = parsed.patients;
+            
+            saveState();
+            updatePatientSelectors();
+            syncAppWidgets();
+            
+            alert("อิมพอร์ตดึงข้อมูลประวัติคนไข้ทั้งหมดจากไฟล์สำรองเสร็จสิ้น!");
+            routeTo('caregiver');
+          } else {
+            alert("รูปแบบไฟล์ข้อมูลจำลองประเมินไม่ถูกต้อง");
+          }
+        } catch (err) {
+          alert("ไม่สามารถอ่านไฟล์ JSON ได้ กรุณาตรวจสอบไฟล์อิมพอร์ตใหม่");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Delete active patient profile
+    function deleteActivePatient() {
+      const p = getActivePatient();
+      const keys = Object.keys(appState.patients);
+
+      if (keys.length <= 1) {
+        alert("ไม่สามารถลบประวัติคนไข้ได้ เนื่องจากมีคนไข้อยู่ในระบบเพียงคนเดียว");
+        return;
+      }
+
+      if (confirm(`คุณพยาบาลแน่ใจใช่หรือไม่ว่าต้องการลบประวัติของ "${p.seniorName}" ออกจากอุปกรณ์เครื่องนี้อย่างถาวร?`)) {
+        playWarningBleep();
+        delete appState.patients[appState.activePatientId];
+        appState.activePatientId = Object.keys(appState.patients)[0];
+        
+        saveState();
+        updatePatientSelectors();
+        syncAppWidgets();
+        
+        alert("ลบข้อมูลประวัติคนไข้คนดังกล่าวออกจากเครื่องจำลองเสร็จสิ้น");
+      }
+    }
+
+    // Factory initial resets
+    function resetDeviceState() {
+      if (confirm("ต้องการรีเซ็ตประวัติตัวจำลองของแท็บเล็ตและลบฐานข้อมูล LocalStorage ออฟไลน์ทั้งหมดใช่หรือไม่?")) {
+        playWarningBleep();
+        localStorage.clear();
+        location.reload(); 
+      }
+    }
+
+    // 📻 Playing Vintage Music player timers
+    function seekRadioMusic(event) {
+      const track = event.currentTarget;
+      const rect = track.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const percent = (clickX / rect.width) * 100;
+      appState.musicProgress = percent;
+      document.getElementById('app-radio-progress-fill').style.width = `${percent}%`;
+      const totalSecs = Math.round((percent / 100) * 150);
+      const mins = Math.floor(totalSecs / 60);
+      const secs = String(totalSecs % 60).padStart(2, '0');
+      document.getElementById('app-radio-time-current').textContent = `${mins}:${secs}`;
+    }
+
+    // 🧩 Memory card game elements
+    const gameTokens = [
+      { id: 1, emoji: '📻', label: 'วิทยุธานินทร์' },
+      { id: 2, emoji: '📺', label: 'ทีวีขาวดำ' },
+      { id: 3, emoji: '🛵', label: 'รถตุ๊กตุ๊ก' }
+    ];
+    let gameCards = [];
+    let selectedCards = [];
+    let matchedPairs = 0;
+    let isBoardLocked = false;
+
+    function buildMatchingGameBoard() {
+      const board = document.getElementById('app-game-board');
+      board.innerHTML = '';
+      const doubled = [...gameTokens, ...gameTokens];
+      doubled.sort(() => Math.random() - 0.5);
+      gameCards = doubled.map((token, index) => {
+        const cardHtml = `
+          <div class="game-card" data-index="${index}" onclick="flipGameCard(this)">
+            <div class="card-face card-back">❓</div>
+            <div class="card-face card-front">
+              <span style="font-size:24px;">${token.emoji}</span>
+              <span style="font-size:9px; font-weight:700; color:var(--navy);">${token.label}</span>
+            </div>
+          </div>
+        `;
+        board.insertAdjacentHTML('beforeend', cardHtml);
+        return { ...token, isMatched: false, isFlipped: false };
+      });
+      document.getElementById('app-game-board-container').style.display = 'flex';
+      document.getElementById('app-game-victory').style.display = 'none';
+      document.getElementById('game-instructions-box').style.display = 'block';
+      selectedCards = [];
+      matchedPairs = 0;
+      isBoardLocked = false;
+    }
+
+    function flipGameCard(cardElement) {
+      if (isBoardLocked) return;
+      const index = parseInt(cardElement.getAttribute('data-index'));
+      const card = gameCards[index];
+      if (card.isMatched || card.isFlipped) return;
+      playTactileBeep(440, 0.08);
+      cardElement.classList.add('flipped');
+      card.isFlipped = true;
+      selectedCards.push({ card, element: cardElement });
+      if (selectedCards.length === 2) {
+        checkGamePairMatch();
+      }
+    }
+
+    function checkGamePairMatch() {
+      isBoardLocked = true;
+      const [first, second] = selectedCards;
+      const isMatch = first.card.id === second.card.id;
+      if (isMatch) {
+        playApplianceChime();
+        first.card.isMatched = true;
+        second.card.isMatched = true;
+        matchedPairs++;
+        selectedCards = [];
+        isBoardLocked = false;
+        if (matchedPairs === gameTokens.length) {
+          triggerGameVictory();
+        }
+      } else {
+        setTimeout(() => {
+          playTactileBeep(220, 0.12, "square");
+          first.element.classList.remove('flipped');
+          second.element.classList.remove('flipped');
+          first.card.isFlipped = false;
+          second.card.isFlipped = false;
+          selectedCards = [];
+          isBoardLocked = false;
+        }, 1000);
+      }
+    }
+
+    function triggerGameVictory() {
+      const p = getActivePatient();
+      p.completedActivities.game = true;
+      syncAppWidgets();
+      setTimeout(() => {
+        playApplianceChime();
+        document.getElementById('app-game-board-container').style.display = 'none';
+        document.getElementById('app-game-victory').style.display = 'flex';
+        document.getElementById('game-instructions-box').style.display = 'none';
+        localStorage.setItem("MemoryCare_ActivePatientGameDone", "true");
+      }, 800);
+    }
+
+    function restartAppGame() {
+      buildMatchingGameBoard();
+    }
+  </script>
+</body>
+</html>

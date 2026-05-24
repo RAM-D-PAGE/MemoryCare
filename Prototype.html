@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MemoryCare — นวัตกรรมบำบัดความทรงจำ</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F3EE;
+  --card: #FFFDF9;
+  --navy: #1E2D5A;
+  --teal: #3D8C8C;
+  --teal-light: #E8F4F4;
+  --rose: #C4606A;
+  --rose-light: #FAE8EA;
+  --gold: #D4973A;
+  --gold-light: #FDF3E0;
+  --sage: #6A9172;
+  --sage-light: #EAF2EB;
+  --dust: #8B7B8B;
+  --border: #E8E0D8;
+  --text: #2A2A2A;
+  --muted: #7A7A7A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: var(--navy);
+  color: white;
+  padding: 48px 32px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(61,140,140,.35) 0%, transparent 55%),
+              radial-gradient(ellipse at 80% 10%, rgba(212,151,58,.2) 0%, transparent 50%);
+}
+.page-header > * { position:relative; z-index:1; }
+.badge {
+  display:inline-block;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.85);
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.page-header h1 {
+  font-family: 'Lora', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.page-header h1 span { color: #7ECFCF; }
+.page-header p {
+  font-size: 16px;
+  color: rgba(255,255,255,.7);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Lora', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.section-divider {
+  width: 40px; height: 3px;
+  background: var(--teal);
+  border-radius: 2px;
+  margin: 8px 0 28px;
+}
+
+/* ── APP OVERVIEW CARD ── */
+.app-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(30,45,90,.06);
+  margin-bottom: 48px;
+}
+@media(max-width:680px){ .app-overview{ grid-template-columns:1fr; } }
+
+.app-info h2 {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.app-info .app-tagline {
+  font-size: 15px;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.app-info p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 20px;
+}
+.target-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-rose { background: var(--rose-light); color: var(--rose); }
+.tag-gold { background: var(--gold-light); color: var(--gold); }
+.tag-sage { background: var(--sage-light); color: var(--sage); }
+
+/* ── PHONE MOCKUP ── */
+.phone-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.phone {
+  width: 220px;
+  height: 430px;
+  background: var(--navy);
+  border-radius: 36px;
+  padding: 12px;
+  box-shadow: 0 20px 60px rgba(30,45,90,.3), 0 4px 20px rgba(0,0,0,.2);
+  position: relative;
+}
+.phone-screen {
+  background: #f0f4f8;
+  border-radius: 26px;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.phone-notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 18px;
+  background: var(--navy);
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+
+/* app screen inside phone */
+.app-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #F8F6FF;
+}
+.app-topbar {
+  background: var(--navy);
+  padding: 28px 14px 14px;
+  color: white;
+}
+.app-topbar .greeting { font-size: 9px; opacity:.7; }
+.app-topbar .username { font-size: 13px; font-weight:700; }
+.app-topbar .date { font-size: 8px; opacity:.6; margin-top:2px; }
+
+.app-memory-card {
+  margin: 10px;
+  background: linear-gradient(135deg, #3D8C8C, #1E2D5A);
+  border-radius: 14px;
+  padding: 12px;
+  color: white;
+}
+.app-memory-card .label { font-size: 7px; opacity:.7; margin-bottom: 3px; }
+.app-memory-card .value { font-size: 11px; font-weight: 700; }
+.app-memory-card .sub { font-size: 7px; opacity:.65; margin-top:2px; }
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 0 10px;
+}
+.app-mini-card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.app-mini-card .icon { font-size: 18px; margin-bottom: 4px; }
+.app-mini-card .label { font-size: 7px; font-weight: 600; color: #333; }
+.app-mini-card .sub { font-size: 6px; color: #999; margin-top:1px; }
+
+.app-activity {
+  margin: 8px 10px;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+.app-activity .a-title { font-size: 8px; font-weight:700; color: var(--navy); margin-bottom:6px; }
+.app-activity-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+.a-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.a-text { font-size: 7px; color: #555; }
+.a-time { font-size: 6px; color: #aaa; margin-left:auto; }
+
+.app-bottom-nav {
+  margin-top: auto;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 4px 10px;
+  border-top: 1px solid #eee;
+}
+.nav-item { text-align:center; }
+.nav-item .icon { font-size: 14px; }
+.nav-item .label { font-size: 6px; color: #aaa; margin-top:1px; }
+.nav-item.active .label { color: var(--teal); }
+
+/* ── FEATURES GRID ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 48px;
+}
+.feature-card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 28px 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 16px rgba(30,45,90,.05);
+  transition: transform .2s, box-shadow .2s;
+  cursor: default;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(30,45,90,.1);
+}
+.feature-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.feature-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.feature-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 14px;
+}
+.feature-detail {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.feature-detail li {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+  padding-left: 14px;
+  position: relative;
+  list-style: none;
+}
+.feature-detail li::before {
+  content: '→';
+  position:absolute; left:0;
+  color: var(--teal);
+  font-size: 11px;
+}
+
+/* ── WORKFLOW ── */
+.workflow {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 36px 32px;
+  border: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0;
+  position: relative;
+}
+.workflow-steps::before {
+  content: '';
+  position: absolute;
+  top: 32px; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(to right, var(--teal), var(--navy));
+  z-index: 0;
+}
+@media(max-width:600px){
+  .workflow-steps::before { display:none; }
+  .workflow-steps { grid-template-columns: 1fr; }
+}
+.step {
+  text-align: center;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+.step-circle {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  margin: 0 auto 14px;
+  font-size: 24px;
+  border: 3px solid white;
+  box-shadow: 0 4px 16px rgba(30,45,90,.15);
+}
+.step h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.step p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ── MEASUREMENT ── */
+.measure-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.measure-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 22px 20px;
+  border: 1px solid var(--border);
+}
+.measure-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.measure-card ul { list-style: none; }
+.measure-card li {
+  font-size: 13px;
+  color: #555;
+  padding: 5px 0;
+  border-bottom: 1px dashed #eee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.measure-card li:last-child { border-bottom: none; }
+.dot-small {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── PROPOSAL BOX ── */
+.proposal-box {
+  background: linear-gradient(135deg, var(--navy) 0%, #2D4A8A 100%);
+  border-radius: 20px;
+  padding: 40px;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+@media(max-width:600px){ .proposal-box{ grid-template-columns:1fr; } }
+.proposal-box h3 {
+  font-family: 'Lora', serif;
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #7ECFCF;
+}
+.proposal-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.p-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items:center; justify-content:center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.p-text { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.85); }
+.p-text strong { color: white; display:block; margin-bottom:2px; }
+
+/* ── FOOTER ── */
+.footer-note {
+  text-align: center;
+  padding: 32px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.footer-note h4 { font-size: 18px; color: var(--navy); margin-bottom: 8px; }
+.footer-note p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.anim { animation: fadeUp .6s ease both; }
+.anim-1 { animation-delay:.1s; }
+.anim-2 { animation-delay:.2s; }
+.anim-3 { animation-delay:.3s; }
+.anim-4 { animation-delay:.4s; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="page-header">
+  <div class="badge">นวัตกรรมโปรเจคคณะพยาบาล</div>
+  <h1>MemoryCare<br><span>แอปบำบัดความทรงจำ</span></h1>
+  <p>Mobile Application สำหรับกระตุ้นและฟื้นฟูความทรงจำในผู้สูงอายุ<br>ผ่านกิจกรรมบำบัดที่มีหลักฐานทางวิทยาศาสตร์รองรับ</p>
+</header>
+
+<div class="container">
+
+  <!-- ── APP OVERVIEW ── -->
+  <div class="app-overview anim anim-1">
+    <div class="app-info">
+      <h2>MemoryCare</h2>
+      <div class="app-tagline">ความทรงจำ คือสายใยแห่งชีวิต</div>
+      <p>แอปพลิเคชันที่ออกแบบเฉพาะสำหรับผู้สูงอายุและผู้ดูแล ผสมผสาน Reminiscence Therapy, Music Therapy และ Cognitive Training ในรูปแบบดิจิทัลที่ใช้งานง่าย ใช้ได้ทั้งในโรงพยาบาลและที่บ้าน</p>
+      <div class="target-tags">
+        <span class="tag tag-teal">👴 ผู้สูงอายุ 60+ ปี</span>
+        <span class="tag tag-rose">🧠 ผู้ป่วย MCI</span>
+        <span class="tag tag-gold">👩‍⚕️ พยาบาล / ผู้ดูแล</span>
+        <span class="tag tag-sage">👨‍👩‍👧 ครอบครัว</span>
+      </div>
+      <div class="target-tags">
+        <span class="tag tag-teal">📱 iOS & Android</span>
+        <span class="tag tag-sage">🆓 ใช้งานฟรี</span>
+        <span class="tag tag-gold">🌐 มีภาษาไทย</span>
+      </div>
+    </div>
+
+    <!-- PHONE MOCKUP -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-notch"></div>
+          <div class="app-screen">
+            <div class="app-topbar">
+              <div class="greeting">สวัสดีตอนเช้า 🌅</div>
+              <div class="username">คุณสมศรี วงศ์ดี</div>
+              <div class="date">วันนี้มีกิจกรรม 3 รายการ</div>
+            </div>
+
+            <div class="app-memory-card">
+              <div class="label">ความทรงจำวันนี้</div>
+              <div class="value">🎵 เพลงลูกทุ่งยุค 2510</div>
+              <div class="sub">ระลึกความทรงจำ · กด เล่น เพื่อเริ่ม</div>
+            </div>
+
+            <div class="app-grid">
+              <div class="app-mini-card">
+                <div class="icon">📸</div>
+                <div class="label">อัลบั้มความทรงจำ</div>
+                <div class="sub">32 รูป</div>
+              </div>
+              <div class="app-mini-card">
+                <div class="icon">🧩</div>
+                <div class="label">เกมฝึกสมอง</div>
+                <div class="sub">วันนี้: ยังไม่ได้เล่น</div>
+              </div>
+              <div class="app-mini-card">
+                <div class="icon">📖</div>
+                <div class="label">เรื่องเล่าชีวิต</div>
+                <div class="sub">บทที่ 3/6</div>
+              </div>
+              <div class="app-mini-card">
+                <div class="icon">📊</div>
+                <div class="label">ผลการประเมิน</div>
+                <div class="sub">สัปดาห์ที่ 2</div>
+              </div>
+            </div>
+
+            <div class="app-activity">
+              <div class="a-title">กิจกรรมล่าสุด</div>
+              <div class="app-activity-item">
+                <div class="a-dot" style="background:#3D8C8C"></div>
+                <div class="a-text">ฟังเพลงโปรด</div>
+                <div class="a-time">08:30</div>
+              </div>
+              <div class="app-activity-item">
+                <div class="a-dot" style="background:#D4973A"></div>
+                <div class="a-text">เล่นเกมจับคู่รูป</div>
+                <div class="a-time">เมื่อวาน</div>
+              </div>
+              <div class="app-activity-item">
+                <div class="a-dot" style="background:#C4606A"></div>
+                <div class="a-text">บันทึกเรื่องราว</div>
+                <div class="a-time">2 วันก่อน</div>
+              </div>
+            </div>
+
+            <div class="app-bottom-nav">
+              <div class="nav-item active">
+                <div class="icon">🏠</div>
+                <div class="label">หน้าหลัก</div>
+              </div>
+              <div class="nav-item">
+                <div class="icon">🧠</div>
+                <div class="label">กิจกรรม</div>
+              </div>
+              <div class="nav-item">
+                <div class="icon">📈</div>
+                <div class="label">ความก้าวหน้า</div>
+              </div>
+              <div class="nav-item">
+                <div class="icon">👤</div>
+                <div class="label">โปรไฟล์</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FEATURES ── -->
+  <div class="section-title anim anim-2">ฟีเจอร์หลักของแอป</div>
+  <div class="section-divider"></div>
+
+  <div class="features-grid">
+
+    <div class="feature-card anim anim-2">
+      <div class="feature-icon" style="background:#E8F4F4;">📸</div>
+      <h3>อัลบั้มความทรงจำส่วนตัว</h3>
+      <p>ผู้ดูแลหรือญาติอัปโหลดรูปภาพ บุคคล สถานที่สำคัญ เพื่อให้ผู้ป่วยดูและเล่าเรื่องประกอบ กระตุ้น Autobiographical Memory</p>
+      <div class="feature-detail">
+        <ul>
+          <li>จัดหมวดหมู่ตามช่วงชีวิต (วัยเด็ก, วัยรุ่น, ผู้ใหญ่)</li>
+          <li>บันทึกเสียงเล่าเรื่องประกอบแต่ละรูป</li>
+          <li>พยาบาลเห็นความถี่ในการใช้งาน</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-card anim anim-2">
+      <div class="feature-icon" style="background:#FDF3E0;">🎵</div>
+      <h3>ดนตรีบำบัดความทรงจำ</h3>
+      <p>Playlist เพลงตามยุคสมัย ใช้หลัก Reminiscence Bump เปิดเพลงยุคที่ผู้ป่วยอายุ 15–25 ปี กระตุ้นความจำระยะยาวได้ดีที่สุด</p>
+      <div class="feature-detail">
+        <ul>
+          <li>เลือกเพลงตามปีเกิดอัตโนมัติ</li>
+          <li>วัด Emotional Response หลังฟัง</li>
+          <li>บันทึกเรื่องราวที่นึกถึงจากเพลง</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-card anim anim-3">
+      <div class="feature-icon" style="background:#EAF2EB;">🧩</div>
+      <h3>เกมฝึกสมองแบบปรับระดับ</h3>
+      <p>เกมที่ออกแบบเฉพาะสำหรับฝึกความจำระยะสั้น ความสนใจ และการรับรู้ ปรับความยากอัตโนมัติตามผลการเล่น</p>
+      <div class="feature-detail">
+        <ul>
+          <li>จับคู่รูปบุคคลในครอบครัว</li>
+          <li>เรียงลำดับเหตุการณ์ในชีวิต</li>
+          <li>ทายชื่อสิ่งของในอดีต</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-card anim anim-3">
+      <div class="feature-icon" style="background:#FAE8EA;">📖</div>
+      <h3>เรื่องเล่าชีวิต (Life Review)</h3>
+      <p>พาผู้ป่วยทบทวนชีวิตอย่างมีโครงสร้าง ผ่านคำถามชวนคิดในแต่ละช่วงชีวิต บันทึกเป็น "หนังสือชีวิต" ส่วนตัว</p>
+      <div class="feature-detail">
+        <ul>
+          <li>6 บท ครอบคลุมทุกช่วงชีวิต</li>
+          <li>บันทึกเป็นเสียงหรือข้อความ</li>
+          <li>แชร์ให้ญาติอ่านได้</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-card anim anim-4">
+      <div class="feature-icon" style="background:#EDE8F5;">📊</div>
+      <h3>Dashboard พยาบาล</h3>
+      <p>พยาบาลติดตามผู้ป่วยหลายรายพร้อมกัน เห็นความถี่การใช้งาน คะแนนเกม และสัญญาณเตือนเมื่อพฤติกรรมเปลี่ยน</p>
+      <div class="feature-detail">
+        <ul>
+          <li>กราฟแสดงพัฒนาการรายสัปดาห์</li>
+          <li>แจ้งเตือนเมื่อผู้ป่วยขาดกิจกรรม</li>
+          <li>Export รายงานเป็น PDF</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-card anim anim-4">
+      <div class="feature-icon" style="background:#FFF3E0;">👨‍👩‍👧</div>
+      <h3>พื้นที่ครอบครัว</h3>
+      <p>ญาติมีส่วนร่วมในการบำบัดโดยส่งรูป วิดีโอ หรือข้อความหาผู้ป่วย เพิ่มแรงจูงใจและลดความโดดเดี่ยว</p>
+      <div class="feature-detail">
+        <ul>
+          <li>ส่งรูปและวิดีโอสั้นได้</li>
+          <li>ดูความก้าวหน้าของผู้ป่วย</li>
+          <li>แจ้งเตือนให้ร่วมกิจกรรมร่วมกัน</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── WORKFLOW ── -->
+  <div class="section-title">ขั้นตอนการใช้งานในโปรเจค</div>
+  <div class="section-divider"></div>
+
+  <div class="workflow anim anim-2">
+    <div class="workflow-steps">
+      <div class="step">
+        <div class="step-circle" style="background:linear-gradient(135deg,#3D8C8C,#2D7A7A);">📋</div>
+        <h4>คัดกรอง</h4>
+        <p>ประเมิน MMSE / MoCA ก่อนเข้าโปรแกรม</p>
+      </div>
+      <div class="step">
+        <div class="step-circle" style="background:linear-gradient(135deg,#D4973A,#C08020);">⚙️</div>
+        <h4>ตั้งค่าส่วนตัว</h4>
+        <p>ญาติอัปโหลดรูปและข้อมูลชีวิต</p>
+      </div>
+      <div class="step">
+        <div class="step-circle" style="background:linear-gradient(135deg,#6A9172,#558060);">🎮</div>
+        <h4>ใช้งาน 4 สัปดาห์</h4>
+        <p>วันละ 20–30 นาที ผ่านแอป</p>
+      </div>
+      <div class="step">
+        <div class="step-circle" style="background:linear-gradient(135deg,#C4606A,#A04050);">📈</div>
+        <h4>ติดตามผล</h4>
+        <p>พยาบาลดู Dashboard รายสัปดาห์</p>
+      </div>
+      <div class="step">
+        <div class="step-circle" style="background:linear-gradient(135deg,#1E2D5A,#162040);">✅</div>
+        <h4>ประเมินซ้ำ</h4>
+        <p>วัดผล MMSE + GDS หลังสิ้นสุด</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MEASUREMENT ── -->
+  <div class="section-title">เครื่องมือวัดผล</div>
+  <div class="section-divider"></div>
+
+  <div class="measure-grid anim anim-3">
+    <div class="measure-card">
+      <h4><span>🧠</span> ด้านความจำและสติปัญญา</h4>
+      <ul>
+        <li><div class="dot-small" style="background:#3D8C8C"></div>MMSE (Mini-Mental State Examination)</li>
+        <li><div class="dot-small" style="background:#3D8C8C"></div>MoCA (Montreal Cognitive Assessment)</li>
+        <li><div class="dot-small" style="background:#3D8C8C"></div>คะแนนเกมในแอป (In-app Score)</li>
+        <li><div class="dot-small" style="background:#3D8C8C"></div>จำนวนความทรงจำที่ระลึกได้</li>
+      </ul>
+    </div>
+    <div class="measure-card">
+      <h4><span>💛</span> ด้านอารมณ์และจิตใจ</h4>
+      <ul>
+        <li><div class="dot-small" style="background:#D4973A"></div>GDS (Geriatric Depression Scale)</li>
+        <li><div class="dot-small" style="background:#D4973A"></div>DASS-21 (ความเครียด/วิตกกังวล)</li>
+        <li><div class="dot-small" style="background:#D4973A"></div>Self-Esteem Scale (Rosenberg)</li>
+        <li><div class="dot-small" style="background:#D4973A"></div>แบบวัดคุณภาพชีวิต SF-36</li>
+      </ul>
+    </div>
+    <div class="measure-card">
+      <h4><span>📱</span> ด้านการใช้งานแอป</h4>
+      <ul>
+        <li><div class="dot-small" style="background:#6A9172"></div>ความถี่และระยะเวลาการใช้งาน</li>
+        <li><div class="dot-small" style="background:#6A9172"></div>ความสม่ำเสมอ (Adherence Rate)</li>
+        <li><div class="dot-small" style="background:#6A9172"></div>แบบวัดความพึงพอใจผู้ใช้ (SUS)</li>
+        <li><div class="dot-small" style="background:#6A9172"></div>ความพึงพอใจของญาติ/พยาบาล</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── PROJECT PROPOSAL ── -->
+  <div class="section-title">โครงร่างโปรเจค</div>
+  <div class="section-divider"></div>
+
+  <div class="proposal-box anim anim-3">
+    <div>
+      <h3>📌 รายละเอียดโปรเจค</h3>
+      <div class="proposal-item">
+        <div class="p-num">1</div>
+        <div class="p-text"><strong>ชื่อโปรเจค</strong>ประสิทธิผลของแอปพลิเคชัน MemoryCare ต่อความสามารถด้านความจำในผู้สูงอายุกลุ่มเสี่ยง MCI</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">2</div>
+        <div class="p-text"><strong>ระยะเวลา</strong>4–8 สัปดาห์ (ปรับได้ตามขนาดโปรเจค)</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">3</div>
+        <div class="p-text"><strong>กลุ่มตัวอย่าง</strong>ผู้สูงอายุ 60 ปีขึ้นไป คะแนน MMSE 18–26 คะแนน จำนวน 20–30 คน</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">4</div>
+        <div class="p-text"><strong>รูปแบบการวิจัย</strong>Quasi-experimental design (Pre-post test with control group)</div>
+      </div>
+    </div>
+    <div>
+      <h3>💡 จุดแข็งของโปรเจคนี้</h3>
+      <div class="proposal-item">
+        <div class="p-num">✦</div>
+        <div class="p-text"><strong>ทันสมัยและน่าสนใจ</strong>เป็นการนำ Digital Health มาใช้กับการพยาบาล ตอบโจทย์ยุค 4.0</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">✦</div>
+        <div class="p-text"><strong>วัดผลได้ชัดเจน</strong>มีทั้งข้อมูลเชิงคลินิกและข้อมูลจากแอป (Data-driven)</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">✦</div>
+        <div class="p-text"><strong>ทำได้จริง</strong>ใช้ Prototype / Figma แทนแอปจริงในขั้นทดลองนำร่องได้</div>
+      </div>
+      <div class="proposal-item">
+        <div class="p-num">✦</div>
+        <div class="p-text"><strong>มีหลักฐานรองรับ</strong>อิงทฤษฎี Reminiscence Therapy และ Cognitive Stimulation Therapy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer-note anim anim-4">
+    <h4>🚀 ขั้นตอนถัดไป</h4>
+    <p>ต้องการให้ช่วยเขียน <strong>บทนำ / วัตถุประสงค์ / กรอบแนวคิด</strong> หรือออกแบบ <strong>Prototype Figma / Wireframe</strong> เพิ่มเติม บอกได้เลยครับ</p>
+  </div>
+
+</div>
+</body>
+</html>
