@@ -87,7 +87,7 @@ const HybridSync = (() => {
     };
 
     try {
-      const res = await fetch(supabaseUrl('/app_states'), {
+      const res = await fetch(supabaseUrl('/app_states?on_conflict=device_id'), {
         method: 'POST',
         headers: supabaseHeaders(),
         body: JSON.stringify(payload)
@@ -115,7 +115,7 @@ const HybridSync = (() => {
 
     for (const payload of queue) {
       try {
-        const res = await fetch(supabaseUrl('/app_states'), {
+        const res = await fetch(supabaseUrl('/app_states?on_conflict=device_id'), {
           method: 'POST',
           headers: supabaseHeaders(),
           body: JSON.stringify(payload)
