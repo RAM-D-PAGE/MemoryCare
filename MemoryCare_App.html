@@ -1619,13 +1619,17 @@
         </div>
 
         <!-- แถบปรับขนาดตัวอักษรสำหรับผู้สูงอายุ (Elderly Accessibility Controls) -->
-        <div class="app-accessibility-bar">
-          <div class="access-label">👁️ ขนาดตัวอักษร:</div>
-          <div class="access-buttons">
-            <button class="btn-access" id="btn-fs-normal" onclick="setAppFontSize('normal')">A ปกติ</button>
-            <button class="btn-access active" id="btn-fs-large" onclick="setAppFontSize('large')">A+ ใหญ่</button>
-            <button class="btn-access" id="btn-fs-xlarge" onclick="setAppFontSize('xlarge')">A++ ใหญ่พิเศษ</button>
-            <span style="width:1px; height:24px; background:var(--border-light); margin:0 4px;"></span>
+        <div class="app-accessibility-bar" style="flex-direction: column; gap: 6px; padding: 6px 12px;">
+          <div style="display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center;">
+            <div class="access-label">🔤 ขนาด:</div>
+            <div class="access-buttons">
+              <button class="btn-access" id="btn-fs-normal" onclick="setAppFontSize('normal')">A ปกติ</button>
+              <button class="btn-access active" id="btn-fs-large" onclick="setAppFontSize('large')">A+ ใหญ่</button>
+              <button class="btn-access" id="btn-fs-xlarge" onclick="setAppFontSize('xlarge')">A++</button>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; width: 100%; justify-content: center;">
+            <div class="access-label">👁️ การแสดงผล:</div>
             <button class="btn-hc-toggle" id="btn-hc-toggle" onclick="toggleHighContrast()">🌓 สีตัดกันสูง</button>
           </div>
         </div>
