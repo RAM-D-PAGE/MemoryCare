@@ -1329,10 +1329,10 @@
     /* Large Accessibility Buttons */
     .app-screen-container.font-large .elderly-btn-large,
     .app-screen-container.font-xlarge .elderly-btn-large {
-      font-size: calc(18px * var(--font-scale)) !important;
-      min-height: calc(64px * var(--font-scale)) !important;
-      padding: calc(18px * var(--font-scale)) calc(24px * var(--font-scale)) !important;
-      border-radius: calc(22px * var(--font-scale)) !important;
+      font-size: calc(16px * var(--font-scale)) !important;
+      min-height: 56px !important;
+      padding: 14px calc(20px * var(--font-scale)) !important;
+      border-radius: 20px !important;
     }
 
     /* Inputs and textareas */
@@ -1382,30 +1382,39 @@
     }
 
     /* ── LINE SPACING (เพิ่มระยะห่างบรรทัดตามขนาดตัวอักษร) ── */
-    .app-screen-container.font-large p,
-    .app-screen-container.font-large label,
-    .app-screen-container.font-large span:not(.icon):not(.topbar-led-indicator),
-    .app-screen-container.font-large li {
+    .app-screen-container.font-large .app-viewport p,
+    .app-screen-container.font-large .app-viewport label,
+    .app-screen-container.font-large .app-viewport li {
       line-height: 1.8 !important;
     }
 
-    .app-screen-container.font-xlarge p,
-    .app-screen-container.font-xlarge label,
-    .app-screen-container.font-xlarge span:not(.icon):not(.topbar-led-indicator),
-    .app-screen-container.font-xlarge li {
+    .app-screen-container.font-xlarge .app-viewport p,
+    .app-screen-container.font-xlarge .app-viewport label,
+    .app-screen-container.font-xlarge .app-viewport li {
       line-height: 2.0 !important;
     }
 
-    .app-screen-container.font-large h2,
-    .app-screen-container.font-large h3,
-    .app-screen-container.font-large h4 {
+    .app-screen-container.font-large .app-viewport h2,
+    .app-screen-container.font-large .app-viewport h3,
+    .app-screen-container.font-large .app-viewport h4 {
       line-height: 1.5 !important;
     }
 
-    .app-screen-container.font-xlarge h2,
-    .app-screen-container.font-xlarge h3,
-    .app-screen-container.font-xlarge h4 {
+    .app-screen-container.font-xlarge .app-viewport h2,
+    .app-screen-container.font-xlarge .app-viewport h3,
+    .app-screen-container.font-xlarge .app-viewport h4 {
       line-height: 1.6 !important;
+    }
+
+    /* Buttons must NOT inherit expanded line-height */
+    .app-screen-container.font-large .elderly-btn-large,
+    .app-screen-container.font-xlarge .elderly-btn-large {
+      line-height: 1.3 !important;
+    }
+
+    .app-screen-container.font-large button,
+    .app-screen-container.font-xlarge button {
+      line-height: 1.2 !important;
     }
 
     /* ── HIGH CONTRAST MODE (โหมดสีตัดกันสูง) ── */
