@@ -2264,13 +2264,21 @@
       if (state) {
         appState.activePatientId = state.activePatientId || "p_1";
         if (state.patients) appState.patients = state.patients;
-        syncAppWidgets();
+
+        // ✅ รีเซ็ต route เป็น welcome เสมอตอนเปิดแอปใหม่
+        // ป้องกันหน้าขาวจาก route ค้างเป็น 'home' ก่อน patient data พร้อม
+        appState.currentRoute = "welcome";
       }
+      syncAppWidgets();
+      updatePatientSelectors();
     }
 
     // Save state back to LocalStorage (Cache) and POST to REST API if ONLINE or HYBRID mode is active
     async function saveState() {
-      await HybridSync.save(appState);
+      const stateToSave = JSON.parse(JSON.stringify(appState));
+      delete stateToSave.caregiverAuthenticated;
+      delete stateToSave.currentRoute;  // ไม่บันทึก route — เปิดใหม่เริ่มที่ welcome เสมอ
+      await HybridSync.save(stateToSave);
     }
 
     // Get currently active patient object
