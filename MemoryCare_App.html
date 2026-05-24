@@ -1378,6 +1378,195 @@
     .app-screen-container.font-xlarge .nav-tab-item .icon {
       font-size: calc(22px * var(--font-scale)) !important;
     }
+
+    /* ── LINE SPACING (เพิ่มระยะห่างบรรทัดตามขนาดตัวอักษร) ── */
+    .app-screen-container.font-large p,
+    .app-screen-container.font-large label,
+    .app-screen-container.font-large span:not(.icon):not(.topbar-led-indicator),
+    .app-screen-container.font-large li {
+      line-height: 1.8 !important;
+    }
+
+    .app-screen-container.font-xlarge p,
+    .app-screen-container.font-xlarge label,
+    .app-screen-container.font-xlarge span:not(.icon):not(.topbar-led-indicator),
+    .app-screen-container.font-xlarge li {
+      line-height: 2.0 !important;
+    }
+
+    .app-screen-container.font-large h2,
+    .app-screen-container.font-large h3,
+    .app-screen-container.font-large h4 {
+      line-height: 1.5 !important;
+    }
+
+    .app-screen-container.font-xlarge h2,
+    .app-screen-container.font-xlarge h3,
+    .app-screen-container.font-xlarge h4 {
+      line-height: 1.6 !important;
+    }
+
+    /* ── HIGH CONTRAST MODE (โหมดสีตัดกันสูง) ── */
+    .app-screen-container.high-contrast {
+      --hc-bg: #000000;
+      --hc-card-bg: #1A1A1A;
+      --hc-text: #FFFFFF;
+      --hc-text-muted: #E0E0E0;
+      --hc-accent: #FFD700;
+      --hc-border: #FFD700;
+      --hc-link: #00CFFF;
+      --hc-success: #00FF88;
+      --hc-danger: #FF4444;
+    }
+
+    .app-screen-container.high-contrast .app-viewport {
+      background: var(--hc-bg) !important;
+    }
+
+    .app-screen-container.high-contrast .screen-header-bar {
+      background: #111111 !important;
+      border-bottom: 3px solid var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .screen-header-bar h3,
+    .app-screen-container.high-contrast .screen-header-bar p {
+      color: var(--hc-text) !important;
+    }
+
+    .app-screen-container.high-contrast .elderly-card {
+      background: var(--hc-card-bg) !important;
+      border: 2px solid var(--hc-border) !important;
+      color: var(--hc-text) !important;
+    }
+
+    .app-screen-container.high-contrast h2,
+    .app-screen-container.high-contrast h3,
+    .app-screen-container.high-contrast h4 {
+      color: var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast p,
+    .app-screen-container.high-contrast span:not(.icon):not(.topbar-led-indicator),
+    .app-screen-container.high-contrast label {
+      color: var(--hc-text) !important;
+    }
+
+    .app-screen-container.high-contrast .elderly-btn-large {
+      background: var(--hc-accent) !important;
+      color: #000000 !important;
+      border: 3px solid #FFFFFF !important;
+      font-weight: 800 !important;
+    }
+
+    .app-screen-container.high-contrast .elderly-btn-large:hover {
+      background: #FFFFFF !important;
+      color: #000000 !important;
+    }
+
+    .app-screen-container.high-contrast .wf-large-input,
+    .app-screen-container.high-contrast select,
+    .app-screen-container.high-contrast textarea,
+    .app-screen-container.high-contrast input {
+      background: #222222 !important;
+      color: var(--hc-text) !important;
+      border: 2px solid var(--hc-border) !important;
+    }
+
+    .app-screen-container.high-contrast .home-shortcut-box {
+      background: var(--hc-card-bg) !important;
+      border: 2px solid var(--hc-accent) !important;
+      color: var(--hc-text) !important;
+    }
+
+    .app-screen-container.high-contrast .home-shortcut-box h4 {
+      color: var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .home-shortcut-box p {
+      color: var(--hc-text-muted) !important;
+    }
+
+    .app-screen-container.high-contrast .daily-home-progress {
+      background: var(--hc-card-bg) !important;
+      border: 2px solid var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .app-bottom-nav {
+      background: #111111 !important;
+      border-top: 3px solid var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .nav-tab-item {
+      color: var(--hc-text-muted) !important;
+    }
+
+    .app-screen-container.high-contrast .nav-tab-item.active {
+      color: var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .encouragement-toast-drawer {
+      background: #1A1A00 !important;
+      border: 2px solid var(--hc-accent) !important;
+      color: var(--hc-text) !important;
+    }
+
+    .app-screen-container.high-contrast .app-accessibility-bar {
+      background: #111111 !important;
+      border-bottom: 2px solid var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .app-accessibility-bar .access-label {
+      color: var(--hc-accent) !important;
+    }
+
+    .app-screen-container.high-contrast .btn-access {
+      background: #222222 !important;
+      color: var(--hc-text) !important;
+      border: 2px solid var(--hc-border) !important;
+    }
+
+    .app-screen-container.high-contrast .btn-access.active {
+      background: var(--hc-accent) !important;
+      color: #000000 !important;
+      border-color: #FFFFFF !important;
+    }
+
+    /* High contrast toggle button */
+    .btn-hc-toggle {
+      background: white;
+      border: 2px solid var(--border-light);
+      color: var(--navy);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-family: 'Sarabun', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-hc-toggle:hover {
+      background: var(--bg-cream);
+      border-color: var(--gold);
+    }
+
+    .btn-hc-toggle.active {
+      background: #1A1A1A;
+      color: #FFD700;
+      border-color: #FFD700;
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    }
+
+    .app-screen-container.high-contrast .btn-hc-toggle.active {
+      background: var(--hc-accent) !important;
+      color: #000000 !important;
+      border-color: #FFFFFF !important;
+    }
   </style>
 </head>
 <body>
@@ -1431,9 +1620,11 @@
         <div class="app-accessibility-bar">
           <div class="access-label">👁️ ขนาดตัวอักษร:</div>
           <div class="access-buttons">
-            <button class="btn-access active" id="btn-fs-normal" onclick="setAppFontSize('normal')">A ปกติ</button>
-            <button class="btn-access" id="btn-fs-large" onclick="setAppFontSize('large')">A+ ใหญ่</button>
+            <button class="btn-access" id="btn-fs-normal" onclick="setAppFontSize('normal')">A ปกติ</button>
+            <button class="btn-access active" id="btn-fs-large" onclick="setAppFontSize('large')">A+ ใหญ่</button>
             <button class="btn-access" id="btn-fs-xlarge" onclick="setAppFontSize('xlarge')">A++ ใหญ่พิเศษ</button>
+            <span style="width:1px; height:24px; background:var(--border-light); margin:0 4px;"></span>
+            <button class="btn-hc-toggle" id="btn-hc-toggle" onclick="toggleHighContrast()">🌓 สีตัดกันสูง</button>
           </div>
         </div>
 
@@ -1970,7 +2161,8 @@
             memoir: false,
             game: false
           },
-          fontSize: "normal",
+          fontSize: "large",
+          highContrast: false,
           currentMood: "relaxed",
           ch1Text: "โรงเรียนแรกของฉันตั้งอยู่ใกล้ริมคลองแสนแสบ มีวัดใหญ่ร่มรื่นอยู่ใกล้เคียง ในวันหยุดฉันมักพากลุ่มเพื่อนสนิทห้าคนไปวิ่งเล่นปีนต้นมะม่วง และพายเรือกระดาษเล่นสนุกในลำคลอง ถือเป็นช่วงเวลาวัยเด็กที่เรียกง่ายและมีความสุขที่สุด...",
           ch2Text: "",
@@ -1992,7 +2184,8 @@
             memoir: false,
             game: false
           },
-          fontSize: "normal",
+          fontSize: "large",
+          highContrast: false,
           currentMood: "relaxed",
           ch1Text: "",
           ch2Text: "",
@@ -2336,7 +2529,8 @@
         reminiscenceStart: year + 15,
         reminiscenceEnd: year + 25,
         completedActivities: { music: false, memoir: false, game: false },
-        fontSize: "normal",
+        fontSize: "large",
+        highContrast: false,
         currentMood: "relaxed",
         ch1Text: "",
         ch2Text: "",
@@ -2387,6 +2581,45 @@
           p.fontSize = size;
           saveState();
         }
+      }
+    }
+
+    // High Contrast Mode Toggle Controller
+    function toggleHighContrast(playSound = true, persist = true) {
+      if (playSound) {
+        playTactileBeep(660, 0.1);
+      }
+
+      const screenContainer = document.querySelector('.app-screen-container');
+      if (!screenContainer) return;
+
+      const isActive = screenContainer.classList.toggle('high-contrast');
+
+      const btn = document.getElementById('btn-hc-toggle');
+      if (btn) {
+        btn.classList.toggle('active', isActive);
+      }
+
+      if (persist) {
+        const p = getActivePatient();
+        if (p) {
+          p.highContrast = isActive;
+          saveState();
+        }
+      }
+    }
+
+    // Set high contrast mode explicitly (for sync)
+    function setHighContrast(enabled, playSound = false, persist = false) {
+      const screenContainer = document.querySelector('.app-screen-container');
+      if (!screenContainer) return;
+
+      const currentlyActive = screenContainer.classList.contains('high-contrast');
+
+      if (enabled && !currentlyActive) {
+        toggleHighContrast(playSound, persist);
+      } else if (!enabled && currentlyActive) {
+        toggleHighContrast(playSound, persist);
       }
     }
 
@@ -2590,6 +2823,9 @@
 
       // Sync senior font size accessibility state without playing sound or saving state
       setAppFontSize(p.fontSize || 'normal', false, false);
+
+      // Sync high contrast mode state
+      setHighContrast(p.highContrast || false, false, false);
 
       saveState();
     }
